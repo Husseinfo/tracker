@@ -3,23 +3,30 @@
 <table class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
+            <th>Id User</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
             <th>E-mail</th>
             <th>Address</th>
             <th>Birth Date</th>
+            <th>Image</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
     {% for b in users %}
         <tr>
+            <td>{{ b.id}}</td>
             <td>{{ b.first_name}}</td>
             <td>{{ b.last_name}}</td>
             <td>{{ b.phone }}</td>
             <td>{{ b.e_mail}}</td>
             <td>{{ b.address}}</td>
             <td>{{ b.birth_date }}</td>
+            {% load static %}
+            <td><img src="{{ MEDIA_ROOT }}/{{ b.Image.url }}" alt="" height=50 width=50></td>
+            <td><button href="{% url 'delete' %}{{skill.id}}" type="button" class="btn btn-xs btn-danger">Delete</button></td>
         </tr>
     {% endfor %}
     </tbody>
