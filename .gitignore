@@ -107,4 +107,4 @@ migrations
 tracker/settings.py
 
 # profile
-tracker/static/profile
+/static/profile/

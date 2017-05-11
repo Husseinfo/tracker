@@ -31,5 +31,5 @@ urlpatterns = [
     url(r'^404/', view=views.handler404),
     url(r'^sendimage/', view=views.receive_images),
     url(r'^sendtrain/', view=views.receive_train),
-    url(r'^users/', view=views.displayUsers)
+    url(r'^users/', view=views.display_users)
 ]

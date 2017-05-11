@@ -59,10 +59,10 @@ def capture(request):
         return redirect(login)
     return render(request, 'capture.html')
 
-def displayUsers(request):
+def display_users(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render_to_response('User.html', {'users': User.objects.all()})
+    return render_to_response('user.html', {'users': User.objects.all()})
 
 def train(request):
     if not request.user.is_authenticated():
