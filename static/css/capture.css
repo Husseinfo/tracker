@@ -1,21 +1,14 @@
-.pure-form {
-    display: inline-block;
-    text-align: center;
-    margin-left: 33%;
-    margin-right: 33%;
-}
-
 .loader,
 .loader:before,
 .loader:after {
-    background: #0078e7;
+    background: #337ab7;
     -webkit-animation: load1 1s infinite ease-in-out;
     animation: load1 1s infinite ease-in-out;
     width: 1em;
     height: 4em;
 }
 .loader {
-    color: #0078e7;
+    color: #337ab7;
     text-indent: -9999em;
     margin: 88px auto;
     position: relative;

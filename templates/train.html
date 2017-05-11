@@ -1,29 +1,40 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block css %}
-<link href="{% static 'css/train.css' %}" rel="stylesheet">
+    <link href="{% static 'css/train.css' %}" rel="stylesheet">
 {% endblock %}
 {% block title %}Train{% endblock %}
 {% block content %}
-
-    <div class="pure-form">{% csrf_token %}
-    <fieldset>
-        <legend>Train the model</legend>
-        <button id="train" class="btn btn-primary">Train</button>
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <h3 class="panel-title">Train the model</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Click to start Training process. It may take several minutes.
+                </p>
+                <p>
+                    Note that training results a new training model and <strong>overwrite</strong> the old one.
+                </p>
+                <button id="train" class="btn btn-danger">Train</button>
+            </div>
+        </div>
         <div id="loader"></div>
-    </fieldset>
     </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="alert alert-dismissable alert-success" style="display: none">
-                      <button type="button" class="close" data-dismiss="alert">×</button>
-                      <strong>Trained! </strong>Model successfully trained.
-                    <a href="#" class="alert-link">Old model has been overridden!</a>
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Trained! </strong>Model successfully trained.
+                <a href="#" class="alert-link">Old model has been overridden!</a>
             </div>
         </div>
     </div>
 
 {% endblock %}
 {% block javascript %}
-    <script src = "{% static 'js/train.js' %}"></script>
+    <script src="{% static 'js/train.js' %}"></script>
 {% endblock %}

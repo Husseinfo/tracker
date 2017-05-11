@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block title %}Dashboard{% endblock %}
 {% block css %}
 <link href="{% static 'css/home.css' %}" rel="stylesheet">
 {% endblock %}
@@ -73,7 +74,7 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
+              <a href="/train">
                 <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">

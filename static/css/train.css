@@ -1,21 +1,32 @@
-.pure-form {
-    display: inline-block;
-    text-align: center;
-    margin-left: 45%;
+.panel-red {
+    border-color: #d9534f;
 }
 
+.panel-red > .panel-heading {
+    border-color: #d9534f;
+    color: #fff;
+    background-color: #d9534f;
+}
+
+.panel-red > a {
+    color: #d9534f;
+}
+
+.panel-red > a:hover {
+    color: #b52b27;
+}
 
 .loader,
 .loader:before,
 .loader:after {
-    background: #0078e7;
+    background: #d9534f;
     -webkit-animation: load1 1s infinite ease-in-out;
     animation: load1 1s infinite ease-in-out;
     width: 1em;
     height: 4em;
 }
 .loader {
-    color: #0078e7;
+    color: #d9534f;
     text-indent: -9999em;
     margin: 88px auto;
     position: relative;
