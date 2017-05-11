@@ -97,3 +97,6 @@ static/photos/
 # Jetbrains
 .idea/
 
+# Train file
+*.yml
+
