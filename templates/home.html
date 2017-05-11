@@ -15,7 +15,7 @@
                   </div>
                   <div class="col-xs-6 text-right">
                     <p class="announcement-heading">{{ photos }}</p>
-                    <p class="announcement-text">Photos</p>
+                    <p class="announcement-text">{% if photos == 1 %}Photo{% else %}Photos{% endif %}</p>
                   </div>
                 </div>
               </div>
@@ -42,7 +42,7 @@
                   </div>
                   <div class="col-xs-6 text-right">
                     <p class="announcement-heading">{{ users }}</p>
-                    <p class="announcement-text">Users</p>
+                    <p class="announcement-text">{% if users == 1 %}User{% else %}Users{% endif %}</p>
                   </div>
                 </div>
               </div>

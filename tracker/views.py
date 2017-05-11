@@ -51,18 +51,21 @@ def add_user(request):
         form = UserForm(request.POST,request.FILES)
         instance = form.save(commit=False)
         instance.save()
-        return render(request, 'home.html')
+        return redirect(home)
     return render(request, 'adduser.html', {'formset': UserForm()})
+
 
 def capture(request):
     if not request.user.is_authenticated():
         return redirect(login)
     return render(request, 'capture.html')
 
+
 def display_users(request):
     if not request.user.is_authenticated():
         return redirect(login)
     return render_to_response('user.html', {'users': User.objects.all()})
+
 
 def train(request):
     if not request.user.is_authenticated():
