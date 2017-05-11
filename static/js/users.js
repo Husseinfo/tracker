@@ -1,12 +1,12 @@
 // Grab elements, create settings, etc.
 $('#delete').click(function () {
     var id = jQuery(this).parent().attr('id');
-    var tr = jQuery(this).parent().parent()
+    var tr = jQuery(this).parent().parent();
     alert('ID and Number must have positive values!' + id);
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
-        url: "/delete_user/",
+        url: "/deleteuser/",
         data: {
             id: id
         },

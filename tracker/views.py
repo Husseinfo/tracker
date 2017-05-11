@@ -99,10 +99,10 @@ def receive_train(request):
     trainer.train()
     return HttpResponse()
 
+
 def delete_user(request):
     if not request.is_ajax():
         return redirect(handler404)
-    id = request.POST.get('id')
-    print(id)
-    User.objects.filter(id=id).delete()
+    user_id = request.POST.get('id')
+    User.objects.filter(id=user_id).delete()
     return HttpResponse()
