@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>E-mail</th>>
+            <th>Address</th>
+            <th>Birth Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for b in users %}
+        <tr>
+            <td>{{ b.first_name}}</td>
+            <td>{{ b.last_name}}</td>
+            <td>{{ b.phone }}</td>
+            <td>{{ b.e_mail}}</td>
+            <td>{{ b.address}}</td>
+            <td>{{ b.birth_date }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>>
+</table>
+{% endblock content %}
