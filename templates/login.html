@@ -1,26 +1,46 @@
 {% load staticfiles %}
-<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-{% block css %}
-<link href="{% static 'css/login.css' %}" rel="stylesheet">
-{% endblock %}
-{% block title %}Log in{% endblock %}
-{% block content %}
-  <div id="form-main">
-  <div id="form-div">
-    <form class="form" id="form1" action="" method="POST">
-    {% csrf_token %}
-      <p class="name">
-        <input id="username" name="username" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="Username"/>
-      </p>
-
-      <p class="password">
-        <input id="password" name="password" type="password" class="validate[required,custom[password]] feedback-input" placeholder="Password" />
-      </p>
-
-      <div class="submit">
-        <input type="submit" value="LOGIN" id="button-blue"/>
-        <div class="ease"></div>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Tracker | Log in</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/login.css' %}" rel="stylesheet">
+	</head>
+	<body>
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">Login to Tracker</h1>
       </div>
-    </form>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block" action="" method="post" >
+              {% csrf_token %}
+            <div class="form-group">
+              <input name="username" type="text" class="form-control input-lg" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <input name="password" type="password" class="form-control input-lg" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+
+		  </div>
+      </div>
   </div>
-{% endblock %}
+  </div>
+</div>
+        <script src = "{% static 'js/bootstrap.min.js' %}"></script>
+        <script src = "{% static 'js/jquery.min.js' %}"></script>
+	</body>
+</html>
