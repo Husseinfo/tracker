@@ -26,9 +26,12 @@
             <td>{{ b.birth_date }}</td>
             {% load static %}
             <td><img src="{{ MEDIA_ROOT }}/{{ b.Image.url }}" alt="" height=50 width=50></td>
-            <td><button href="{% url 'delete' %}{{skill.id}}" type="button" class="btn btn-xs btn-danger">Delete</button></td>
+            <td id="{{ b.id }}"><button id="delete" type="button" class="btn btn-xs btn-danger">Delete</button></td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 {% endblock content %}
+{% block javascript %}
+    <script src = "{% static 'js/users.js' %}"></script>
+{% endblock %}
