@@ -5,13 +5,18 @@ from django.contrib.auth import authenticate, login as _login, logout as _logout
 from tracker.models import User
 from tracker.forms import UserForm
 from tracker import trainer, train_file_name
+from tracker import utility
 import base64
+import os
 
 
 def home(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render(request, "home.html", {'photos': trainer.get_nbr_photos(), 'users': 0})
+    return render(request, "home.html",
+                  {'photos': trainer.get_nbr_photos(),
+                   'users': 0,
+                   'last_training': utility.time_spent(os.path.getmtime(train_file_name))},)
 
 
 def login(request):
