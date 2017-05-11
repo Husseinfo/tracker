@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+DATE_INPUT_FORMATS = ('%d-%m-%Y')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

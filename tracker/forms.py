@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+import datetime
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+
+from tracker import settings
 
 
 class LoginForm(AuthenticationForm):
@@ -14,8 +17,8 @@ class LoginForm(AuthenticationForm):
 class UserForm(forms.Form):
     first_name = forms.CharField(max_length=32)
     last_name = forms.CharField(max_length=32)
-    mail = forms.CharField(max_length=32, widget=forms.EmailInput)
-    phone = forms.IntegerField('Phone number')
-    image = forms.ImageField('Image')
+    mail = forms.CharField(max_length=32)
+    phone = forms.CharField(max_length=32)
+    image = forms.ImageField(max_length=128)
     address = forms.CharField(max_length=128)
-    birth_date = forms.DateField(widget=forms.DateInput)
+    birth_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)

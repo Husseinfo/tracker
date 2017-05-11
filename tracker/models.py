@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
+import datetime
 
 from django.db import models
 from django.forms import ModelForm
 
 
 class User(models.Model):
-    id = models.IntegerField(name='ID', primary_key=True, unique=True, auto_created=True, editable=False)
-    first_name = models.CharField(name='First Name', max_length=32)
-    last_name = models.CharField(name='Last Name', max_length=32)
-    mail = models.CharField(name='E-mail', max_length=32)
-    phone = models.IntegerField(name='Phone number')
-    image = models.ImageField(name='Image')
-    address = models.CharField(name='Address', max_length=128)
-    birth_date = models.DateField(name='Birth date')
-
+    id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
+    e_mail = models.CharField(max_length=32)
+    phone = models.CharField(max_length=32)
+    image = models.ImageField(upload_to='static/Photos/',name="Image")
+    address = models.CharField(max_length=128)
+    birth_date = models.DateField(("Date"), default=datetime.date.today)
 
 class Image(models.Model):
     id = models.IntegerField(name='ID', unique=True, primary_key=True, editable=False)
