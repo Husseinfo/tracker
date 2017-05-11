@@ -90,3 +90,10 @@ ENV/
 
 # Photos path
 static/photos/
+
+# macOS
+.DS_Store/
+
+# Jetbrains
+.idea/
+
