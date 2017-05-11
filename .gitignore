@@ -100,3 +100,8 @@ static/photos/
 # Train file
 *.yml
 
+# DB Migrations
+migrations
+
+# settings
+tracker/settings.py
