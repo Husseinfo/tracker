@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+
+from django.shortcuts import render, redirect, render_to_response, HttpResponse
+from django.contrib.auth import authenticate, login as _login, logout as _logout
+from tracker.models import User
+from tracker.forms import UserForm
+from tracker import trainer, train_file_name
+import base64
+
+
+def home(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render(request, "home.html", {'photos': trainer.get_nbr_photos(), 'users': 0})
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            _login(request, user)
+            return redirect(home)
+        else:
+            return render(request, 'login.html')
+    elif request.method == 'GET':
+        if request.user.is_authenticated():
+            return redirect(home)
+        return render(request, 'login.html')
+
+
+def logout(request):
+    _logout(request)
+    return redirect(login)
+
+
+def about(request):
+    return render(request, 'about.html', {})
+
+
+def add_user(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    if request.method == 'POST':
+        form = User(request.POST)
+        user = form.save()
+        user.save()
+        return 'User added!'
+    return render(request, 'adduser.html', {'formset': UserForm()})
+
+
+def capture(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render(request, 'capture.html')
+
+
+def train(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render(request, 'train.html')
+
+
+def handler404(request):
+    response = render_to_response('404.html', {})
+    response.status_code = 404
+    return response
+
+
+def receive_images(request):
+    if not request.is_ajax():
+        return redirect(handler404)
+    label = request.POST.get('label')
+    photos = request.POST.getlist('photos[]')
+    for photo in photos:
+        ext, img = photo.split(';base64,')
+        ext = ext.split('/')[-1]
+        fh = open('static/photos/'+str(label)+'_'+str(photos.index(photo))+'.'+ext, 'wb')
+        fh.write(base64.b64decode(img))
+        fh.close()
+    return HttpResponse()
+
+
+def receive_train(request):
+    if not request.is_ajax():
+        return redirect(handler404)
+    trainer.train()
+    return HttpResponse()

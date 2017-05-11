@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+<link href="{% static 'css/capture.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}Capture{% endblock %}
+{% block content %}
+
+
+    <video id="video" width="320" height="240" autoplay style="margin-left: 37%"></video>
+    <canvas id="canvas" width="320" height="240" style="visibility: hidden"></canvas>
+
+    <div class="pure-form">
+    <fieldset>
+        <legend>Capture a session</legend>
+
+        <input id="id" type="number" placeholder="ID">
+        <input id="number" type="number" placeholder="Number">
+        <button id="capture" class="btn btn-primary">Capture</button>
+    </fieldset>
+    </div>
+
+
+{% endblock %}
+{% block javascript %}
+    <script src = "{% static 'js/capture.js' %}"></script>
+{% endblock %}

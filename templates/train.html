@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+<link href="{% static 'css/train.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}Train{% endblock %}
+{% block content %}
+
+    <div class="pure-form">{% csrf_token %}
+    <fieldset>
+        <legend>Train the model</legend>
+        <button id="train" class="btn btn-primary">Train</button>
+        <div id="loader"></div>
+    </fieldset>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="alert alert-dismissable alert-success" style="display: none">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      <strong>Trained! </strong>Model successfully trained.
+                    <a href="#" class="alert-link">Old model has been overridden!</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script src = "{% static 'js/train.js' %}"></script>
+{% endblock %}
