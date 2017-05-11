@@ -16,7 +16,7 @@ def home(request):
         return redirect(login)
     return render(request, "home.html",
                   {'photos': trainer.get_nbr_photos(),
-                   'users': 0,
+                   'users': User.objects.count(),
                    'last_training': utility.time_spent(os.path.getmtime(train_file_name))},)
 
 
