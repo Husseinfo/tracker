@@ -4,6 +4,7 @@ from django import forms
 
 from tracker import settings
 
+
 class UserForm(forms.Form):
     first_name = forms.CharField(max_length=32)
     last_name = forms.CharField(max_length=32)

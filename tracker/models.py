@@ -13,7 +13,8 @@ class User(models.Model):
     phone = models.CharField(max_length=32)
     image = models.ImageField(upload_to='static/profile/', name="Image")
     address = models.CharField(max_length=128)
-    birth_date = models.DateField(("Date"), default=datetime.date.today)
+    birth_date = models.DateField("Date", default=datetime.date.today)
+
 
 class Image(models.Model):
     id = models.IntegerField(name='ID', unique=True, primary_key=True, editable=False)
@@ -34,4 +35,3 @@ class ImageForm(ModelForm):
     class Meta:
         model = Image
         exclude = ['id']
-
