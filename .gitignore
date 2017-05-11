@@ -105,3 +105,6 @@ migrations
 
 # settings
 tracker/settings.py
+
+# profile
+tracker/static/profile

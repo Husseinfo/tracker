@@ -11,7 +11,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=32)
     e_mail = models.CharField(max_length=32)
     phone = models.CharField(max_length=32)
-    image = models.ImageField(upload_to='static/Photos/',name="Image")
+    image = models.ImageField(upload_to='static/profile/', name="Image")
     address = models.CharField(max_length=128)
     birth_date = models.DateField(("Date"), default=datetime.date.today)
 

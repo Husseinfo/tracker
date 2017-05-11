@@ -5,15 +5,9 @@
 {% endblock %}
 {% block title %}Add User{% endblock %}
 {% block content %}
-    <div class="row">
-    <div class="col-lg-4">
-        <div class="form-group">
-            <form role="form" action="" method="post">
-                {% csrf_token %}
-                {{ formset.as_p }}
-                <input type="submit" class="btn btn-primary" value="Submit" />
-            </form>
-        </div>
-    </div>
-</div>
+<form role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.as_p }}
+    <input type="submit" class="btn btn-primary" value="Submit" />
+</form>
 {% endblock %}

@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
 from tracker import settings
+from tracker.models import User
 
 
 class LoginForm(AuthenticationForm):

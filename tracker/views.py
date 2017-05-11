@@ -2,9 +2,7 @@
 
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
-from tracker.models import User
-from tracker.forms import UserForm
-from tracker.models import User
+from tracker.models import UserForm, User
 from tracker import trainer, train_file_name
 from tracker import utility
 import base64
@@ -51,13 +49,10 @@ def add_user(request):
         return redirect(login)
     if request.method == 'POST':
         form = UserForm(request.POST,request.FILES)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
+        instance = form.save(commit=False)
+        instance.save()
         return render(request, 'home.html')
     return render(request, 'adduser.html', {'formset': UserForm()})
-
-
 
 def capture(request):
     if not request.user.is_authenticated():
