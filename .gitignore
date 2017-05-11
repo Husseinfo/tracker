@@ -92,7 +92,7 @@ ENV/
 static/photos/
 
 # macOS
-.DS_Store/
+.DS_Store
 
 # Jetbrains
 .idea/
