@@ -26,6 +26,7 @@
             <td>{{ b.birth_date }}</td>
             {% load static %}
             <td><img src="{{ MEDIA_ROOT }}/{{ b.Image.url }}" alt="" height=50 width=50></td>
+            <td><a href={%  url 'profile' id=b.id%}>View Profile</a></td>
             <td id="{{ b.id }}"><button id="delete" type="button" class="btn btn-xs btn-danger">Delete</button></td>
         </tr>
     {% endfor %}
