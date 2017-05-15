@@ -2,6 +2,8 @@
 
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
+
+from recognition import recognizer
 from tracker.models import UserForm, User
 from tracker import trainer, face_recognizer, train_file_name, photos_path, utility
 import base64
@@ -139,3 +141,13 @@ def receive_recognize_camera(request):
     fh.write(base64.b64decode(img))
     fh.close()
     return HttpResponse(face_recognizer.get_image_label('temp/rec.'+ext))
+
+def recognize_photo(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render(request,'recognise_photo.html')
+
+def recognize_photo_uploaded(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    recognizer.get_image_label()

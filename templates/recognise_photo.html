@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link href="{% static 'css/adduser.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}Add User{% endblock %}
+{% block content %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img id="uploaded" src="#" alt="your image" />
+            </div>
+            <input type='file' onchange="readURL(this);" />
+            <button id="capture" class="btn btn-primary">Capture</button>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/recognize_photo.js' %}"></script>
+{% endblock %}
