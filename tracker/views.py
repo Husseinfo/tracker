@@ -3,11 +3,10 @@
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from tracker.models import UserForm, User
-from tracker import trainer, face_recognizer, train_file_name
-from tracker import utility
+from tracker import trainer, face_recognizer, train_file_name, photos_path, utility
 import base64
 import os
-from tracker import photos_path
+
 
 def home(request):
     if not request.user.is_authenticated():
@@ -16,6 +15,7 @@ def home(request):
                   {'photos': trainer.get_nbr_photos(),
                    'users': User.objects.count(),
                    'last_training': utility.time_spent(os.path.getmtime(train_file_name))},)
+
 
 def login(request):
     if request.method == 'POST':
@@ -41,6 +41,7 @@ def logout(request):
 
 def about(request):
     return render(request, 'about.html', {})
+
 
 def add_user(request):
     if not request.user.is_authenticated():
@@ -76,7 +77,10 @@ def handler404(request):
     response.status_code = 404
     return response
 
+
 def receive_images(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     label = request.POST.get('label')
@@ -91,21 +95,25 @@ def receive_images(request):
 
 
 def receive_train(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     trainer.train()
     return HttpResponse()
 
-def profile(request,id=1):
+
+def profile(request, id=1):
     if not request.user.is_authenticated():
         return redirect(login)
-    print(id)
-    print("data")
     user_data = User.objects.get(pk=id)
     images = [filename for filename in os.listdir(photos_path) if filename.startswith(id)]
-    return render(request, 'profile.html', {'user': user_data,'images':images})
+    return render(request, 'profile.html', {'user': user_data, 'images': images})
+
 
 def delete_user(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     user_id = request.POST.get('id')
@@ -114,10 +122,14 @@ def delete_user(request):
 
 
 def recognize_camera(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     return render(request, 'camera.html')
 
 
 def receive_recognize_camera(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     photo = request.POST.get('photo')
