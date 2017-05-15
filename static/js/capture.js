@@ -16,13 +16,13 @@ var context = canvas.getContext('2d');
 
 // Trigger photo take
 $('#capture').click(function() {
-    var id = $('#id').val();
+    var id = $('#user_id').val();
     var number = $('#number').val();
     if(id <=0 || number <=0){
         alert('ID and Number must have positive values!');
         return;
     }
-    alert('Taking ' + number + ' photos for user: ' + id + '\nPress ok when ready.');
+    alert('Taking ' + number + ' photos for user: ' + $('#user_id option[value="'+id+'"]').text() + '\nPress ok when ready.');
     $(this).css('disabled', 'true');
     var photos = takePhotos(number);
     $.ajax({

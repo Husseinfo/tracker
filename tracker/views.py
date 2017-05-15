@@ -58,7 +58,7 @@ def add_user(request):
 def capture(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render(request, 'capture.html')
+    return render(request, 'capture.html', {'users': User.objects.all()})
 
 
 def display_users(request):
