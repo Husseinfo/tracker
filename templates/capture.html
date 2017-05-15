@@ -11,12 +11,12 @@
                 <video id="video" width="640" height="480" class="img-thumbnail"></video>
             </div>
             <div class="modal-body">
-                <select id="user_id">
+                <select id="user_id" class="form-control">
                     {% for user in users %}
                         <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
                     {% endfor %}
-                </select>
-                <input id="number" type="number" placeholder="Number" class="form-control">
+                </select><br>
+                <input id="number" type="number" placeholder="Number" class="form-control"><br>
                 <button id="capture" class="btn btn-primary">Capture</button>
             </div>
         </div>
