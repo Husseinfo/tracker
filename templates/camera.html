@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block css %}
-    <link href="{% static 'css/capture.css' %}" rel="stylesheet">
+    <link href="{% static 'css/camera.css' %}" rel="stylesheet">
 {% endblock %}
-{% block title %}Capture{% endblock %}
+{% block title %}Camera{% endblock %}
 {% block content %}
     <div class="modal-dialog">
         <div class="modal-content">
@@ -11,18 +11,13 @@
                 <video id="video" width="640" height="480" class="img-thumbnail"></video>
             </div>
             <div class="modal-body">
-                <select id="user_id">
-                    {% for user in users %}
-                        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
-                    {% endfor %}
-                </select>
-                <input id="number" type="number" placeholder="Number" class="form-control">
                 <button id="capture" class="btn btn-primary">Capture</button>
             </div>
         </div>
+        <div id="loader"></div>
     </div>
     <canvas id="canvas" width="320" height="240" style="visibility: hidden"></canvas>
 {% endblock %}
 {% block javascript %}
-    <script src="{% static 'js/capture.js' %}"></script>
+    <script src="{% static 'js/camera.js' %}"></script>
 {% endblock %}

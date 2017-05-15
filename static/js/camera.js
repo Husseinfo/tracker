@@ -1,3 +1,6 @@
+/**
+ * Created by hussein on 5/15/17.
+ */
 // Grab elements, create settings, etc.
 var video = document.getElementById('video');
 
@@ -16,39 +19,23 @@ var context = canvas.getContext('2d');
 
 // Trigger photo take
 $('#capture').click(function() {
-    var id = $('#user_id').val();
-    var number = $('#number').val();
-    if(id <=0 || number <=0){
-        alert('ID and Number must have positive values!');
-        return;
-    }
-    alert('Taking ' + number + ' photos for user: ' + $('#user_id option[value="'+id+'"]').text() + '\nPress ok when ready.');
     $(this).css('disabled', 'true');
-    var photos = takePhotos(number);
+    context.drawImage(video, 0, 0, 320, 240);
+    var photo = document.getElementById("canvas").toDataURL("image/png");
+    $('#loader').addClass('loader');
     $.ajax({
             headers: { "X-CSRFToken": getCookie('csrftoken') },
              type:"POST",
-             url:"/sendimage/",
+             url:"/recognizecamera/",
              data: {
-                    label: id,
-                    photos: photos
+                    photo: photo
                     },
-             success: function(){
+             success: function(user){
                 $('#loader').removeClass('loader');
-                alert('Uploaded!');
+                alert(user);
              }
             });
 });
-
-function takePhotos(num){
-    var photos = [];
-    for(var i=0; i<num; i++){
-        alert('Ready?');
-        context.drawImage(video, 0, 0, 320, 240);
-        photos[i] = document.getElementById("canvas").toDataURL("image/png");
-    }
-    return photos;
-}
 
 function getCookie(name) {
     var cookieValue = null;
