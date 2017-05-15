@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from tracker.models import UserForm, User
-from tracker import trainer, train_file_name
+from tracker import trainer, face_recognizer, train_file_name
 from tracker import utility
 import base64
 import os
@@ -106,3 +106,19 @@ def delete_user(request):
     user_id = request.POST.get('id')
     User.objects.filter(id=user_id).delete()
     return HttpResponse()
+
+
+def recognize_camera(request):
+    return render(request, 'camera.html')
+
+
+def receive_recognize_camera(request):
+    if not request.is_ajax():
+        return redirect(handler404)
+    photo = request.POST.get('photo')
+    ext, img = photo.split(';base64,')
+    ext = ext.split('/')[-1]
+    fh = open('temp/rec.'+ext, 'wb')
+    fh.write(base64.b64decode(img))
+    fh.close()
+    return HttpResponse(face_recognizer.get_image_label('temp/rec.'+ext))

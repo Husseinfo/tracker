@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link href="{% static 'css/camera.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}Capture{% endblock %}
+{% block content %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <video id="video" width="640" height="480" class="img-thumbnail"></video>
+            </div>
+            <div class="modal-body">
+                <button id="capture" class="btn btn-primary">Capture</button>
+            </div>
+        </div>
+        <div id="loader"></div>
+    </div>
+    <canvas id="canvas" width="320" height="240" style="visibility: hidden"></canvas>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/camera.js' %}"></script>
+{% endblock %}

@@ -32,5 +32,7 @@ urlpatterns = [
     url(r'^sendimage/', view=views.receive_images),
     url(r'^sendtrain/', view=views.receive_train),
     url(r'^users/', view=views.display_users),
-    url(r'^deleteuser/', view=views.delete_user)
+    url(r'^deleteuser/', view=views.delete_user),
+    url(r'^recognize/camera/', view=views.recognize_camera),
+    url(r'^recognizecamera', view=views.receive_recognize_camera)
 ]
