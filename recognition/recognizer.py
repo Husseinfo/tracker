@@ -16,7 +16,7 @@ class Recognizer:
     Several methods are included such as reading an image from disk, from video source, from a URL, searching in social
     media...
     """
-    def __init__(self, recognizer_filename, source, threshold=100):
+    def __init__(self, recognizer_filename, source, threshold=None):
         """
         Initialization of attributes
         :param recognizer_filename: Path of the file containing the exported trained model
@@ -28,7 +28,7 @@ class Recognizer:
         self.video_capture = None
         self.recognizer = cv2.face.createLBPHFaceRecognizer()
         self.recognizer.load(recognizer_filename)
-        self.recognizer.setThreshold(threshold)
+        if threshold is not None: self.recognizer.setThreshold(threshold)
 
     def open_source(self):
         """

@@ -22,7 +22,6 @@ $('#capture').click(function() {
     $(this).css('disabled', 'true');
     context.drawImage(video, 0, 0, 320, 240);
     var photo = document.getElementById("canvas").toDataURL("image/png");
-    $('#loader').addClass('loader');
     $.ajax({
             headers: { "X-CSRFToken": getCookie('csrftoken') },
              type:"POST",
@@ -31,7 +30,6 @@ $('#capture').click(function() {
                     photo: photo
                     },
              success: function(user){
-                $('#loader').removeClass('loader');
                 alert(user);
              }
             });

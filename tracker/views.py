@@ -16,7 +16,7 @@ def home(request):
     return render(request, "home.html",
                   {'photos': trainer.get_nbr_photos(),
                    'users': User.objects.count(),
-                   'last_training': utility.time_spent(os.path.getmtime(train_file_name))},)
+                   'last_training': utility.time_spent(os.path.getmtime(train_file_name))}, )
 
 
 def login(request):
@@ -49,7 +49,7 @@ def add_user(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if request.method == 'POST':
-        form = UserForm(request.POST,request.FILES)
+        form = UserForm(request.POST, request.FILES)
         instance = form.save(commit=False)
         instance.save()
         return redirect(home)
@@ -87,10 +87,12 @@ def receive_images(request):
         return redirect(handler404)
     label = request.POST.get('label')
     photos = request.POST.getlist('photos[]')
+    num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == label])
     for photo in photos:
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
-        fh = open('static/photos/'+str(label)+'_'+str(photos.index(photo))+'.'+ext, 'wb')
+        fh = open('static/photos/' + str(label) + '_' + str(num) + '.' + ext, 'wb')
+        num += 1
         fh.write(base64.b64decode(img))
         fh.close()
     return HttpResponse()
@@ -137,15 +139,20 @@ def receive_recognize_camera(request):
     photo = request.POST.get('photo')
     ext, img = photo.split(';base64,')
     ext = ext.split('/')[-1]
-    fh = open('temp/rec.'+ext, 'wb')
+    fh = open('temp/rec.' + ext, 'wb')
     fh.write(base64.b64decode(img))
     fh.close()
-    return HttpResponse(face_recognizer.get_image_label('temp/rec.'+ext))
+    user_id = face_recognizer.get_image_label('temp/rec.' + ext)
+    name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
+        .objects.get(id=user_id).last_name
+    return HttpResponse(name)
+
 
 def recognize_photo(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render(request,'recognise_photo.html')
+    return render(request, 'recognise_photo.html')
+
 
 def recognize_photo_uploaded(request):
     if not request.user.is_authenticated():
