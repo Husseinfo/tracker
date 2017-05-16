@@ -22,6 +22,7 @@ function showImage() {
 
 $('#file').on('change', function(){
     $('#uploaded').show(200);
+    $('#uploaded').attr('width', '100%');
     $('#btnRecognize').prop('disabled', false);
 });
 
