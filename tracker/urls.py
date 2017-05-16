@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^deleteuser/', view=views.delete_user),
     url(r'^profile/(?P<id>\d+)/$',view=views.profile,name="profile"),
     url(r'^recognize/camera/', view=views.recognize_camera),
-    url(r'^recognizecamera', view=views.receive_recognize_camera)
+    url(r'^recognizephoto/', view=views.receive_recognize),
+    url(r'^recognize/photo/', view=views.recognize_photo),
 ]

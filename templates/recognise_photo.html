@@ -8,10 +8,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <img id="uploaded" src="#" alt="your image" />
+                <img id="uploaded" id="image" style="visibility: hidden" src="#" alt="your image" />
             </div>
-            <input type='file' onchange="readURL(this);" />
-            <button id="capture" class="btn btn-primary">Capture</button>
+            <input  type='file' onchange="readURL(this);" /><br>
+            <button id="btnRecognize" class="btn btn-primary">Recognize</button>
+            <br>
         </div>
     </div>
 {% endblock %}

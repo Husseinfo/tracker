@@ -131,7 +131,7 @@ def recognize_camera(request):
     return render(request, 'camera.html')
 
 
-def receive_recognize_camera(request):
+def receive_recognize(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if not request.is_ajax():
@@ -143,6 +143,12 @@ def receive_recognize_camera(request):
     fh.write(base64.b64decode(img))
     fh.close()
     user_id = face_recognizer.get_image_label('temp/rec.' + ext)
+    print(user_id)
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return HttpResponse(name)
+
+def recognize_photo(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render(request, 'recognise_photo.html')
