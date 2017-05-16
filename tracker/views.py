@@ -110,7 +110,7 @@ def profile(request, id=1):
     if not request.user.is_authenticated():
         return redirect(login)
     user_data = User.objects.get(pk=id)
-    images = [filename for filename in os.listdir(photos_path) if filename.startswith(id)]
+    images = [filename for filename in os.listdir(photos_path) if filename.startswith(str(id))]
     return render(request, 'profile.html', {'user': user_data, 'images': images})
 
 def delete_user(request):
