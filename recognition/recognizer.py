@@ -30,6 +30,10 @@ class Recognizer:
         self.recognizer.load(recognizer_filename)
         if threshold is not None: self.recognizer.setThreshold(threshold)
 
+    def reload(self):
+        self.recognizer = cv2.face.createLBPHFaceRecognizer()
+        self.recognizer.load(self.recognizer_filename)
+
     def open_source(self):
         """
         Opens the source of video

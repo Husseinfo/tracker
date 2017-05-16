@@ -104,6 +104,7 @@ def receive_train(request):
     if not request.is_ajax():
         return redirect(handler404)
     trainer.train()
+    face_recognizer.reload()
     return HttpResponse()
 
 
@@ -147,6 +148,7 @@ def receive_recognize(request):
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return HttpResponse(name)
+
 
 def recognize_photo(request):
     if not request.user.is_authenticated():
