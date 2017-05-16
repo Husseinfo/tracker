@@ -146,15 +146,3 @@ def receive_recognize_camera(request):
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return HttpResponse(name)
-
-
-def recognize_photo(request):
-    if not request.user.is_authenticated():
-        return redirect(login)
-    return render(request, 'recognise_photo.html')
-
-
-def recognize_photo_uploaded(request):
-    if not request.user.is_authenticated():
-        return redirect(login)
-    recognizer.get_image_label()
