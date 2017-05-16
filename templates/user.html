@@ -3,31 +3,22 @@
 <table class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
-            <th>Id User</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>#Id</th>
+            <th>Name</th>
             <th>Phone Number</th>
             <th>E-mail</th>
-            <th>Address</th>
-            <th>Birth Date</th>
-            <th>Image</th>
-            <th>Delete</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
     {% for b in users %}
-        <tr>
+        <tr id = {{ b.id }}>
             <td>{{ b.id}}</td>
-            <td>{{ b.first_name}}</td>
-            <td>{{ b.last_name}}</td>
+            <td>{{ b.first_name}} {{ b.last_name}}</td>
             <td>{{ b.phone }}</td>
             <td>{{ b.e_mail}}</td>
-            <td>{{ b.address}}</td>
-            <td>{{ b.birth_date }}</td>
             {% load static %}
-            <td><img src="{{ MEDIA_ROOT }}/{{ b.Image.url }}" alt="" height=50 width=50></td>
-            <td><a href={%  url 'profile' id=b.id%}>View Profile</a></td>
-            <td id="{{ b.id }}"><button id="delete" type="button" class="btn btn-xs btn-danger">Delete</button></td>
+            <td><button type="button" class="btn btn-xs btn-info"><a href={%  url 'profile' id=b.id%}>View Profile</a></button>&nbsp&nbsp<button id="delete" type="button" class="btn btn-xs btn-danger" onclick="deleteUser({{ b.id }})">Delete</button></td>
         </tr>
     {% endfor %}
     </tbody>

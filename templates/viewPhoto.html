@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+    {% block content %}
+        {% for image in data %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-user"></i> User :{{ image.user }} </h3>
+            </div>
+                {% for b in image.images %}
+                    <img src="/static/photos/{{ b }}" name ={{ index }}/>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+{%  endblock content %}

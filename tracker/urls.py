@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^recognize/camera/', view=views.recognize_camera),
     url(r'^recognizephoto/', view=views.receive_recognize),
     url(r'^recognize/photo/', view=views.recognize_photo),
+    url(r'^viewphotos/', view=views.view_photos)
 ]

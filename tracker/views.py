@@ -106,14 +106,12 @@ def receive_train(request):
     face_recognizer.reload()
     return HttpResponse()
 
-
 def profile(request, id=1):
     if not request.user.is_authenticated():
         return redirect(login)
     user_data = User.objects.get(pk=id)
     images = [filename for filename in os.listdir(photos_path) if filename.startswith(id)]
     return render(request, 'profile.html', {'user': user_data, 'images': images})
-
 
 def delete_user(request):
     if not request.user.is_authenticated():
@@ -152,3 +150,13 @@ def recognize_photo(request):
     if not request.user.is_authenticated():
         return redirect(login)
     return render(request, 'recognise_photo.html')
+
+def view_photos(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    users=User.objects.all()
+    data = []
+    for user in users:
+        images = [filename for filename in os.listdir(photos_path) if filename.startswith(str(user.id))]
+        data.append({'user': user.first_name +" "+ user.last_name, 'images': images})
+    return render(request, 'viewPhoto.html', {'data': data})

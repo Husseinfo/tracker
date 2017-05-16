@@ -1,8 +1,8 @@
 // Grab elements, create settings, etc.
-$('#delete').click(function () {
-    var id = jQuery(this).parent().attr('id');
-    var tr = jQuery(this).parent().parent();
-    alert('ID and Number must have positive values!' + id);
+function deleteUser(id)
+{
+    if (!confirm('Are you sure you want to delete this user?'+id))
+        return;
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
@@ -11,12 +11,12 @@ $('#delete').click(function () {
             id: id
         },
         success: function () {
-            tr.hide(100);
-            tr.remove();
-            alert('Uploaded!');
+            $('#'+id).hide(300);
+            $('#'+id).remove();
+            alert('deleted!');
         }
     });
-});
+}
 
 function getCookie(name) {
     var cookieValue = null;
