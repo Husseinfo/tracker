@@ -1,29 +1,32 @@
 /**
  * Created by Ahmad Tfaily on 5/15/2017.
  */
-var image =null;
+
+var image = null;
 function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#uploaded')
-                    .attr('src', e.target.result)
-                image = e.target.result
-                alert(image)
-                showImage();
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#uploaded').attr('src', e.target.result);
+            image = e.target.result;
+            showImage();
+        };
+        reader.readAsDataURL(input.files[0]);
     }
+}
+
 function showImage() {
     var img = document.getElementById('uploaded');
     img.style.visibility = 'visible';
 }
+
+$('#file').on('change', function(){
+    $('#uploaded').show(200);
+    $('#btnRecognize').prop('disabled', false);
+});
+
 $('#btnRecognize').click(function () {
-    if (image == null) {
-        alert("upload Image first!!");
-        return;
-    }
+    $('#loader').addClass('loader');
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
@@ -32,10 +35,22 @@ $('#btnRecognize').click(function () {
             photo: image
         },
         success: function (data) {
-            alert('Uploaded!'+data);
+            $('#loader').removeClass('loader');
+            $('#go').parent().attr('href', '/profile/'+data.id);
+            $('#go').html(data.name);
+            $('#go').removeAttr('style');
         }
     });
 });
+
+$('#reset').click(function(){
+   image = null;
+   $('#file').val('');
+   $('#btnRecognize').prop('disabled', true);
+   $('#go').attr('style', 'visibility: hidden');
+   $('#uploaded').hide(200);
+});
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {

@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 
-from recognition import recognizer
+from django.http import JsonResponse
 from tracker.models import UserForm, User
 from tracker import trainer, face_recognizer, train_file_name, photos_path, utility
 import base64
@@ -147,7 +147,7 @@ def receive_recognize(request):
     print(user_id)
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
-    return HttpResponse(name)
+    return JsonResponse({'id': user_id, 'name': name})
 
 
 def recognize_photo(request):

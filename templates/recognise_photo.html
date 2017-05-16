@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block css %}
-    <link href="{% static 'css/adduser.css' %}" rel="stylesheet">
+    <link href="{% static 'css/photo.css' %}" rel="stylesheet">
 {% endblock %}
 {% block title %}Add User{% endblock %}
 {% block content %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <img id="uploaded" id="image" style="visibility: hidden" src="#" alt="your image" />
+                <img id="uploaded" style="visibility: hidden" src="#" alt="your image"/>
             </div>
-            <input  type='file' onchange="readURL(this);" /><br>
-            <button id="btnRecognize" class="btn btn-primary">Recognize</button>
-            <br>
+            <div class="modal-body">
+                <input id="file" type='file' class="form-control" onchange="readURL(this);"/><br>
+                <button disabled id="btnRecognize" class="btn btn-primary">Recognize</button>
+                <button id="reset" class="btn btn-danger">Reset</button>
+                <a><button id="go" class="btn btn-success" style="visibility: hidden"></button></a>
+                <div id="loader"></div>
+            </div>
         </div>
     </div>
 {% endblock %}
