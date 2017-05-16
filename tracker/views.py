@@ -24,7 +24,6 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             _login(request, user)
             return redirect(home)
@@ -144,7 +143,6 @@ def receive_recognize(request):
     fh.write(base64.b64decode(img))
     fh.close()
     user_id = face_recognizer.get_image_label('temp/rec.' + ext)
-    print(user_id)
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return JsonResponse({'id': user_id, 'name': name})

@@ -5,9 +5,9 @@
 var video = document.getElementById('video');
 
 // Get access to the camera!
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+    navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
         video.src = window.URL.createObjectURL(stream);
         video.play();
     });
@@ -18,21 +18,23 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 
 // Trigger photo take
-$('#capture').click(function() {
+$('#capture').click(function () {
     $(this).css('disabled', 'true');
     context.drawImage(video, 0, 0, 320, 240);
     var photo = document.getElementById("canvas").toDataURL("image/png");
     $.ajax({
-            headers: { "X-CSRFToken": getCookie('csrftoken') },
-             type:"POST",
-             url:"/recognizecamera/",
-             data: {
-                    photo: photo
-                    },
-             success: function(user){
-                alert(user);
-             }
-            });
+        headers: {"X-CSRFToken": getCookie('csrftoken')},
+        type: "POST",
+        url: "/recognizephoto/",
+        data: {
+            photo: photo
+        },
+        success: function (data) {
+            $('#go').parent().attr('href', '/profile/' + data.id);
+            $('#go').html(data.name);
+            $('#go').removeAttr('style');
+        }
+    });
 });
 
 function getCookie(name) {
@@ -52,8 +54,8 @@ function getCookie(name) {
 }
 
 function sleep(milliseconds) {
-   var currentTime = new Date().getTime();
+    var currentTime = new Date().getTime();
 
-   while (currentTime + milliseconds >= new Date().getTime()) {
-   }
+    while (currentTime + milliseconds >= new Date().getTime()) {
+    }
 }
