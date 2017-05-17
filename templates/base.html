@@ -33,10 +33,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li><a href="/home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li><a href="/capture"><i class="fa fa-camera"></i> Capture</a></li>
-                <li><a href="/train"><i class="fa fa-cogs"></i> Train</a></li>
-                <li><a href="/adduser"><i class="fa fa-user-plus"></i> Add user</a></li>
+                <li id="Dashboard"><a href="/home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                <li id="Capture"><a href="/capture"><i class="fa fa-camera"></i> Capture</a></li>
+                <li id="Train"><a href="/train"><i class="fa fa-cogs"></i> Train</a></li>
+                <li id="AddUser"><a href="/adduser"><i class="fa fa-user-plus"></i> Add user</a></li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#recognize" class="collapsed"
                        aria-expanded="false"><i class="fa fa-question-circle"></i> Recognize <i
@@ -50,7 +50,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="/about"><i class="fa fa-info"></i> About</a></li>
+                <li id="About   "><a href="/about"><i class="fa fa-info"></i> About</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right navbar-user">
@@ -125,8 +125,7 @@
     </div>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="{% static 'js/base.js' %}"></script>
 </div><!-- /#wrapper -->
 {% block javascript %}
 {% endblock %}

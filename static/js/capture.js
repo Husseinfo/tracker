@@ -1,4 +1,5 @@
 // Grab elements, create settings, etc.
+
 var video = document.getElementById('video');
 
 // Get access to the camera!

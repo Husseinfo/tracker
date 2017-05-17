@@ -1,8 +1,7 @@
 /**
  * Created by hussein on 5/17/17.
  */
-$(function(){
-   $('ul.nav.navbar-nav.side-nav li').click(function(){
-      alert('hi');
-   });
+$(function () {
+    var id = $('title').html().split('|')[1].trim().replace(/ /g,'');
+    $('#'+id).addClass('active');
 });
