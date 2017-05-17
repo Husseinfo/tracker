@@ -3,7 +3,7 @@
 {% block css %}
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
-{% block title %}Add User{% endblock %}
+{% block title %}{{ user.first_name}} {{user.last_name }}{% endblock %}
 {% block content %}
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
