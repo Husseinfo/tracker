@@ -5,6 +5,16 @@
 {% endblock %}
 {% block title %}Add User{% endblock %}
 {% block content %}
+    <div class="row">
+        <div class="col-lg-8"></div>
+        <div class="col-lg-4">
+            <div class="alert alert-dismissable alert-danger" style="display: none">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Not found! </strong>Image does not contain any known face.
+                <a class="alert-link">Try with a clearer one!</a>
+            </div>
+        </div>
+    </div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,11 +24,14 @@
                 <input id="file" type='file' class="form-control" onchange="readURL(this);" accept="image/*"/><br>
                 <button disabled id="btnRecognize" class="btn btn-primary">Recognize</button>
                 <button id="reset" class="btn btn-danger">Reset</button>
-                <a><button id="go" class="btn btn-success" style="visibility: hidden"></button></a>
+                <a>
+                    <button id="go" class="btn btn-success" style="visibility: hidden"></button>
+                </a>
                 <div id="loader"></div>
             </div>
         </div>
     </div>
+
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'js/recognize_photo.js' %}"></script>

@@ -30,6 +30,10 @@ $('#capture').click(function () {
             photo: photo
         },
         success: function (data) {
+            if (data.id === null) {
+                $('#go').attr('style', 'visibility: hidden');
+                return;
+            }
             $('#go').parent().attr('href', '/profile/' + data.id);
             $('#go').html(data.name);
             $('#go').removeAttr('style');

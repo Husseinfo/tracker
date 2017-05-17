@@ -37,6 +37,10 @@ $('#btnRecognize').click(function () {
         },
         success: function (data) {
             $('#loader').removeClass('loader');
+            if(data.id === null){
+                $('.alert.alert-dismissable.alert-danger').show(200);
+                return;
+            }
             $('#go').parent().attr('href', '/profile/'+data.id);
             $('#go').html(data.name);
             $('#go').removeAttr('style');
@@ -50,6 +54,7 @@ $('#reset').click(function(){
    $('#btnRecognize').prop('disabled', true);
    $('#go').attr('style', 'visibility: hidden');
    $('#uploaded').hide(200);
+   $('.alert.alert-dismissable.alert-danger').hide(200);
 });
 
 function getCookie(name) {
