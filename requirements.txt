@@ -2,6 +2,5 @@ django
 tweepy
 opencv-python
 numpy
-webbrowser
 psycopg2
 
