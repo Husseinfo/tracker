@@ -19,7 +19,7 @@
             <td>{{ b.phone }}</td>
             <td>{{ b.e_mail}}</td>
             {% load static %}
-            <td><a href={%  url 'profile' id=b.id%}><button type="button" class="btn btn-xs btn-info">View</button></a>&nbsp&nbsp<button id="delete" type="button" class="btn btn-xs btn-danger" onclick="deleteUser({{ b.id }})">Delete</button></td>
+            <td><a href={%  url 'profile' id=b.id%}><button type="button" class="btn btn-xs btn-info">View</button></a>&nbsp&nbsp<a href={%  url 'edituser' id=b.id%}><button type="button" class="btn btn-xs btn-warning">Edit</button></a>&nbsp&nbsp<button id="delete" type="button" class="btn btn-xs btn-danger" onclick="deleteUser({{ b.id }})">Delete</button></td>
         </tr>
     {% endfor %}
     </tbody>

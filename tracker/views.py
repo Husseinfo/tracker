@@ -2,8 +2,8 @@
 
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
-
 from django.http import JsonResponse
+
 from tracker.models import UserForm, User
 from tracker import trainer, face_recognizer, train_file_name, photos_path, utility
 import base64
@@ -163,3 +163,15 @@ def view_photos(request):
         images = [filename for filename in os.listdir(photos_path) if filename.startswith(str(user.id))]
         data.append({'user': user.first_name + " " + user.last_name, 'images': images})
     return render(request, 'viewPhoto.html', {'data': data})
+
+def edit_user(request,id=None):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    instance = User.objects.get(id=id)
+    form = UserForm(request.POST or None, request.FILES or None,instance=instance)
+    if request.method == 'POST':
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect(home)
+    return render(request, 'user_details.html', {'formset': form})
+
