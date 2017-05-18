@@ -1,0 +1,6 @@
+django
+tweepy
+opencv-python
+numpy
+psycopg2
+
