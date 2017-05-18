@@ -1,6 +1,0 @@
-django
-tweepy
-cv2
-numpy
-webbrowser
-psycopg2
