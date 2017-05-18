@@ -3,6 +3,7 @@
 from django import forms
 
 from tracker import settings
+from tracker.models import User
 
 
 class UserForm(forms.Form):
@@ -13,3 +14,4 @@ class UserForm(forms.Form):
     image = forms.ImageField(max_length=128)
     address = forms.CharField(max_length=128)
     birth_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
+

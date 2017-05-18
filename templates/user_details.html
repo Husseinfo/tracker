@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link href="{% static 'css/adduser.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}Edit User{% endblock %}
+{% block content %}
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Update user</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        {{ formset.as_p }}
+                        <input type="submit" class="btn btn-primary" value="Update"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
