@@ -1,11 +1,21 @@
 // Grab elements, create settings, etc.
+$.urlParam = function (name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results !== null)
+        return results[1] || 0;
+};
+
+var user = $.urlParam('user');
+if (user !== null) {
+    $('#user_id').val(user);
+}
 
 var video = document.getElementById('video');
 
 // Get access to the camera!
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+    navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
         video.src = window.URL.createObjectURL(stream);
         video.play();
     });
@@ -16,34 +26,34 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 
 // Trigger photo take
-$('#capture').click(function() {
+$('#capture').click(function () {
     var id = $('#user_id').val();
     var number = $('#number').val();
-    if(id <=0 || number <=0){
+    if (id <= 0 || number <= 0) {
         alert('ID and Number must have positive values!');
         return;
     }
-    alert('Taking ' + number + ' photos for user: ' + $('#user_id option[value="'+id+'"]').text() + '\nPress ok when ready.');
+    alert('Taking ' + number + ' photos for user: ' + $('#user_id option[value="' + id + '"]').text() + '\nPress ok when ready.');
     $(this).css('disabled', 'true');
     var photos = takePhotos(number);
     $.ajax({
-            headers: { "X-CSRFToken": getCookie('csrftoken') },
-             type:"POST",
-             url:"/sendimage/",
-             data: {
-                    label: id,
-                    photos: photos
-                    },
-             success: function(){
-                $('#loader').removeClass('loader');
-                alert('Uploaded!');
-             }
-            });
+        headers: {"X-CSRFToken": getCookie('csrftoken')},
+        type: "POST",
+        url: "/sendimage/",
+        data: {
+            label: id,
+            photos: photos
+        },
+        success: function () {
+            $('#loader').removeClass('loader');
+            alert('Uploaded!');
+        }
+    });
 });
 
-function takePhotos(num){
+function takePhotos(num) {
     var photos = [];
-    for(var i=0; i<num; i++){
+    for (var i = 0; i < num; i++) {
         alert('Ready?');
         context.drawImage(video, 0, 0, 320, 240);
         photos[i] = document.getElementById("canvas").toDataURL("image/png");
