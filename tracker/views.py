@@ -41,6 +41,8 @@ def logout(request):
 
 
 def about(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
     return render(request, 'about.html', {})
 
 
