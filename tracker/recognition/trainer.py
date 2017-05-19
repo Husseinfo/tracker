@@ -1,9 +1,11 @@
 #!/usr/local/bin/python3
 
+import os
+
 import cv2
 import numpy as np
-import os
-from recognition import face_cascade
+
+from tracker.recognition import face_cascade
 
 
 class Trainer:

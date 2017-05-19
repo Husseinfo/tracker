@@ -1,13 +1,15 @@
 #!/usr/local/bin/python3
 
-import cv2
-import numpy as np
 import urllib.request
 import webbrowser
-from recognition import face_cascade
-from recognition import users
-from recognition import twitter
-from recognition import facebook
+
+import cv2
+import numpy as np
+
+from tracker.recognition import face_cascade
+from tracker.recognition import facebook
+from tracker.recognition import twitter
+from tracker.recognition import users
 
 
 class Recognizer:

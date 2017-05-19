@@ -108,4 +108,5 @@ tracker/settings.py
 
 # profile
 /static/profile/
-/temp/
+/static/temp/
+

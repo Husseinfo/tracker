@@ -1,8 +1,9 @@
-from recognition.trainer import Trainer
-from recognition.recognizer import Recognizer
+from tracker.recognition.recognizer import Recognizer
+from tracker.recognition.trainer import Trainer
+
 
 photos_path = 'static/photos'
-train_file_name = 'recognition/trained.yml'
+train_file_name = 'static/trained.yml'
 video_source = 0
 
 

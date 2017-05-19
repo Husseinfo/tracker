@@ -139,10 +139,10 @@ def receive_recognize(request):
     photo = request.POST.get('photo')
     ext, img = photo.split(';base64,')
     ext = ext.split('/')[-1]
-    fh = open('temp/rec.' + ext, 'wb')
+    fh = open('static/temp/rec.' + ext, 'wb')
     fh.write(base64.b64decode(img))
     fh.close()
-    user_id = face_recognizer.get_image_label('temp/rec.' + ext)
+    user_id = face_recognizer.get_image_label('static/temp/rec.' + ext)
     name = 'Unknown' if user_id == -1 or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return JsonResponse({'id': user_id, 'name': name})
@@ -163,6 +163,7 @@ def view_photos(request):
         images = [filename for filename in os.listdir(photos_path) if filename.startswith(str(user.id))]
         data.append({'user': user.first_name + " " + user.last_name, 'images': images})
     return render(request, 'viewPhoto.html', {'data': data})
+
 
 def edit_user(request,id=None):
     if not request.user.is_authenticated():
