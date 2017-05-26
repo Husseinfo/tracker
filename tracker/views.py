@@ -16,7 +16,7 @@ def home(request):
     return render(request, "home.html",
                   {'photos': trainer.get_nbr_photos(),
                    'users': User.objects.count(),
-                   'last_training': utility.time_spent(os.path.getmtime(train_file_name))}, )
+                   'last_training': utility.last_training()}, )
 
 
 def login(request):
@@ -130,6 +130,8 @@ def delete_user(request):
 def recognize_camera(request):
     if not request.user.is_authenticated():
         return redirect(login)
+    if not utility.is_model_trained():
+        return redirect(train)
     return render(request, 'camera.html')
 
 
@@ -153,6 +155,8 @@ def receive_recognize(request):
 def recognize_photo(request):
     if not request.user.is_authenticated():
         return redirect(login)
+    if not utility.is_model_trained():
+        return redirect(train)
     return render(request, 'recognise_photo.html')
 
 

@@ -29,7 +29,8 @@ class Recognizer:
         self.source = source
         self.video_capture = None
         self.recognizer = cv2.face.createLBPHFaceRecognizer()
-        self.recognizer.load(recognizer_filename)
+        try: self.recognizer.load(recognizer_filename)
+        except: pass
         if threshold is not None: self.recognizer.setThreshold(threshold)
 
     def reload(self):
