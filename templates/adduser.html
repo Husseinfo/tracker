@@ -22,4 +22,15 @@
             </div>
         </div>
     </div>
+    {% if request.GET.status == 'empty' %}
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="alert alert-dismissable alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Empty! </strong>You need to add new users.
+                    <a href="#" class="alert-link">Afterwards, you can capture images for them.</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

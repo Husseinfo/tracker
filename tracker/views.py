@@ -61,7 +61,7 @@ def capture(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if User.objects.count() == 0:
-        return redirect(add_user)
+        return redirect('/adduser/?status=empty')
     return render(request, 'capture.html', {'users': User.objects.all()})
 
 
@@ -75,7 +75,7 @@ def train(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if not utility.are_there_photos():
-        return redirect(capture)
+        return redirect('/capture/?status=empty')
     return render(request, 'train.html')
 
 
@@ -135,7 +135,7 @@ def recognize_camera(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if not utility.is_model_trained():
-        return redirect(train)
+        return redirect('/train/?status=untrained')
     return render(request, 'camera.html')
 
 
@@ -160,7 +160,7 @@ def recognize_photo(request):
     if not request.user.is_authenticated():
         return redirect(login)
     if not utility.is_model_trained():
-        return redirect(train)
+        return redirect('/train/?status=untrained')
     return render(request, 'recognise_photo.html')
 
 

@@ -5,7 +5,17 @@
 {% endblock %}
 {% block title %}Train{% endblock %}
 {% block content %}
-    <div class="col-lg-4"></div>
+    {% if request.GET.status == 'untrained' %}
+        <div class="col-lg-4">
+            <div class="alert alert-dismissable alert-warning">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Untrained! </strong>You need train the model.
+                <a href="#" class="alert-link">Afterwards, you can recognize by camera or photo.</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-lg-4"></div>
+    {% endif %}
     <div class="col-lg-4">
         <div class="panel panel-red">
             <div class="panel-heading">
@@ -32,7 +42,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'js/train.js' %}"></script>
