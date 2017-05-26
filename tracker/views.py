@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.http import JsonResponse
 
 from tracker.models import UserForm, User
-from tracker import trainer, face_recognizer, train_file_name, photos_path, utility
+from tracker import trainer, face_recognizer, photos_path, utility
 import base64
 import os
 
@@ -60,6 +60,8 @@ def add_user(request):
 def capture(request):
     if not request.user.is_authenticated():
         return redirect(login)
+    if User.objects.count() == 0:
+        return redirect(add_user)
     return render(request, 'capture.html', {'users': User.objects.all()})
 
 
@@ -72,6 +74,8 @@ def display_users(request):
 def train(request):
     if not request.user.is_authenticated():
         return redirect(login)
+    if not utility.are_there_photos():
+        return redirect(capture)
     return render(request, 'train.html')
 
 

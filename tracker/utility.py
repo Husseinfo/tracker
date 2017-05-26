@@ -3,6 +3,7 @@
 import datetime
 import os
 from tracker import train_file_name
+from tracker import trainer
 
 
 def time_spent(sec):
@@ -25,3 +26,7 @@ def last_training():
 
 def is_model_trained():
     return os.path.isfile(train_file_name)
+
+
+def are_there_photos():
+    return True if trainer.get_nbr_photos() > 0 else False
