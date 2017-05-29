@@ -109,4 +109,5 @@ tracker/settings.py
 # profile
 /static/profile/
 /static/temp/
-
+# Negative images
+/static/negatives/
