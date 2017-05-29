@@ -19,7 +19,6 @@ var context = canvas.getContext('2d');
 
 // Trigger photo take
 $('#capture').click(function () {
-    $(this).css('disabled', 'true');
     context.drawImage(video, 0, 0, 320, 240);
     var photo = document.getElementById("canvas").toDataURL("image/png");
     $.ajax({
@@ -34,9 +33,14 @@ $('#capture').click(function () {
                 $('#go').attr('style', 'visibility: hidden');
                 return;
             }
-            $('#go').parent().attr('href', '/profile/' + data.id);
             $('#go').html(data.name);
             $('#go').removeAttr('style');
+            if (data.name == 'Unknown'){
+                $('#go').prop('disabled', true);
+                return;
+            }
+            $('#go').prop('disabled', false);
+            $('#go').parent().attr('href', '/profile/' + data.id);
         }
     });
 });

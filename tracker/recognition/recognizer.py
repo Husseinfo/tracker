@@ -188,3 +188,15 @@ class Recognizer:
                     cv2.putText(image, str(name), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
             cv2.imshow('Recognizing', image)
             cv2.waitKey(10)
+
+    def get_label(self):
+        """
+        A generator the predicts the label of photos read from video source
+        :param num: Number of iterations
+        :return: The prediction of the photo
+        """
+        for i in range(5):
+            image, gray = self.read_image()
+        faces = face_cascade.detectMultiScale(gray)
+        for x, y, w, h in faces:
+            yield self.recognizer.predict(gray[y: y + h, x: x + w])[0]
