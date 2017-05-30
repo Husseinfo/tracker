@@ -74,7 +74,7 @@ def capture(request):
 def display_users(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render_to_response('user.html', {'users': User.objects.all()})
+    return render(request, 'user.html', {'users': User.objects.all()})
 
 
 def train(request):
@@ -205,4 +205,4 @@ class AttendanceRecord(APIView):
 def attendance(request):
     if not request.user.is_authenticated():
         return redirect(login)
-    return render_to_response('attendance.html', {'attendance': Attendance.objects.all()})
+    return render(request, 'attendance.html', {'attendance': Attendance.objects.all()})
