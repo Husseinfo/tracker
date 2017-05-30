@@ -4,6 +4,12 @@ from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.http import JsonResponse
 
+from tracker.serializers import AttendanceSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
 from tracker.models import UserForm, User
 from tracker import trainer, face_recognizer, photos_path, utility
 import base64
@@ -186,3 +192,11 @@ def edit_user(request,id=None):
         return redirect(home)
     return render(request, 'user_details.html', {'formset': form})
 
+
+class AttendanceRecord(APIView):
+    def post(self, request, format=None):
+        serializer = AttendanceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

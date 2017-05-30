@@ -35,3 +35,9 @@ class ImageForm(ModelForm):
     class Meta:
         model = Image
         exclude = ['id']
+
+
+class Attendance(models.Model):
+    id = models.AutoField(name='id', primary_key=True)
+    user = models.IntegerField(name="user")
+    date = models.DateTimeField("date")

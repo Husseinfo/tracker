@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 from tracker import views
@@ -33,10 +33,11 @@ urlpatterns = [
     url(r'^sendtrain/', view=views.receive_train),
     url(r'^users/', view=views.display_users),
     url(r'^deleteuser/', view=views.delete_user),
-    url(r'^profile/(?P<id>\d+)/$',view=views.profile,name="profile"),
+    url(r'^profile/(?P<id>\d+)/$', view=views.profile, name="profile"),
     url(r'^recognize/camera/', view=views.recognize_camera),
     url(r'^recognizephoto/', view=views.receive_recognize),
     url(r'^recognize/photo/', view=views.recognize_photo),
     url(r'^viewphotos/', view=views.view_photos),
-    url(r'^edituser/(?P<id>\d+)/$',view=views.edit_user,name="edituser"),
+    url(r'^edituser/(?P<id>\d+)/$', view=views.edit_user, name="edituser"),
+    url(r'^api/attendance/', view=views.AttendanceRecord.as_view())
 ]
