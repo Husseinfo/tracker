@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^recognize/photo/', view=views.recognize_photo),
     url(r'^viewphotos/', view=views.view_photos),
     url(r'^edituser/(?P<id>\d+)/$', view=views.edit_user, name="edituser"),
+    url(r'^attendance/', view=views.attendance),
     url(r'^api/attendance/', view=views.AttendanceRecord.as_view())
 ]

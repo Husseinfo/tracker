@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Attendance{% endblock %}
+{% block content %}
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>#Id</th>
+            <th>User</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in attendance %}
+            <tr id= {{ rec.id }}>
+                <td>{{ rec.id }}</td>
+                <td>{{ rec.user.first_name }} {{ rec.user.last_name }}</td>
+                <td>{{ rec.date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

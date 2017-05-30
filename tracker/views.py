@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-from tracker.models import UserForm, User
+from tracker.models import UserForm, User, Attendance
 from tracker import trainer, face_recognizer, photos_path, utility
 import base64
 import os
@@ -181,7 +181,7 @@ def view_photos(request):
     return render(request, 'viewPhoto.html', {'data': data})
 
 
-def edit_user(request,id=None):
+def edit_user(request, id=None):
     if not request.user.is_authenticated():
         return redirect(login)
     instance = User.objects.get(id=id)
@@ -200,3 +200,9 @@ class AttendanceRecord(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def attendance(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    return render_to_response('attendance.html', {'attendance': Attendance.objects.all()})

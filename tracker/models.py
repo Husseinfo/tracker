@@ -39,5 +39,5 @@ class ImageForm(ModelForm):
 
 class Attendance(models.Model):
     id = models.AutoField(name='id', primary_key=True)
-    user = models.IntegerField(name="user")
+    user = models.ForeignKey(User)
     date = models.DateTimeField("date")
