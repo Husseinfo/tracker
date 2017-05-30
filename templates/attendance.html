@@ -1,7 +1,22 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}Attendance{% endblock %}
+{% block css %}
+    <style>
+        #search {
+            width: 33%;
+            font-size: 16px;
+            padding: 12px 20px 12px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            margin-left: 12px;
+        }
+    </style>
+{% endblock %}
 {% block content %}
-    <table class="table table-bordered table-hover table-striped">
+    <i class="fa fa-search fa-2x"></i>
+    <input type="text" id="search" onkeyup="sort()" placeholder="Search names ..">
+    <table class="table table-bordered table-hover table-striped" id="table">
         <thead>
         <tr>
             <th>#Id</th>
@@ -13,10 +28,34 @@
         {% for rec in attendance %}
             <tr id= {{ rec.id }}>
                 <td>{{ rec.id }}</td>
-                <td>{{ rec.user.first_name }} {{ rec.user.last_name }}</td>
+                <td><a href={% url 'profile' id=rec.user.id %}>{{ rec.user.first_name }} {{ rec.user.last_name }}</a>
+                </td>
                 <td>{{ rec.date }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 {% endblock content %}
+{% block javascript %}
+    <script>
+        function sort() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}
