@@ -2,20 +2,13 @@
 {% load staticfiles %}
 {% block title %}Attendance{% endblock %}
 {% block css %}
-    <style>
-        #search {
-            width: 95%;
-            font-size: 16px;
-            padding: 12px 20px 12px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-            margin-left: 12px;
-        }
-    </style>
+    <link href="{% static 'css/attendance.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dhtmlxcalendar.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <i class="fa fa-search fa-2x"></i>
     <input type="text" id="search" onkeyup="sort()" placeholder="Search names ..">
+    <input type="text" id="calendar">
     <table class="table table-bordered table-hover table-striped" id="table">
         <thead>
         <tr>
@@ -44,25 +37,6 @@
     </table>
 {% endblock content %}
 {% block javascript %}
-    <script>
-        function sort() {
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("search");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("table");
-            tr = table.getElementsByTagName("tr");
-
-            // Loop through all table rows, and hide those who don't match the search query
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="{% static 'js/attendance.js' %}"></script>
+    <script src="{% static 'js/dhtmlxcalendar.js' %}"></script>
 {% endblock %}
