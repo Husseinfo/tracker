@@ -41,3 +41,4 @@ class Attendance(models.Model):
     id = models.AutoField(name='id', primary_key=True)
     user = models.ForeignKey(User)
     date = models.DateTimeField("date")
+    inout = models.BooleanField("inout", default=True)
