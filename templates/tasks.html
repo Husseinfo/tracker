@@ -9,8 +9,8 @@
       <h1>Tasks</h1>
     <form role="form">
         <select id="user_id" class="form-control">
-         {% for user in users %}
-             <option value="{{ task.id }}">{{ task.name }}</option>
+         {% for task in tasks %}
+             {{ task.name }}<option value="{{ task.id }}">{{ task.name }}</option>
          {% endfor %}
         </select>
     </form>
@@ -19,6 +19,9 @@
         <div></div>
     <table class="table table-hover table-striped">
         <tbody id="todo"></tbody>
+        {% for task in user_tasks %}
+            <td><tr> value="{{ task.id }}">{{ task.name }}</tr></td>
+         {% endfor %}
     </table>
 </body>
 {% endblock %}

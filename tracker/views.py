@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-from tracker.models import UserForm, User, Attendance
+from tracker.models import UserForm, User, Attendance, UserTask, Task
 from tracker import trainer, face_recognizer, photos_path, utility
 from tracker import tasks
 import base64
@@ -205,9 +205,8 @@ class AttendanceRecord(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def task(request,id=-1):
-
-    user_task= TaskUser.objects.get(user=id)
-    return render(request,'tasks.html',{'task': task.objects.all(),'user_task':user_task})
+    user_task= UserTask.objects.filter(user__id=id)
+    return render(request,'tasks.html',{'tasks': Task.objects.all(),'user_tasks':user_task})
 
 def attendance(request):
     if not request.user.is_authenticated():
