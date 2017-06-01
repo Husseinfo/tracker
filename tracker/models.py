@@ -42,3 +42,16 @@ class Attendance(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField("date")
     inout = models.NullBooleanField("inout")
+
+
+class Task(models.Model):
+    id = models.AutoField(name='id', primary_key=True)
+    name = models.CharField(max_length=32)
+
+
+class UserTask(models.Model):
+    task = models.ForeignKey(Task)
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = (("task", "user"), )
