@@ -201,6 +201,10 @@ class AttendanceRecord(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+def task(request,id=-1):
+
+    user_task= TaskUser.objects.get(user=id)
+    return render(request,'tasks.html',{'task': task.objects.all(),'user_task':user_task})
 
 def attendance(request):
     if not request.user.is_authenticated():
