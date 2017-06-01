@@ -1,0 +1,14 @@
+form {
+    display: inline-block;
+}
+.form-group {
+}
+#todo {
+    margin: 0 auto;
+    width: 500px;
+}
+
+a.close {
+  float: right;
+}
+

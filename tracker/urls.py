@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^viewphotos/', view=views.view_photos),
     url(r'^edituser/(?P<id>\d+)/$', view=views.edit_user, name="edituser"),
     url(r'^attendance/', view=views.attendance),
+    url(r'^task/(?P<id>\d+)/$', view=views.task),
     url(r'^api/attendance/', view=views.AttendanceRecord.as_view())
 ]

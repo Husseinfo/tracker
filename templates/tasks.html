@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link href="{% static 'css/tasks.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<body>
+    <div class="form-group">
+      <h1>Tasks</h1>
+    <form role="form">
+        <select id="user_id" class="form-control">
+         {% for user in users %}
+             <option value="{{ task.id }}">{{ task.name }}</option>
+         {% endfor %}
+        </select>
+    </form>
+    <button type="button" class="btn btn btn-primary">Add</button>
+        </div>
+        <div></div>
+    <table class="table table-hover table-striped">
+        <tbody id="todo"></tbody>
+    </table>
+</body>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/tasks.js' %}"></script>
+{% endblock %}
