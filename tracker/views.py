@@ -12,6 +12,7 @@ from rest_framework import status
 
 from tracker.models import UserForm, User, Attendance
 from tracker import trainer, face_recognizer, photos_path, utility
+from tracker import tasks
 import base64
 import os
 
@@ -198,6 +199,8 @@ class AttendanceRecord(APIView):
         serializer = AttendanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            # Run assigned tasks
+            tasks.do_user_tasks(serializer.data.user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
