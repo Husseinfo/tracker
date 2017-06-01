@@ -31,15 +31,10 @@ function onCalendarChange(date, state) {
     var _month = date.split(' ')[1];
     var _year = date.split(' ')[3];
     for (i = 1; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
-        td = String(td);
-        alert(td);
+        td = tr[i].getElementsByTagName("td")[2].textContent;
         var day = td.split(' ')[1].split(',')[0];
-        alert(td);
         var month = td.split(' ')[0];
-        alert(td);
         var year = td.split(', ')[1].split(',')[0];
-        alert(td);
         if (td) {
 
             if (month == _month && day == _day && year == _year) {
