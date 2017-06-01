@@ -22,5 +22,5 @@ def do_user_tasks(user):
 
 
 TASKS = ('Turn Lamp On', )
-mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='', on_message=on_message)
+mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='server', on_message=on_message)
 db_sync()
