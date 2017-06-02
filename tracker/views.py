@@ -220,9 +220,7 @@ def save_tasks(request):
     UserTask.objects.filter(user_id=id).delete()
     id_user = User.objects.get(id=id)
     for t in tasks:
-        print(t)
         tak = t[0:len(t) - 1]
-        print(tak)
         db_task = Task.objects.get(name=tak)
         UserTask.objects.create(user=id_user, task=db_task)
     return HttpResponse()

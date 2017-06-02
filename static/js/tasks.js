@@ -18,7 +18,6 @@ $('#save').click(function () {
         td = tr[i].getElementsByTagName("td")[0]
             tasks[i]=td.textContent;
     }
-    alert(tasks);
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
@@ -28,7 +27,8 @@ $('#save').click(function () {
             tasks: tasks
         },
         success: function () {
-            alert('saved!');
+            $('#success').hide(200)
+            $('#success').show(200)
         }
     });
 });

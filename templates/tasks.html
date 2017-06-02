@@ -4,29 +4,47 @@
     <link href="{% static 'css/tasks.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<body>
-    <input type="hidden" id="id" value="{{ user_data.id }}"/>
-    <div class="form-group">
-        <h1>{{ user_data.first_name }} {{ user_data.last_name }} Tasks :</h1>
-    <form role="form">
-        <select id="tasks" class="form-control">
-         {% for task in tasks %}
-             <option>{{ task }}</option>
-         {% endfor %}
-        </select>
-    </form>
-        <button id="add" type="button" class="btn btn btn-primary">Add</button>
-    </div>
-    <table class="table table-hover table-striped">
-        <tbody id="todo">
-        {% for task in user_tasks %}
-            <tr><td> {{ task.task.name }}<a href='#' class='close' aria-hidden='true'>&times;</a></td></tr>
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ user_data.first_name }} {{ user_data.last_name }} Tasks:</h3>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" id="id" value="{{ user_data.id }}"/>
+                <div class="form-group" style="display: flex">
 
-        {% endfor %}
-        </tbody>
-    </table>
-    <button id="save" type="button" class="btn btn-lg btn-success">Save</button>
-</body>
+                    <select id="tasks" class="form-control">
+                        {% for task in tasks %}
+                            <option>{{ task }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button id="add" type="button" class="btn btn btn-success">Add</button>
+                </div>
+                <table class="table table-hover table-striped">
+                    <tbody id="todo">
+                    {% for task in user_tasks %}
+                        <tr>
+                            <td> {{ task.task.name }}<a href='#' class='close' aria-hidden='true'>&times;</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button id="save" type="button" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="alert alert-dismissable alert-success" style="display: none" id="success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Saved! </strong>
+                <a href="#" class="alert-link">Tasks assigned to {{ user_data.first_name }} {{ user_data.last_name }}
+                    successfully.</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'js/tasks.js' %}"></script>

@@ -1,14 +1,8 @@
-form {
-    display: inline-block;
-}
-.form-group {
-}
-#todo {
-    margin: 0 auto;
-    width: 500px;
+#tasks {
+    width: 80%;
+
 }
 
-a.close {
-  float: right;
-}
+#add {
 
+}
