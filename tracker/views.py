@@ -206,8 +206,22 @@ class AttendanceRecord(APIView):
 
 
 def task(request, id=-1):
-    user_task = UserTask.objects.filter(user_id=id)
+    user_task = UserTask.objects.filter(user__id=id)
     return render(request, 'tasks.html', {'tasks': Task.objects.all(), 'user_tasks': user_task})
+
+
+def save_tasks(request):
+    id = request.POST.get('id')
+    tasks = request.POST.getlist('tasks[]')
+    print(id)
+    print(tasks)
+    UserTask.objects.filter(user__id=id).delete()
+    id_user = User.objects.get(id=id)
+    for t in tasks:
+        print(t)
+        db_task = Task.objects.get(name=t)
+        UserTask.objects.create(user=id_user, task=db_task)
+    return HttpResponse()
 
 
 def attendance(request):
