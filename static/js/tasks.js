@@ -11,13 +11,12 @@ $('#add').click(function () {
     }
 });
 $('#save').click(function () {
-    alert('save');
     var tasks = [];
     table = document.getElementById("todo");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        tasks[i]=td.textContent.split('&times;')[0];
+        td = tr[i].getElementsByTagName("td")[0]
+            tasks[i]=td.textContent;
     }
     alert(tasks);
     $.ajax({
@@ -37,7 +36,7 @@ $("body").on('click', '#todo a', function () {
     var s= $(this).closest("td").text();
     s=s.substring(0, s.length-1);
     $("#tasks").append('<option >'+s+'</option>');
-    $(this).closest("td").remove();
+    $(this).closest("tr").remove();
 });
 function getCookie(name) {
     var cookieValue = null;
