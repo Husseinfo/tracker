@@ -3,6 +3,7 @@
 {% block css %}
     <link href="{% static 'css/tasks.css' %}" rel="stylesheet">
 {% endblock %}
+{% block title %}Tasks{% endblock %}
 {% block content %}
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
@@ -26,7 +27,7 @@
                     <tbody id="todo">
                     {% for task in user_tasks %}
                         <tr>
-                            <td> {{ task.task.name }}<a href='#' class='close' aria-hidden='true'>&times;</a></td>
+                            <td>{{ task.task.name }}<a href='#' class='close' aria-hidden='true'>&times;</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>

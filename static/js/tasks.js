@@ -3,10 +3,9 @@
  */
 
 $('#add').click(function () {
-    var s=$('#tasks :selected').text();
-    if(s!="")
-    {
-        $('#todo').append("<tr><td>" + $("#tasks :selected").text() +"<a href='#' class='close' aria-hidden='true'>&times;</a></td></tr>");
+    var s = $('#tasks :selected').text();
+    if (s != "") {
+        $('#todo').append("<tr><td>" + $("#tasks :selected").text() + "<a href='#' class='close' aria-hidden='true'>&times;</a></td></tr>");
         $('#tasks :selected').remove();
     }
 });
@@ -15,8 +14,8 @@ $('#save').click(function () {
     table = document.getElementById("todo");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0]
-            tasks[i]=td.textContent;
+        td = tr[i].getElementsByTagName("td")[0];
+        tasks[i] = td.textContent;
     }
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
@@ -33,9 +32,9 @@ $('#save').click(function () {
     });
 });
 $("body").on('click', '#todo a', function () {
-    var s= $(this).closest("td").text();
-    s=s.substring(0, s.length-1);
-    $("#tasks").append('<option >'+s+'</option>');
+    var s = $(this).closest("td").text();
+    s = s.substring(0, s.length - 1);
+    $("#tasks").append('<option >' + s + '</option>');
     $(this).closest("tr").remove();
 });
 function getCookie(name) {
