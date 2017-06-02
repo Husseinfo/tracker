@@ -200,13 +200,15 @@ class AttendanceRecord(APIView):
         if serializer.is_valid():
             serializer.save()
             # Run assigned tasks
-            tasks.do_user_tasks(serializer.data.user)
+            tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def task(request,id=-1):
-    user_task= UserTask.objects.filter(user__id=id)
-    return render(request,'tasks.html',{'tasks': Task.objects.all(),'user_tasks':user_task})
+
+def task(request, id=-1):
+    user_task = UserTask.objects.filter(user_id=id)
+    return render(request, 'tasks.html', {'tasks': Task.objects.all(), 'user_tasks': user_task})
+
 
 def attendance(request):
     if not request.user.is_authenticated():

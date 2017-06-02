@@ -13,14 +13,20 @@ def db_sync():
     if tuple(stored) == TASKS: return
     for task in tuple(set(tuple(stored)) ^ set(TASKS)):
         Task.objects.create(name=task)
-    pass
 
 
-def do_user_tasks(user):
-    for task in UserTask.objects.filter(user=user):
-        mqtt_client.send(topic='room1', message=str(task.task.name) + ',' + str(user))
+def do_user_tasks(user, inout=True):
+    for task in UserTask.objects.filter(user_id=user):
+        globals()[str(task.task.name).lower().replace(' ', '_')](user, inout)
+
+
+def turn_lamp_on(user, inout=True):
+    if inout:
+        mqtt_client.send(topic='room1', message=1)
+    else:
+        mqtt_client.send(topic='room1', message=0)
 
 
 TASKS = ('Turn Lamp On', )
-mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='', on_message=on_message)
+mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='server', on_message=on_message)
 db_sync()
