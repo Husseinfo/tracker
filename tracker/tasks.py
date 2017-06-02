@@ -27,6 +27,20 @@ def turn_lamp_on(user, inout=True):
         mqtt_client.send(topic='room1', message=0)
 
 
-TASKS = ('Turn Lamp On', )
+def turn_ac_on(user, inout=False):
+    if inout:
+        mqtt_client.send(topic='room1', message=3)
+    else:
+        mqtt_client.send(topic='room1', message=4)
+
+
+def start_voice_assistant(user, inout=False):
+    if inout:
+        mqtt_client.send(topic='assistant', message='start')
+    else:
+        mqtt_client.send(topic='assistant', message='stop')
+
+
+TASKS = ('Turn Lamp On', 'Turn AC on', 'Start Voice Assistant')
 mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='server', on_message=on_message)
 db_sync()
