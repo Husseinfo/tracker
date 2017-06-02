@@ -203,24 +203,32 @@ class AttendanceRecord(APIView):
             tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 def task(request, id=-1):
     user_task = UserTask.objects.filter(user__id=id)
     return render(request, 'tasks.html', {'tasks': Task.objects.all(), 'user_tasks': user_task})
 
+def task(request,id=-1):
+    user_task= UserTask.objects.filter(user__id=id)
+    user_data = User.objects.get(pk=id)
+    tasks = []
+    print(user_task)
+    for t in Task.objects.all():
+        if t not in [tsk.task for tsk in user_task]: tasks.append(t.name)
+    print(Task.objects.all())
+    return render(request,'tasks.html',{'tasks': tasks,'user_tasks':user_task,'user_data':user_data})
 
 def save_tasks(request):
     id = request.POST.get('id')
     tasks = request.POST.getlist('tasks[]')
-    print(id)
-    print(tasks)
     UserTask.objects.filter(user__id=id).delete()
     id_user = User.objects.get(id=id)
     for t in tasks:
         print(t)
         db_task = Task.objects.get(name=t)
         UserTask.objects.create(user=id_user, task=db_task)
+        tak=t[0:len(t)-1]
+        db_task=Task.objects.get(name=tak)
+        UserTask.objects.create(user=id_user,task=db_task)
     return HttpResponse()
 
 

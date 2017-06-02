@@ -1,8 +1,14 @@
 /**
  * Created by Ahmad Tfaily on 6/1/2017.
  */
+
 $('#add').click(function () {
-    $('#todo').append("<tr><td>" + $("#tasks :selected").text() +"<a href='#' class='close' aria-hidden='true'>&times;</a></td></tr>");
+    var s=$('#tasks :selected').text();
+    if(s!="")
+    {
+        $('#todo').append("<tr><td>" + $("#tasks :selected").text() +"<a href='#' class='close' aria-hidden='true'>&times;</a></td></tr>");
+        $('#tasks :selected').remove();
+    }
 });
 $('#save').click(function () {
     alert('save');
@@ -28,7 +34,10 @@ $('#save').click(function () {
     });
 });
 $("body").on('click', '#todo a', function () {
-        $(this).closest("td").remove();
+    var s= $(this).closest("td").text();
+    s=s.substring(0, s.length-1);
+    $("#tasks").append('<option >'+s+'</option>');
+    $(this).closest("td").remove();
 });
 function getCookie(name) {
     var cookieValue = null;
