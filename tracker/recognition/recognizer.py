@@ -195,3 +195,12 @@ class Recognizer:
         faces = face_cascade.detectMultiScale(gray)
         for x, y, w, h in faces:
             yield self.recognizer.predict(gray[y: y + h, x: x + w])[0]
+
+    def save_and_get_label(self):
+        for i in range(5):
+            img, gray = self.read_image()
+        faces = face_cascade.detectMultiScale(gray)
+        for (x, y, w, h) in faces:
+            cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            cv2.imwrite('img.jpg', gray[y:y + h, x:x + w])
+        return self.get_image_label('img.jpg')

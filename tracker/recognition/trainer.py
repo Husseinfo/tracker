@@ -34,7 +34,7 @@ class Trainer:
         # we will not read the image with .sad extension in the training set
         # rather, we will use them to test our accuracy the training
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
-        image_paths += [os.path.join('static/negatives', f) for f in os.listdir('static/negatives')]
+        # image_paths += [os.path.join('static/negatives', f) for f in os.listdir('static/negatives')]
         # images will contain face images
         images = []
         # labels will contains the label that is assigned to the image
@@ -55,7 +55,7 @@ class Trainer:
 
             # if face is detected, append the face to images and the label to labels
             for x, y, w, h in faces:
-                images.append(image)
+                images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
 
         # return the images list and labels list
