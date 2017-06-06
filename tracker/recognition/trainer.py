@@ -42,22 +42,17 @@ class Trainer:
 
         for image_path in image_paths:
             # read the image and convert to greyscale
-            image_pil = cv2.imread(image_path, 0)
-
-            # convert the image format into numpy array
-            image = np.array(image_pil, 'uint8')
-
+            image_pil = cv2.imread(image_path)
             # get the label of the image
             nbr = int(os.path.split(image_path)[1].split("_")[0])
-
+            gray = cv2.cvtColor(image_pil,cv2.COLOR_BGR2GRAY)
             # detect the face in the image
-            faces = face_cascade.detectMultiScale(image)
-
+            faces = face_cascade.detectMultiScale(gray,1.3,5)
+            image = np.array(gray, 'uint8')
             # if face is detected, append the face to images and the label to labels
             for x, y, w, h in faces:
                 images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
-
         # return the images list and labels list
         return images, labels
 
