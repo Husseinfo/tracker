@@ -1,15 +1,9 @@
 #!/usr/local/bin/python3
 
-import urllib.request
-import webbrowser
-
 import cv2
 import numpy as np
 
 from tracker.recognition import face_cascade
-from tracker.recognition import facebook
-from tracker.recognition import twitter
-from tracker.recognition import users
 
 
 class Recognizer:
@@ -66,18 +60,7 @@ class Recognizer:
             return self.recognizer.predict(gray[y: y + h, x: x + w])[0]
         return None
 
-    def get_image_name(self, path):
-        """
-        Get the name of the corresponding user of the predicted label of photo
-        :param path: Path to the photo
-        :return: The name of the predicted owner of the photo
-        """
-        label = self.get_image_label(path)
-        if label is not None:
-            return users[label]
-        return None
-
-    def recognize(self, num=10):
+    def recognize_from_video(self, num=10):
         """
         A generator the predicts the label of photos read from video source
         :param num: Number of iterations
@@ -88,106 +71,6 @@ class Recognizer:
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
                 yield self.recognizer.predict(gray[y: y + h, x: x + w])
-
-    def recognize_name(self):
-        """
-        Opens the video source and starts taking photos, predict the name of the owner
-        :return: The name of predicted user
-        """
-        for i in range(5):
-            image, gray = self.read_image()
-            cv2.imshow('Recognizing', image)
-            cv2.waitKey(10)
-        faces = face_cascade.detectMultiScale(gray)
-        for x, y, w, h in faces:
-            face = self.recognizer.predict(gray[y: y + h, x: x + w])[0]
-            if face == -1: return None
-            name = users[face]
-            if name is None: pass
-            else:
-                cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.putText(image, str(name), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-                cv2.imshow(name, image)
-                cv2.waitKey(10)
-                return name
-        return None
-
-    def recognize_and_show(self):
-        """
-        Real time recognition of faces taken from video source
-        :return: None
-        """
-        while True:
-            image, gray = self.read_image()
-            faces = face_cascade.detectMultiScale(gray)
-            for x, y, w, h in faces:
-                label, conf = self.recognizer.predict(gray[y: y + h, x: x + w])
-                cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.putText(image, str(label), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-            cv2.imshow('Prediction', image)
-            cv2.waitKey(10)
-
-    def is_valid_user(self, user, username, url, platform='tw'):
-        """
-        Reads the image of the username, open the account if the label matches the user
-        :param user: The name of the user to be searched on social media
-        :param username: The username of the owner of the photo
-        :param url: The url of the photo
-        :param platform: Twitter or Facebook
-        :return: True if the photo, and therefore the username belongs to the user, False if not
-        """
-        try:
-            response = urllib.request.urlopen(url)
-            resp = response.read()
-        except: return False
-        image = np.asarray(bytearray(resp), dtype="uint8")
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-        if image is None: return False
-        faces = face_cascade.detectMultiScale(image)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        for x, y, w, h in faces:
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            label, conf = self.recognizer.predict(gray[y: y + h, x: x + w])
-            cv2.putText(image, users[label], (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            cv2.imshow(username, image)
-            cv2.waitKey(1000)
-            if users[label] == user:
-                if platform == 'tw':
-                    webbrowser.open_new('https://www.twitter.com/' + username)
-                else:
-                    webbrowser.open_new('https://www.facebook.com/' + username)
-                return True
-            cv2.destroyWindow(username)
-        return False
-
-    def real_time_recognition(self, platform='tw'):
-        """
-        Real time recognition and searching on social media
-        :param platform: Twitter or Facebook
-        :return: None
-        """
-        occurrences = {}
-        if platform == 'fb':
-            get_user_account = facebook.get_user_account
-        elif platform == 'tw':
-            get_user_account = twitter.get_user_account
-        while True:
-            image, gray = self.read_image()
-            faces = face_cascade.detectMultiScale(gray)
-            for x, y, w, h in faces:
-                face = self.recognizer.predict(gray[y: y + h, x: x + w])[0]
-                name = users[face]
-                if face == -1 or face == 1: continue
-                if occurrences.__contains__(face):
-                    occurrences[face] += 1
-                else: occurrences[face] = 0
-                if occurrences[face] == 3: get_user_account(self, name)
-                if name is None: pass
-                else:
-                    cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                    cv2.putText(image, str(name), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-            cv2.imshow('Recognizing', image)
-            cv2.waitKey(10)
 
     def get_label(self):
         for i in range(5):

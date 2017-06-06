@@ -30,9 +30,7 @@ def main():
     face_recognizer = Recognizer(train_file_name, video_source, threshold=50)
     # name = recognizer.recognize_name()
     # print(name)
-    # print(twitter.get_user_account(recognizer, name))
     face_recognizer.real_time_recognition(platform='fb')
-    # facebook.get_user_account(face_recognizer, name)
     ###
 
 if __name__ == '__main__': main()
