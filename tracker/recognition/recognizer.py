@@ -2,6 +2,7 @@
 
 import cv2
 import numpy as np
+from collections import Counter
 
 from tracker.recognition import face_cascade
 
@@ -22,14 +23,13 @@ class Recognizer:
         self.recognizer_filename = recognizer_filename
         self.source = source
         self.video_capture = None
-        self.recognizer = cv2.face.createLBPHFaceRecognizer()
-        try: self.recognizer.load(recognizer_filename)
-        except: pass
-        if threshold is not None: self.recognizer.setThreshold(threshold)
+        self.lbph_rec = self.eigenface_rec = self.fisherface_rec = None
+        self.reload()
 
     def reload(self):
-        self.recognizer = cv2.face.createLBPHFaceRecognizer()
-        self.recognizer.load(self.recognizer_filename)
+        for recognizer, name in zip((self.lbph_rec, self.eigenface_rec, self.fisherface_rec), ('lbph', 'eigenface', 'fisherface')):
+            try: recognizer.load(self.recognizer_filename+'_'+name+'.yml')
+            except: pass
 
     def open_source(self):
         """
@@ -47,6 +47,17 @@ class Recognizer:
         image = np.array(self.video_capture.read()[1])
         return image, cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+    def predict(self, gray):
+        res = []
+        for recognizer in (self.lbph_rec, self.eigenface_rec, self.fisherface_rec):
+            faces = face_cascade.detectMultiScale(gray)
+            for x, y, w, h in faces:
+                try:
+                    res.append(recognizer.predict(gray[y: y + h, x: x + w])[0])
+                except: pass
+        print(res)
+        return Counter(res).most_common(1)[0][0]
+
     def get_image_label(self, path):
         """
         Gets the label of a saved photo on the disk
@@ -55,10 +66,7 @@ class Recognizer:
         """
         image = np.array(cv2.imread(path))
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray)
-        for x, y, w, h in faces:
-            return self.recognizer.predict(gray[y: y + h, x: x + w])[0]
-        return None
+        return self.predict(gray)
 
     def recognize_from_video(self, num=10):
         """
@@ -68,16 +76,12 @@ class Recognizer:
         """
         for i in range(num):
             image, gray = self.read_image()
-            faces = face_cascade.detectMultiScale(gray)
-            for x, y, w, h in faces:
-                yield self.recognizer.predict(gray[y: y + h, x: x + w])
+            yield self.predict(gray)
 
     def get_label(self):
         for i in range(5):
             image, gray = self.read_image()
-        faces = face_cascade.detectMultiScale(gray)
-        for x, y, w, h in faces:
-            yield self.recognizer.predict(gray[y: y + h, x: x + w])[0]
+            yield self.predict(gray)
 
     def save_and_get_label(self):
         for i in range(5):

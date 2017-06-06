@@ -45,9 +45,9 @@ class Trainer:
             image_pil = cv2.imread(image_path)
             # get the label of the image
             nbr = int(os.path.split(image_path)[1].split("_")[0])
-            gray = cv2.cvtColor(image_pil,cv2.COLOR_BGR2GRAY)
+            gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             # detect the face in the image
-            faces = face_cascade.detectMultiScale(gray,1.3,5)
+            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             image = np.array(gray, 'uint8')
             # if face is detected, append the face to images and the label to labels
             for x, y, w, h in faces:
@@ -63,11 +63,18 @@ class Trainer:
         :return: 
         """
         # create the face recognizer object
-        recognizer = cv2.face.createLBPHFaceRecognizer()
+        lbph_rec = cv2.face.createLBPHFaceRecognizer()
+        eigenface_rec = cv2.face.createEigenFaceRecognizer()
+        fisherface_rec = cv2.face.createFisherFaceRecognizer()
 
         # call get_images_and_labels
         images, labels = self.get_images_and_labels()
 
         # perform the training
-        recognizer.train(images, np.array(labels))
-        recognizer.save(self.export)
+        for recognizer, name in zip((lbph_rec, ), ('lbph', 'fisherface')):
+            recognizer.train(images, np.array(labels))
+            recognizer.save(self.export+'_'+name+'.yml')
+
+        # Train EigenFaces
+        # eigenface_rec.train()
+        # eigenface_rec.save(self.export + '_eigenface.yml')
