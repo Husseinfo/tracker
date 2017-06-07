@@ -13,7 +13,7 @@ class Recognizer:
     Several methods are included such as reading an image from disk, from video source, from a URL, searching in social
     media...
     """
-    def __init__(self, recognizer_filename, source, threshold=None):
+    def __init__(self, recognizer_filename, source, max_width, max_height, threshold=None):
         """
         Initialization of attributes
         :param recognizer_filename: Path of the file containing the exported trained model
@@ -23,12 +23,18 @@ class Recognizer:
         self.recognizer_filename = recognizer_filename
         self.source = source
         self.video_capture = None
+        self.max_width = max_width
+        self.max_height = max_height
         self.lbph_rec = self.eigenface_rec = self.fisherface_rec = None
         self.reload()
 
     def reload(self):
-        for recognizer, name in zip((self.lbph_rec, self.eigenface_rec, self.fisherface_rec), ('lbph', 'eigenface', 'fisherface')):
-            try: recognizer.load(self.recognizer_filename+'_'+name+'.yml')
+        self.lbph_rec = cv2.face.createLBPHFaceRecognizer()
+        self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
+        self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
+        for recognizer, name in zip((self.lbph_rec, self.eigenface_rec), ('lbph', 'eigenface', 'fisherface')):
+            try:
+                recognizer.load(self.recognizer_filename+'_'+name+'.yml')
             except: pass
 
     def open_source(self):
@@ -49,12 +55,15 @@ class Recognizer:
 
     def predict(self, gray):
         res = []
-        for recognizer in (self.lbph_rec, self.eigenface_rec, self.fisherface_rec):
+        faces = face_cascade.detectMultiScale(gray)
+        for x, y, w, h in faces:
+            if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
+        for recognizer in (self.eigenface_rec, ):
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
-                try:
-                    res.append(recognizer.predict(gray[y: y + h, x: x + w])[0])
-                except: pass
+                ex, ey, ew, eh = x - int((self.max_width - w) / 2), y - int((self.max_height - h) / 2), self.max_width, self.max_height
+                img = gray[ey: ey + eh, ex: ex + ew].copy()
+                if recognizer is not None: res.append(recognizer.predict(img)[0])
         print(res)
         return Counter(res).most_common(1)[0][0]
 

@@ -9,4 +9,5 @@ video_source = 0
 
 
 trainer = Trainer(photos_path, train_file_name)
-face_recognizer = Recognizer(train_file_name, video_source)
+w, h = trainer.get_max_area()
+face_recognizer = Recognizer(train_file_name, video_source, max_width=w, max_height=h)

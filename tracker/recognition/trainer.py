@@ -12,7 +12,6 @@ class Trainer:
     """
     The trainer class is the responsible of reading datasets, training them, and exporting the trained model
     """
-
     def __init__(self, photos, export):
         """
         Initialization of attributes
@@ -25,35 +24,38 @@ class Trainer:
     def get_nbr_photos(self):
         return len(os.listdir(self.photos))
 
-    def get_images_and_labels(self):
-        """
-        Reads each photo from photos directory, extract its label from its name, train it 
-        :return: A tuple containing the list of images and the list of corresponding labels
-        """
-        # append all the absolute image paths in a list image_paths
-        # we will not read the image with .sad extension in the training set
-        # rather, we will use them to test our accuracy the training
-        image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
-        # image_paths += [os.path.join('static/negatives', f) for f in os.listdir('static/negatives')]
-        # images will contain face images
-        images = []
-        # labels will contains the label that is assigned to the image
-        labels = []
+    def get_radius(self, x, y, w, h):
+        return w * h
 
+    def get_max_area(self):
+        image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
+        width = height = _x = _y = _w = _h = 0
         for image_path in image_paths:
-            # read the image and convert to greyscale
             image_pil = cv2.imread(image_path)
-            # get the label of the image
+            gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            x, y, w, h = faces[0]
+            if self.get_radius(x, y, w, h) >= self.get_radius(_x, _y, _w, _h):
+                width, height = w, h
+        return width, height
+
+    def get_images_and_labels(self, same_size=False):
+        image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
+        images, labels = [], []
+        if same_size:
+            width, height = self.get_max_area()
+        for image_path in image_paths:
+            image_pil = cv2.imread(image_path)
             nbr = int(os.path.split(image_path)[1].split("_")[0])
             gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
-            # detect the face in the image
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             image = np.array(gray, 'uint8')
-            # if face is detected, append the face to images and the label to labels
             for x, y, w, h in faces:
-                images.append(image[y:y+h, x:x+w])
+                if same_size:
+                    ex, ey, ew, eh = x - int((width - w) / 2), y - int((height - h)/2), width, height
+                    images.append(image[ey:ey + eh, ex:ex + ew])
+                else: images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
-        # return the images list and labels list
         return images, labels
 
     def train(self):
@@ -67,14 +69,13 @@ class Trainer:
         eigenface_rec = cv2.face.createEigenFaceRecognizer()
         fisherface_rec = cv2.face.createFisherFaceRecognizer()
 
-        # call get_images_and_labels
+        # Train LBPH recognizer
         images, labels = self.get_images_and_labels()
+        lbph_rec.train(images, np.array(labels))
+        lbph_rec.save(self.export + '_lbph.yml')
 
-        # perform the training
-        for recognizer, name in zip((lbph_rec, ), ('lbph', 'fisherface')):
+        # Train other two recognizers
+        images, labels = self.get_images_and_labels(same_size=True)
+        for recognizer, name in zip((eigenface_rec, ), ('eigenface', 'fisherface')):
             recognizer.train(images, np.array(labels))
             recognizer.save(self.export+'_'+name+'.yml')
-
-        # Train EigenFaces
-        # eigenface_rec.train()
-        # eigenface_rec.save(self.export + '_eigenface.yml')
