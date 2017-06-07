@@ -34,6 +34,7 @@ class Trainer:
             image_pil = cv2.imread(image_path)
             gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            if not faces: continue
             x, y, w, h = faces[0]
             if self.get_radius(x, y, w, h) >= self.get_radius(_x, _y, _w, _h):
                 width, height = w, h
