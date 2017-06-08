@@ -62,10 +62,9 @@ class Recognizer:
             for recognizer in (self.eigenface_rec, ):
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
-                    ex, ey, ew, eh = x - int((self.max_width - w) / 2), y - int((self.max_height - h) / 2), self.max_width, self.max_height
-                    img = gray[ey: ey + eh, ex: ex + ew].copy()
+                    img = gray[y: y + h, x: x + w].copy()
+                    img = cv2.resize(img, (self.max_height,self.max_width))
                     if recognizer is not None: res.append(recognizer.predict(img)[0])
-            print(res)
         return Counter(res).most_common(1)[0][0]
 
     def get_image_label(self, *paths):

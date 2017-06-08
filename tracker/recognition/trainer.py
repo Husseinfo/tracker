@@ -53,8 +53,7 @@ class Trainer:
             image = np.array(gray, 'uint8')
             for x, y, w, h in faces:
                 if same_size:
-                    ex, ey, ew, eh = x - int((width - w) / 2), y - int((height - h)/2), width, height
-                    images.append(image[ey:ey + eh, ex:ex + ew])
+                    images.append(cv2.resize(image[y:y + h, x:x + w], (height,width)))
                 else: images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
         return images, labels

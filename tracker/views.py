@@ -158,7 +158,6 @@ def receive_recognize(request):
         return redirect(handler404)
     photos = request.POST.getlist('photos[]')
     paths=[]
-    print(photos)
     for i, photo in enumerate(photos):
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
