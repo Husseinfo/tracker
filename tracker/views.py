@@ -169,10 +169,10 @@ def receive_recognize(request):
         fh.write(base64.b64decode(img))
         fh.close()
         paths.append('static/temp/rec'+str(i)+'.' + ext)
-    user_id = face_recognizer.get_image_label(*paths)
+    user_id, percentage = face_recognizer.get_image_label(*paths)
     name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
-    return JsonResponse({'id': user_id, 'name': name})
+    return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
 
 
 def recognize_photo(request):

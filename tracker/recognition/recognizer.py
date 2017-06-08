@@ -32,7 +32,7 @@ class Recognizer:
         self.lbph_rec = cv2.face.createLBPHFaceRecognizer()
         self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
         self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
-        for recognizer, name in zip((self.lbph_rec, self.eigenface_rec), ('lbph', 'eigenface', 'fisherface')):
+        for recognizer, name in ((self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
             try:
                 recognizer.load(self.recognizer_filename+'_'+name+'.yml')
             except: pass
@@ -59,14 +59,15 @@ class Recognizer:
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
                 if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
-            for recognizer in (self.eigenface_rec, ):
+            for recognizer in (self.eigenface_rec, self.fisherface_rec):
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
                     img = gray[y: y + h, x: x + w].copy()
-                    img = cv2.resize(img, (self.max_height,self.max_width))
+                    img = cv2.resize(img, (self.max_width,self.max_height))
                     if recognizer is not None: res.append(recognizer.predict(img)[0])
-        print(res)
-        return Counter(res).most_common(1)[0][0]
+        top, occur = Counter(res).most_common(1)[0]
+        percent = int((occur / len(res)) * 100)
+        return top, percent
 
     def get_image_label(self, *paths):
         """

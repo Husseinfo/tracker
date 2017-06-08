@@ -54,7 +54,7 @@ class Trainer:
             image = np.array(gray, 'uint8')
             for x, y, w, h in faces:
                 if same_size:
-                    images.append(cv2.resize(image[y:y + h, x:x + w], (height,width)))
+                    images.append(cv2.resize(image[y:y + h, x:x + w], (width,height)))
                 else: images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
         return images, labels
@@ -77,6 +77,6 @@ class Trainer:
 
         # Train other two recognizers
         images, labels = self.get_images_and_labels(same_size=True)
-        for recognizer, name in zip((eigenface_rec, ), ('eigenface', 'fisherface')):
+        for recognizer, name in zip((eigenface_rec, fisherface_rec), ('eigenface', 'fisherface')):
             recognizer.train(images, np.array(labels))
             recognizer.save(self.export+'_'+name+'.yml')
