@@ -16,17 +16,25 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 // Elements for taking the snapshot
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
-
+function takePhotos(num) {
+    var photos = [];
+    for (var i = 0; i < num; i++){
+        alert('Ready?');
+        context.drawImage(video, 0, 0, 320, 240);
+        photos[i] = document.getElementById("canvas").toDataURL("image/png");
+    }
+    return photos;
+}
 // Trigger photo take
 $('#capture').click(function () {
     context.drawImage(video, 0, 0, 320, 240);
-    var photo = document.getElementById("canvas").toDataURL("image/png");
+    var photos = takePhotos(3);
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
         url: "/recognizephoto/",
         data: {
-            photo: photo
+            photos: photos
         },
         success: function (data) {
             if (data.id === null) {
