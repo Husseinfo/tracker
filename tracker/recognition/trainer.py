@@ -31,8 +31,8 @@ class Trainer:
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
         width = height = _x = _y = _w = _h = 0
         for image_path in image_paths:
-            image_pil = cv2.imread(image_path)
-            gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
+            gray = cv2.imread(image_path, cv2.COLOR_BGR2GRAY)
+            # gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             try:
                 x, y, w, h = faces[0]
@@ -48,13 +48,14 @@ class Trainer:
             width, height = self.get_max_area()
         for image_path in image_paths:
             image_pil = cv2.imread(image_path)
-            nbr = int(os.path.split(image_path)[1].split("_")[0])
+            try: nbr = int(os.path.split(image_path)[1].split("_")[0])
+            except: continue
             gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             image = np.array(gray, 'uint8')
             for x, y, w, h in faces:
                 if same_size:
-                    images.append(cv2.resize(image[y:y + h, x:x + w], (width,height)))
+                    images.append(cv2.resize(image[y:y + h, x:x + w], (width, height)))
                 else: images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
         return images, labels
