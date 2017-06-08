@@ -157,7 +157,7 @@ def receive_recognize(request):
     if not request.is_ajax():
         return redirect(handler404)
     photos = request.POST.getlist('photos[]')
-    paths=[]
+    paths = []
     for i, photo in enumerate(photos):
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
