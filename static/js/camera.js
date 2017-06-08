@@ -18,7 +18,7 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 function takePhotos(num) {
     var photos = [];
-    for (var i = 0; i < num; i++){
+    for (var i = 0; i < num; i++) {
         alert('Ready?');
         context.drawImage(video, 0, 0, 320, 240);
         photos[i] = document.getElementById("canvas").toDataURL("image/png");
@@ -43,7 +43,7 @@ $('#capture').click(function () {
             }
             $('#go').html(data.name);
             $('#go').removeAttr('style');
-            if (data.name == 'Unknown'){
+            if (data.name == 'Unknown') {
                 $('#go').prop('disabled', true);
                 return;
             }
