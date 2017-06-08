@@ -65,8 +65,9 @@ class Recognizer:
                     img = gray[y: y + h, x: x + w].copy()
                     img = cv2.resize(img, (self.max_height,self.max_width))
                     if recognizer is not None: res.append(recognizer.predict(img)[0])
-        print(res)
-        return Counter(res).most_common(1)[0][0]
+        top, occur = Counter(res).most_common(1)[0]
+        percent = int((occur / len(res)) * 100)
+        return top, percent
 
     def get_image_label(self, *paths):
         """
