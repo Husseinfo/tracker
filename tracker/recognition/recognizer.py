@@ -33,8 +33,9 @@ class Recognizer:
         self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
         self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
         for recognizer, name in ((self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
-            print(recognizer)
-            recognizer.load(self.recognizer_filename+'_'+name+'.yml')
+            try:
+                recognizer.load(self.recognizer_filename+'_'+name+'.yml')
+            except: pass
 
     def open_source(self):
         """
