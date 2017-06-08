@@ -53,29 +53,32 @@ class Recognizer:
         image = np.array(self.video_capture.read()[1])
         return image, cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    def predict(self, gray):
+    def predict(self, *grays):
         res = []
-        faces = face_cascade.detectMultiScale(gray)
-        for x, y, w, h in faces:
-            if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
-        for recognizer in (self.eigenface_rec, ):
+        for gray in grays:
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
-                ex, ey, ew, eh = x - int((self.max_width - w) / 2), y - int((self.max_height - h) / 2), self.max_width, self.max_height
-                img = gray[ey: ey + eh, ex: ex + ew].copy()
-                if recognizer is not None: res.append(recognizer.predict(img)[0])
-        print(res)
+                if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
+            for recognizer in (self.eigenface_rec, ):
+                faces = face_cascade.detectMultiScale(gray)
+                for x, y, w, h in faces:
+                    ex, ey, ew, eh = x - int((self.max_width - w) / 2), y - int((self.max_height - h) / 2), self.max_width, self.max_height
+                    img = gray[ey: ey + eh, ex: ex + ew].copy()
+                    if recognizer is not None: res.append(recognizer.predict(img)[0])
+            print(res)
         return Counter(res).most_common(1)[0][0]
 
-    def get_image_label(self, path):
+    def get_image_label(self, *paths):
         """
         Gets the label of a saved photo on the disk
         :param path: Path of the photo
         :return: The predicted label of the photo
         """
-        image = np.array(cv2.imread(path))
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        return self.predict(gray)
+        grays = []
+        for path in paths:
+            image = np.array(cv2.imread(path))
+            grays.append(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))
+        return self.predict(*grays)
 
     def recognize_from_video(self, num=10):
         """
@@ -94,9 +97,13 @@ class Recognizer:
 
     def save_and_get_label(self):
         for i in range(5):
-            img, gray = self.read_image()
-        faces = face_cascade.detectMultiScale(gray)
-        for (x, y, w, h) in faces:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-            cv2.imwrite('img.jpg', gray[y:y + h, x:x + w])
-        return self.get_image_label('img.jpg')
+            self.read_image()
+        grays, paths = [], []
+        for i in range(5):
+            grays.append(self.read_image()[1])
+        for i, gray in enumerate(grays):
+            faces = face_cascade.detectMultiScale(gray)
+            for (x, y, w, h) in faces:
+                paths.append('img'+str(i)+'.jpg')
+                cv2.imwrite(paths[-1], gray[y:y + h, x:x + w])
+        return self.get_image_label(*paths)
