@@ -151,13 +151,17 @@ def receive_recognize(request):
         return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
-    photo = request.POST.get('photo')
-    ext, img = photo.split(';base64,')
-    ext = ext.split('/')[-1]
-    fh = open('static/temp/rec.' + ext, 'wb')
-    fh.write(base64.b64decode(img))
-    fh.close()
-    user_id = face_recognizer.get_image_label('static/temp/rec.' + ext)
+    photos = request.POST.getlist('photos[]')
+    paths=[]
+    print(photos)
+    for i, photo in enumerate(photos):
+        ext, img = photo.split(';base64,')
+        ext = ext.split('/')[-1]
+        fh = open('static/temp/rec'+str(i)+'.' + ext, 'wb')
+        fh.write(base64.b64decode(img))
+        fh.close()
+        paths.append('static/temp/rec'+str(i)+'.' + ext)
+    user_id = face_recognizer.get_image_label(*paths)
     name = 'Unknown' if user_id in (-1, 999) or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return JsonResponse({'id': user_id, 'name': name})
