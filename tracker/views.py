@@ -129,7 +129,7 @@ def profile(request, id=1):
     if not request.user.is_authenticated():
         return redirect(login)
     user_data = User.objects.get(pk=id)
-    images = [filename for filename in os.listdir(photos_path) if filename.split('_')==str(id)]
+    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(id)]
     return render(request, 'profile.html', {'user': user_data, 'images': images})
 
 
@@ -140,7 +140,7 @@ def delete_user(request):
         return redirect(handler404)
     user_id = request.POST.get('id')
     User.objects.filter(id=user_id).delete()
-    images = [filename for filename in os.listdir(photos_path) if filename.split('_')==str(id)]
+    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(id)]
     for image in images:
         print(image)
         os.remove('static/photos/'+image)
@@ -189,7 +189,7 @@ def view_photos(request):
     users = User.objects.all()
     data = []
     for user in users:
-        images = [filename for filename in os.listdir(photos_path) if filename.split('_')==str(user.id)]
+        images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(user.id)]
         data.append({'user': user.first_name + " " + user.last_name, 'images': images})
     return render(request, 'viewPhoto.html', {'data': data})
 
