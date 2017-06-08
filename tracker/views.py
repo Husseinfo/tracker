@@ -13,8 +13,11 @@ from rest_framework import status
 from tracker.models import UserForm, User, Attendance, UserTask, Task
 from tracker import trainer, face_recognizer, photos_path, utility
 from tracker import tasks
+
+from math import ceil
 import base64
 import os
+import time
 
 
 def home(request):
@@ -115,9 +118,11 @@ def receive_train(request):
         return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
+    start = time.time()
     trainer.train()
     face_recognizer.reload()
-    return HttpResponse()
+    duration = ceil(time.time() - start)
+    return JsonResponse({'duration': duration})
 
 
 def profile(request, id=1):
@@ -162,7 +167,7 @@ def receive_recognize(request):
         fh.close()
         paths.append('static/temp/rec'+str(i)+'.' + ext)
     user_id = face_recognizer.get_image_label(*paths)
-    name = 'Unknown' if user_id in (-1, 999) or user_id is None else User.objects.get(id=user_id).first_name + ' ' + User\
+    name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User\
         .objects.get(id=user_id).last_name
     return JsonResponse({'id': user_id, 'name': name})
 
