@@ -63,7 +63,7 @@ class Recognizer:
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
                     img = gray[y: y + h, x: x + w].copy()
-                    img = cv2.resize(img, (self.max_height,self.max_width))
+                    img = cv2.resize(img, (self.max_width, self.max_height))
                     if recognizer is not None: res.append(recognizer.predict(img)[0])
         top, occur = Counter(res).most_common(1)[0]
         percent = int((occur / len(res)) * 100)

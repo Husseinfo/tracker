@@ -49,6 +49,11 @@ $('#capture').click(function () {
             }
             $('#go').prop('disabled', false);
             $('#go').parent().attr('href', '/profile/' + data.id);
+            var percent = String(data.percentage);
+            console.log(percent+'%');
+            console.log(String(3));
+            $('#percentage').css('width', percent+'%').attr('aria-valuenow', percent);
+            $('#percentage').html(percent + ' %');
         }
     });
 });
@@ -67,11 +72,4 @@ function getCookie(name) {
         }
     }
     return cookieValue;
-}
-
-function sleep(milliseconds) {
-    var currentTime = new Date().getTime();
-
-    while (currentTime + milliseconds >= new Date().getTime()) {
-    }
 }
