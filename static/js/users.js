@@ -1,7 +1,7 @@
 // Grab elements, create settings, etc.
-function deleteUser(id)
+function deleteUser(id,fName,lName)
 {
-    if (!confirm('Are you sure you want to delete this user?'+id))
+    if (!confirm('Are you sure you want to delete '+fName+' '+lName+'?'))
         return;
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},

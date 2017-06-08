@@ -140,6 +140,10 @@ def delete_user(request):
         return redirect(handler404)
     user_id = request.POST.get('id')
     User.objects.filter(id=user_id).delete()
+    images = [filename for filename in os.listdir(photos_path) if filename.startswith(str(user_id))]
+    for image in images:
+        print(image)
+        os.remove('static/photos/'+image)
     return HttpResponse()
 
 
