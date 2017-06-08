@@ -77,6 +77,6 @@ class Trainer:
 
         # Train other two recognizers
         images, labels = self.get_images_and_labels(same_size=True)
-        for recognizer, name in zip((eigenface_rec, ), ('eigenface', 'fisherface')):
+        for recognizer, name in zip((eigenface_rec, fisherface_rec), ('eigenface', 'fisherface')):
             recognizer.train(images, np.array(labels))
             recognizer.save(self.export+'_'+name+'.yml')

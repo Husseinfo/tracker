@@ -32,10 +32,9 @@ class Recognizer:
         self.lbph_rec = cv2.face.createLBPHFaceRecognizer()
         self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
         self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
-        for recognizer, name in zip((self.lbph_rec, self.eigenface_rec), ('lbph', 'eigenface', 'fisherface')):
-            try:
-                recognizer.load(self.recognizer_filename+'_'+name+'.yml')
-            except: pass
+        for recognizer, name in ((self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
+            print(recognizer)
+            recognizer.load(self.recognizer_filename+'_'+name+'.yml')
 
     def open_source(self):
         """
@@ -59,7 +58,7 @@ class Recognizer:
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
                 if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
-            for recognizer in (self.eigenface_rec, ):
+            for recognizer in (self.eigenface_rec, self.fisherface_rec):
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
                     img = gray[y: y + h, x: x + w].copy()
