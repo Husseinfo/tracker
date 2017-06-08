@@ -65,6 +65,7 @@ class Recognizer:
                     img = gray[y: y + h, x: x + w].copy()
                     img = cv2.resize(img, (self.max_width, self.max_height))
                     if recognizer is not None: res.append(recognizer.predict(img)[0])
+        if not res: return None, None
         top, occur = Counter(res).most_common(1)[0]
         percent = int((occur / len(res)) * 100)
         return top, percent
