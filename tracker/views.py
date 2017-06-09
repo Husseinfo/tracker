@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+import datetime
+import cv2
+import numpy
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.http import JsonResponse
@@ -208,13 +210,27 @@ def edit_user(request, id=None):
 
 class AttendanceRecord(APIView):
     def post(self, request, format=None):
-        serializer = AttendanceSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            # Run assigned tasks
-            tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        images=[]
+        images.append(request.POST.get('image1'))
+        images.append(request.POST.get('image2'))
+        images.append(request.POST.get('image3'))
+        print(images)
+        paths = []
+        for i, photo in enumerate(images):
+            fh = open('static/temp/rec'+str(i)+'.png', 'wb')
+            fh.write(base64.b64decode(photo))
+            fh.close()
+            paths.append('static/temp/recg' + str(i)+ '.png')
+        user_id, percentage = face_recognizer.get_image_label(*paths)
+        if user_id != -1 or user_id!=None:
+            data_rec={'user': user_id, 'date': datetime.datetime.now(), 'inout': None}
+            serializer = AttendanceSerializer(data=data_rec)
+            if serializer.is_valid():
+                serializer.save()
+                # Run assigned tasks
+                tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def task(request, id=-1):
