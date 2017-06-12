@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-import datetime
-import cv2
-import numpy
+
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.http import JsonResponse
 
-from tracker.serializers import AttendanceSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-
+from tracker.serializers import AttendanceSerializer
 from tracker.models import UserForm, User, Attendance, UserTask, Task
 from tracker import trainer, face_recognizer, photos_path, utility
 from tracker import tasks
@@ -20,6 +17,8 @@ from math import ceil
 import base64
 import os
 import time
+import datetime
+from json import loads
 
 
 def home(request):
@@ -131,7 +130,7 @@ def profile(request, id=1):
     if not request.user.is_authenticated():
         return redirect(login)
     user_data = User.objects.get(pk=id)
-    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(id)]
+    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0] == str(id)]
     return render(request, 'profile.html', {'user': user_data, 'images': images})
 
 
@@ -142,9 +141,8 @@ def delete_user(request):
         return redirect(handler404)
     user_id = request.POST.get('id')
     User.objects.filter(id=user_id).delete()
-    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(id)]
+    images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0] == str(id)]
     for image in images:
-        print(image)
         os.remove('static/photos/'+image)
     return HttpResponse()
 
@@ -210,27 +208,24 @@ def edit_user(request, id=None):
 
 class AttendanceRecord(APIView):
     def post(self, request, format=None):
-        images=[]
-        images.append(request.POST.get('image1'))
-        images.append(request.POST.get('image2'))
-        images.append(request.POST.get('image3'))
-        print(images)
+        data = loads(request.body)
+        date = datetime.datetime.fromtimestamp(int(data['date']))
         paths = []
-        for i, photo in enumerate(images):
-            fh = open('static/temp/rec'+str(i)+'.png', 'wb')
-            fh.write(base64.b64decode(photo))
-            fh.close()
-            paths.append('static/temp/recg' + str(i)+ '.png')
+        for i, photo in enumerate(data['images']):
+            with open('static/temp/rec'+str(i)+'.png', 'wb') as fh:
+                fh.write(base64.b64decode(photo))
+            paths.append('static/temp/rec'+str(i)+'.png')
         user_id, percentage = face_recognizer.get_image_label(*paths)
-        if user_id != -1 or user_id!=None:
-            data_rec={'user': user_id, 'date': datetime.datetime.now(), 'inout': None}
+        if user_id not in (-1, None):
+            data_rec = {'user': user_id, 'date': date, 'inout': data['inout']}
             serializer = AttendanceSerializer(data=data_rec)
             if serializer.is_valid():
                 serializer.save()
                 # Run assigned tasks
                 tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
-                return Response(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def task(request, id=-1):

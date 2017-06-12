@@ -93,6 +93,7 @@ static/photos/
 
 # macOS
 .DS_Store
+._.DS_Store
 
 # Jetbrains
 .idea/
@@ -109,5 +110,6 @@ tracker/settings.py
 # profile
 /static/profile/
 /static/temp/
+
 # Negative images
 /static/negatives/
