@@ -25,8 +25,6 @@
     height: 130px;
 }
 .card-background img {
-    -ms-filter: blur(25px);
-    filter: blur(25px);
     margin-left: -100px;
     margin-top: -200px;
     min-width: 130%;
