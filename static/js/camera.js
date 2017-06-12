@@ -40,19 +40,19 @@ $('#capture').click(function () {
                 photos: photos
             },
             success: function (data) {
+                $('#go').prop('disabled', true);
+                counter = 3;
+                document.getElementById("counter").innerHTML = counter;
                 if (data.id === null) {
-                    $('#go').attr('style', 'visibility: hidden');
+                    $('#go').hide();
                     return;
                 }
                 document.getElementById("counter").innerHTML = counter;
                 $('#go').html(data.name);
                 $('#go').removeAttr('style');
                 if (data.name == 'Unknown') {
-                    $('#go').prop('disabled', true);
                     return;
                 }
-                counter = 3;
-                document.getElementById("counter").innerHTML = counter;
                 $('#go').prop('disabled', false);
                 $('#go').parent().attr('href', '/profile/' + data.id);
                 var percent = String(data.percentage);
