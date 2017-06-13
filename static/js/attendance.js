@@ -47,6 +47,8 @@ function onCalendarChange(date, state) {
 }
 
 $(function () {
-    var myCalendar = new dhtmlXCalendarObject("calendar");
+    var myCalendar = new dhtmlxCalendarObject("calendar");
+    myCalendar.attachEvent("onChange", onCalendarChange);
+    var myCalendar = new dhtmlXCalendarObject("calendar2");
     myCalendar.attachEvent("onChange", onCalendarChange);
 });
