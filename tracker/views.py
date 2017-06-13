@@ -220,7 +220,7 @@ class AttendanceRecord(APIView):
                 fh.write(base64.b64decode(photo))
             paths.append('static/temp/rec' + str(i) + '.png')
         user_id, percentage = face_recognizer.get_image_label(*paths)
-        if user_id not in (-1, None):
+        if user_id not in (-1, None) and percentage == 100:
             data_rec = {'user': user_id, 'date': date, 'inout': data['inout']}
             serializer = AttendanceSerializer(data=data_rec)
             if serializer.is_valid():
