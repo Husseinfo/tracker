@@ -13,6 +13,7 @@ class Recognizer:
     Several methods are included such as reading an image from disk, from video source, from a URL, searching in social
     media...
     """
+
     def __init__(self, recognizer_filename, source, max_width, max_height, threshold=None):
         """
         Initialization of attributes
@@ -32,10 +33,12 @@ class Recognizer:
         self.lbph_rec = cv2.face.createLBPHFaceRecognizer()
         self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
         self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
-        for recognizer, name in ((self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
+        for recognizer, name in (
+        (self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
             try:
-                recognizer.load(self.recognizer_filename+'_'+name+'.yml')
-            except: pass
+                recognizer.load(self.recognizer_filename + '_' + name + '.yml')
+            except:
+                pass
 
     def open_source(self):
         """
@@ -63,8 +66,12 @@ class Recognizer:
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
                     img = gray[y: y + h, x: x + w].copy()
-                    img = cv2.resize(img, (self.max_width,self.max_height))
-                    if recognizer is not None: res.append(recognizer.predict(img)[0])
+                    img = cv2.resize(img, (self.max_width, self.max_height))
+                    if recognizer is not None:
+                        try:
+                            res.append(recognizer.predict(img)[0])
+                        except:
+                            pass
         if not res: return None, None
         top, occur = Counter(res).most_common(1)[0]
         percent = int((occur / len(res)) * 100)
@@ -106,6 +113,6 @@ class Recognizer:
         for i, gray in enumerate(grays):
             faces = face_cascade.detectMultiScale(gray)
             for (x, y, w, h) in faces:
-                paths.append('img'+str(i)+'.jpg')
+                paths.append('img' + str(i) + '.jpg')
                 cv2.imwrite(paths[-1], gray[y:y + h, x:x + w])
         return self.get_image_label(*paths)

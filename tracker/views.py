@@ -143,7 +143,7 @@ def delete_user(request):
     User.objects.filter(id=user_id).delete()
     images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0] == str(id)]
     for image in images:
-        os.remove('static/photos/'+image)
+        os.remove('static/photos/' + image)
     return HttpResponse()
 
 
@@ -165,12 +165,12 @@ def receive_recognize(request):
     for i, photo in enumerate(photos):
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
-        fh = open('static/temp/rec'+str(i)+'.' + ext, 'wb')
+        fh = open('static/temp/rec' + str(i) + '.' + ext, 'wb')
         fh.write(base64.b64decode(img))
         fh.close()
-        paths.append('static/temp/rec'+str(i)+'.' + ext)
+        paths.append('static/temp/rec' + str(i) + '.' + ext)
     user_id, percentage = face_recognizer.get_image_label(*paths)
-    name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User\
+    name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
         .objects.get(id=user_id).last_name
     return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
 
@@ -189,7 +189,7 @@ def view_photos(request):
     users = User.objects.all()
     data = []
     for user in users:
-        images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0]==str(user.id)]
+        images = [filename for filename in os.listdir(photos_path) if filename.split('_')[0] == str(user.id)]
         data.append({'user': user.first_name + " " + user.last_name, 'images': images})
     return render(request, 'viewPhoto.html', {'data': data})
 
@@ -198,7 +198,7 @@ def edit_user(request, id=None):
     if not request.user.is_authenticated():
         return redirect(login)
     instance = User.objects.get(id=id)
-    form = UserForm(request.POST or None, request.FILES or None,instance=instance)
+    form = UserForm(request.POST or None, request.FILES or None, instance=instance)
     if request.method == 'POST':
         instance = form.save(commit=False)
         instance.save()
@@ -212,9 +212,9 @@ class AttendanceRecord(APIView):
         date = datetime.datetime.fromtimestamp(int(data['date']))
         paths = []
         for i, photo in enumerate(data['images']):
-            with open('static/temp/rec'+str(i)+'.png', 'wb') as fh:
+            with open('static/temp/rec' + str(i) + '.png', 'wb') as fh:
                 fh.write(base64.b64decode(photo))
-            paths.append('static/temp/rec'+str(i)+'.png')
+            paths.append('static/temp/rec' + str(i) + '.png')
         user_id, percentage = face_recognizer.get_image_label(*paths)
         if user_id not in (-1, None):
             data_rec = {'user': user_id, 'date': date, 'inout': data['inout']}

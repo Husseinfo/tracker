@@ -20,7 +20,7 @@ function showImage() {
     img.style.visibility = 'visible';
 }
 
-$('#file').on('change', function(){
+$('#file').on('change', function () {
     $('#uploaded').show(200);
     $('#uploaded').attr('width', '100%');
     $('#btnRecognize').prop('disabled', false);
@@ -33,28 +33,28 @@ $('#btnRecognize').click(function () {
         type: "POST",
         url: "/recognizephoto/",
         data: {
-            photo: image
+            photos: image
         },
         success: function (data) {
             $('#loader').removeClass('loader');
-            if(data.id === null){
+            if (data.id === null) {
                 $('.alert.alert-dismissable.alert-danger').show(200);
                 return;
             }
-            $('#go').parent().attr('href', '/profile/'+data.id);
-            $('#go').html(data.name);
+            $('#go').parent().attr('href', '/profile/' + data.id);
+            $('#go').html(data.name + ' (' + data.percentage + '%)');
             $('#go').removeAttr('style');
         }
     });
 });
 
-$('#reset').click(function(){
-   image = null;
-   $('#file').val('');
-   $('#btnRecognize').prop('disabled', true);
-   $('#go').attr('style', 'visibility: hidden');
-   $('#uploaded').hide(200);
-   $('.alert.alert-dismissable.alert-danger').hide(200);
+$('#reset').click(function () {
+    image = null;
+    $('#file').val('');
+    $('#btnRecognize').prop('disabled', true);
+    $('#go').attr('style', 'visibility: hidden');
+    $('#uploaded').hide(200);
+    $('.alert.alert-dismissable.alert-danger').hide(200);
 });
 
 function getCookie(name) {
