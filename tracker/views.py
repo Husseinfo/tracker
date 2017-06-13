@@ -227,7 +227,10 @@ class AttendanceRecord(APIView):
                 serializer.save()
                 # Run assigned tasks
                 tasks.do_user_tasks(serializer.data['user'], serializer.data['inout'])
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                user = User.objects.get(id=user_id)
+                inout = Attendance.objects.last().inout
+                json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
+                return JsonResponse(json_data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

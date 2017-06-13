@@ -34,7 +34,7 @@ class Recognizer:
         self.eigenface_rec = cv2.face.createEigenFaceRecognizer()
         self.fisherface_rec = cv2.face.createFisherFaceRecognizer()
         for recognizer, name in (
-        (self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
+                (self.lbph_rec, 'lbph'), (self.eigenface_rec, 'eigenface'), (self.fisherface_rec, 'fisherface')):
             try:
                 recognizer.load(self.recognizer_filename + '_' + name + '.yml')
             except:
@@ -61,7 +61,11 @@ class Recognizer:
         for gray in grays:
             faces = face_cascade.detectMultiScale(gray)
             for x, y, w, h in faces:
-                if self.lbph_rec is not None: res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
+                if self.lbph_rec is not None:
+                    try:
+                        res.append(self.lbph_rec.predict(gray[y: y + h, x: x + w])[0])
+                    except:
+                        res.append(None)
             for recognizer in (self.eigenface_rec, self.fisherface_rec):
                 faces = face_cascade.detectMultiScale(gray)
                 for x, y, w, h in faces:
@@ -71,7 +75,7 @@ class Recognizer:
                         try:
                             res.append(recognizer.predict(img)[0])
                         except:
-                            pass
+                            res.append(None)
         if not res: return None, None
         top, occur = Counter(res).most_common(1)[0]
         percent = int((occur / len(res)) * 100)
