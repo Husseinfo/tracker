@@ -172,6 +172,10 @@ def receive_recognize(request):
     user_id, percentage = face_recognizer.get_image_label(*paths)
     name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
         .objects.get(id=user_id).last_name
+    data_rec = {'user': user_id, 'date': datetime.datetime.now(), 'inout': None}
+    serializer = AttendanceSerializer(data=data_rec)
+    if serializer.is_valid() and percentage == 100:
+        serializer.save()
     return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
 
 
