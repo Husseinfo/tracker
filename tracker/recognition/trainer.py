@@ -39,7 +39,7 @@ class Trainer:
                 if self.get_radius(x, y, w, h) >= self.get_radius(_x, _y, _w, _h):
                     width, height = w, h
             except: continue
-        return width, height
+        return 100, 100
 
     def get_images_and_labels(self, same_size=False):
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]

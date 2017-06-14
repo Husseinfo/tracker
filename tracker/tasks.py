@@ -24,7 +24,7 @@ def turn_lamp_on(user, inout=True):
     if inout:
         mqtt_client.send(topic='room1', message=1)
     else:
-        mqtt_client.send(topic='room1', message=0)
+        mqtt_client.send(topic='room1', message=2)
 
 
 def turn_ac_on(user, inout=False):

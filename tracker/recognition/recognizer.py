@@ -77,6 +77,9 @@ class Recognizer:
                         except:
                             res.append(None)
         if not res: return None, None
+        if len(res) < len(grays) * 3:
+            for i in range(len(grays) * 3 - len(res)):
+                res.append(None)
         top, occur = Counter(res).most_common(1)[0]
         percent = int((occur / len(res)) * 100)
         return top, percent
