@@ -4,6 +4,7 @@ import datetime
 import os
 from tracker import lbph_train_file_name
 from tracker import trainer
+from tracker import photos_path, temp_path
 
 
 def time_spent(sec):
@@ -30,3 +31,10 @@ def is_model_trained():
 
 def are_there_photos():
     return True if trainer.get_nbr_photos() > 0 else False
+
+
+def add_new_user_photos(user, paths):
+    num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
+    for image in paths:
+        os.popen('mv {} {}/{}_{}.png'.format(image, photos_path, user, num))
+        num += 1

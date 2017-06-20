@@ -123,3 +123,8 @@ class Recognizer:
                 paths.append('img' + str(i) + '.jpg')
                 cv2.imwrite(paths[-1], gray[y:y + h, x:x + w])
         return self.get_image_label(*paths)
+
+    def resize_image(self, path, width, height):
+        img = cv2.imread(path)
+        img = cv2.resize(img, (width, height))
+        cv2.imwrite(path, img)

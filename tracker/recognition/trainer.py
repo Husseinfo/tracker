@@ -39,7 +39,7 @@ class Trainer:
                 if self.get_radius(x, y, w, h) >= self.get_radius(_x, _y, _w, _h):
                     width, height = w, h
             except: continue
-        return 100, 100
+        return width, height
 
     def get_images_and_labels(self, same_size=False):
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
@@ -55,7 +55,8 @@ class Trainer:
             image = np.array(gray, 'uint8')
             for x, y, w, h in faces:
                 if same_size:
-                    images.append(cv2.resize(image[y:y + h, x:x + w], (width, height)))
+                    resized = cv2.resize(image[y:y + h, x:x + w], (width, height))
+                    images.append(resized)
                 else: images.append(image[y:y+h, x:x+w])
                 labels.append(nbr)
         return images, labels
