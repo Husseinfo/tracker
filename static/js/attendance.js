@@ -50,4 +50,5 @@ $(function () {
     myCalendar2 = new dhtmlXCalendarObject("calendar2");
     myCalendar.attachEvent("onChange", sort);
     myCalendar2.attachEvent("onChange", sort);
+    sort();
 });
