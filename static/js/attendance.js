@@ -23,19 +23,19 @@ function sort() {
     }
 }
 
-function onCalendarChange(date, state) {
+function onCalendarChange() {
     var table, tr, td, i;
     table = document.getElementById("table");
     tr = table.getElementsByTagName("tr");
-    fDate = new Date(myCalendar.getFormatedDate("%Y/%n/%j"));
-    lDate = new Date(myCalendar2.getFormatedDate("%Y/%n/%j"));
+    var fDate = new Date(myCalendar.getFormatedDate("%Y/%n/%j"));
+    var lDate = new Date(myCalendar2.getFormatedDate("%Y/%n/%j"));
     for (i = 1; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[2].textContent;
         var day = td.split(' ')[1].split(',')[0];
         var month = td.split(' ')[0];
         var year = td.split(', ')[1].split(',')[0];
         var m = months.indexOf(month);
-        cDate = new Date(year,m,day);
+        var cDate = new Date(year,m,day);
         if (cDate <= lDate && cDate >= fDate)
             tr[i].style.display = "";
         else
