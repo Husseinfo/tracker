@@ -28,5 +28,6 @@ while True:
         date = time.mktime(datetime.datetime.now().timetuple())
         data = {'images': images, 'date': date, 'inout': None}
         response = requests.post(URL, json=data)
+        response.c
         print(response.status_code)
         time.sleep(5)
