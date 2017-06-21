@@ -21,6 +21,7 @@ function sort() {
             }
         }
     }
+    onCalendarChange();
 }
 
 function onCalendarChange() {
@@ -36,7 +37,7 @@ function onCalendarChange() {
         var year = td.split(', ')[1].split(',')[0];
         var m = months.indexOf(month);
         var cDate = new Date(year,m,day);
-        if (cDate <= lDate && cDate >= fDate)
+        if (cDate <= lDate && cDate >= fDate && tr[i].style.display=="")
             tr[i].style.display = "";
         else
             tr[i].style.display = "none";
@@ -46,6 +47,6 @@ function onCalendarChange() {
 $(function () {
     myCalendar = new dhtmlxCalendarObject("calendar");
     myCalendar2 = new dhtmlXCalendarObject("calendar2");
-    myCalendar.attachEvent("onChange", onCalendarChange);
-    myCalendar2.attachEvent("onChange", onCalendarChange);
+    myCalendar.attachEvent("onChange", sort);
+    myCalendar2.attachEvent("onChange", sort);
 });
