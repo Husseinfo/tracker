@@ -4,6 +4,7 @@
 var myCalendar2;
 var myCalendar;
 var months = ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+
 function sort() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("search");

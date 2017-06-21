@@ -19,6 +19,7 @@ import os
 import time
 import datetime
 from json import loads
+from _thread import start_new_thread
 
 
 def home(request):
@@ -103,14 +104,7 @@ def receive_images(request):
         return redirect(handler404)
     label = request.POST.get('label')
     photos = request.POST.getlist('photos[]')
-    num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == label])
-    for photo in photos:
-        ext, img = photo.split(';base64,')
-        ext = ext.split('/')[-1]
-        fh = open('static/photos/' + str(label) + '_' + str(num) + '.' + ext, 'wb')
-        num += 1
-        fh.write(base64.b64decode(img))
-        fh.close()
+    start_new_thread(utility.save_base64_photos, (label, photos))
     return HttpResponse()
 
 
@@ -121,7 +115,7 @@ def receive_train(request):
         return redirect(handler404)
     start = time.time()
     trainer.train()
-    face_recognizer.reload()
+    start_new_thread(face_recognizer.reload, ())
     duration = ceil(time.time() - start)
     return JsonResponse({'duration': duration})
 
@@ -171,6 +165,7 @@ def receive_recognize(request):
         fh.close()
 
         paths.append('static/temp/rec' + str(i) + '.' + ext)
+    utility.crop_photos(paths=paths)
     user_id, percentage = face_recognizer.get_image_label(*paths)
     name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
         .objects.get(id=user_id).last_name
@@ -222,7 +217,6 @@ class AttendanceRecord(APIView):
             name = 'static/temp/rec' + str(i) + '.png'
             with open(name, 'wb') as fh:
                 fh.write(base64.b64decode(photo))
-            face_recognizer.resize_image(name, 320, 240)
             paths.append(name)
 
         user_id, percentage = face_recognizer.get_image_label(*paths)
@@ -237,7 +231,7 @@ class AttendanceRecord(APIView):
                 # Run assigned tasks
                 tasks.do_user_tasks(user_id, inout=inout)
                 # Save captured images for future training
-                utility.add_new_user_photos(user=user_id, paths=paths)
+                utility.add_new_user_photos(user=user_id, path=paths[1])
                 user = User.objects.get(id=user_id)
                 json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
                 return JsonResponse(json_data, status=status.HTTP_201_CREATED)

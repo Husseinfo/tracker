@@ -24,20 +24,17 @@ class Trainer:
     def get_nbr_photos(self):
         return len(os.listdir(self.photos))
 
-    def get_radius(self, x, y, w, h):
-        return w * h
-
     def get_max_area(self):
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
-        width = height = _x = _y = _w = _h = 0
+        width = height = 0
         for image_path in image_paths:
-            gray = cv2.imread(image_path, cv2.COLOR_BGR2GRAY)
-            # gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
+            image_pil = cv2.imread(image_path)
+            gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             try:
                 x, y, w, h = faces[0]
-                if self.get_radius(x, y, w, h) >= self.get_radius(_x, _y, _w, _h):
-                    width, height = w, h
+                if w > width: width = w
+                if h > height: height = h
             except: continue
         return width, height
 
