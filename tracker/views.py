@@ -163,7 +163,6 @@ def receive_recognize(request):
         fh = open(name, 'wb')
         fh.write(base64.b64decode(img))
         fh.close()
-
         paths.append('static/temp/rec' + str(i) + '.' + ext)
     utility.crop_photos(paths=paths)
     user_id, percentage = face_recognizer.get_image_label(*paths)
@@ -212,13 +211,12 @@ class AttendanceRecord(APIView):
         data = loads(request.body)
         date = datetime.datetime.fromtimestamp(int(data['date']))
         paths = []
-
         for i, photo in enumerate(data['images']):
             name = 'static/temp/rec' + str(i) + '.png'
             with open(name, 'wb') as fh:
                 fh.write(base64.b64decode(photo))
             paths.append(name)
-
+        utility.crop_photos(paths=paths)
         user_id, percentage = face_recognizer.get_image_label(*paths)
 
         if user_id not in (-1, None) and percentage == 100:
@@ -231,7 +229,7 @@ class AttendanceRecord(APIView):
                 # Run assigned tasks
                 tasks.do_user_tasks(user_id, inout=inout)
                 # Save captured images for future training
-                utility.add_new_user_photos(user=user_id, path=paths[1])
+                utility.add_new_user_photos(user=user_id, path=paths[0])
                 user = User.objects.get(id=user_id)
                 json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
                 return JsonResponse(json_data, status=status.HTTP_201_CREATED)

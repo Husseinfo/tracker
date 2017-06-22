@@ -38,8 +38,8 @@ def are_there_photos():
 
 def add_new_user_photos(user, path):
     num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
-    os.popen('mv {} {}/{}_{}.png'.format(path, photos_path, user, num))
-    num += 1
+    name = '{}/{}_{}.png'.format(photos_path, user, num)
+    os.popen('mv {} {}'.format(path, name))
 
 
 def save_base64_photos(label, photos):
