@@ -12,6 +12,7 @@ class Trainer:
     """
     The trainer class is the responsible of reading datasets, training them, and exporting the trained model
     """
+
     def __init__(self, photos, export):
         """
         Initialization of attributes
@@ -24,29 +25,36 @@ class Trainer:
     def get_nbr_photos(self):
         return len(os.listdir(self.photos))
 
-    def get_max_area(self):
+    def get_photo_size(self):
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
-        width = height = 0
+        image_pil = cv2.imread(image_paths[0])
+        gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        width, height = faces[0][2:4]
         for image_path in image_paths:
             image_pil = cv2.imread(image_path)
             gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             try:
                 x, y, w, h = faces[0]
-                if w > width: width = w
-                if h > height: height = h
-            except: continue
+                if w < width: width = w
+                if h < height: height = h
+            except:
+                continue
+        print(width, height)
         return width, height
 
     def get_images_and_labels(self, same_size=False):
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
         images, labels = [], []
         if same_size:
-            width, height = self.get_max_area()
+            width, height = self.get_photo_size()
         for image_path in image_paths:
             image_pil = cv2.imread(image_path)
-            try: nbr = int(os.path.split(image_path)[1].split("_")[0])
-            except: continue
+            try:
+                nbr = int(os.path.split(image_path)[1].split("_")[0])
+            except:
+                continue
             gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
             image = np.array(gray, 'uint8')
@@ -54,7 +62,8 @@ class Trainer:
                 if same_size:
                     resized = cv2.resize(image[y:y + h, x:x + w], (width, height))
                     images.append(resized)
-                else: images.append(image[y:y+h, x:x+w])
+                else:
+                    images.append(image[y:y + h, x:x + w])
                 labels.append(nbr)
         return images, labels
 
@@ -78,4 +87,4 @@ class Trainer:
         images, labels = self.get_images_and_labels(same_size=True)
         for recognizer, name in zip((eigenface_rec, fisherface_rec), ('eigenface', 'fisherface')):
             recognizer.train(images, np.array(labels))
-            recognizer.save(self.export+'_'+name+'.yml')
+            recognizer.save(self.export + '_' + name + '.yml')
