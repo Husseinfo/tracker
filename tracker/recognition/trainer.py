@@ -41,7 +41,6 @@ class Trainer:
                 if h < height: height = h
             except:
                 continue
-        print(width, height)
         return width, height
 
     def get_images_and_labels(self, same_size=False):
