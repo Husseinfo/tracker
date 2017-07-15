@@ -1,4 +1,17 @@
 // Grab elements, create settings, etc.
+$(function () {
+    $('#device').change(function () {
+        if ($('#device').val() == 0) {
+            $('.modal-header').empty();
+            $('.modal-header').prepend('<video id="video" width="640" height="480" class="img-thumbnail"></video>');
+        }
+        else {
+            $('.modal-header').empty();
+            $('.modal-header').prepend('<img id="image" src="http://192.168.0.2/cgi-bin/nph-zms?monitor=4" width=640 height=480 class="img-thumbnail"/>');
+        }
+    });
+});
+
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results !== null)
@@ -35,20 +48,35 @@ $('#capture').click(function () {
     }
     alert('Taking ' + number + ' photos for user: ' + $('#user_id option[value="' + id + '"]').text() + '\nPress ok when ready.');
     $(this).css('disabled', 'true');
-    var photos = takePhotos(number);
-    $.ajax({
-        headers: {"X-CSRFToken": getCookie('csrftoken')},
-        type: "POST",
-        url: "/sendimage/",
-        data: {
-            label: id,
-            photos: photos
-        },
-        success: function () {
-            $('#loader').removeClass('loader');
-            alert('Uploaded!');
+    if ($('#device').val() == 0) {
+        var photos = takePhotos(number);
+        $.ajax({
+            headers: {"X-CSRFToken": getCookie('csrftoken')},
+            type: "POST",
+            url: "/sendimage/",
+            data: {
+                label: id,
+                photos: photos
+            },
+            success: function () {
+                $('#loader').removeClass('loader');
+                alert('Uploaded!');
+            }
+        });
+    }
+    else {
+        for (var i = 0; i < number; i++) {
+            alert('Ready?');
+            $.ajax({
+                type: "GET",
+                url: "/remotecapture/",
+                data: {
+                    user: id
+                }
+            });
         }
-    });
+        alert('Uploaded!');
+    }
 });
 
 function takePhotos(num) {

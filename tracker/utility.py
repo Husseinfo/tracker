@@ -4,6 +4,7 @@ import datetime
 import os
 import cv2
 import base64
+from urllib import request
 from tracker import lbph_train_file_name
 from tracker import trainer
 from tracker import photos_path
@@ -66,10 +67,8 @@ def crop_photos(paths):
             cv2.imwrite(image, gray[y:y + h, x:x + w])
 
 
-def test(paths):
-    for image in paths:
-        img = cv2.imread(image)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = detector.detectMultiScale(gray, 1.3, 5)
-        for (x, y, w, h) in faces:
-            cv2.imwrite(image, gray[y:y + h, x:x + w])
+def save_remote_photo(user):
+    num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
+    name = '{}/{}_{}.jpg'.format(photos_path, user, num)
+    request.urlretrieve('http://192.168.0.2/cgi-bin/nph-zms?mode=single&monitor=4', name)
+    crop_photos(name)

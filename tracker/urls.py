@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^adduser/', view=views.add_user),
     url(r'^home/', view=views.home),
     url(r'^capture/', view=views.capture),
+    url(r'^remotecapture/', view=views.remote_capture),
     url(r'^train/', view=views.train),
     url(r'^404/', view=views.handler404),
     url(r'^sendimage/', view=views.receive_images),

@@ -206,6 +206,16 @@ def edit_user(request, id=None):
     return render(request, 'user_details.html', {'formset': form})
 
 
+def remote_capture(request):
+    if not request.user.is_authenticated():
+        return redirect(login)
+    if not request.is_ajax():
+        return redirect(handler404)
+    user = request.GET.get('user')
+    utility.save_remote_photo(user)
+    return Response(status=status.HTTP_201_CREATED)
+
+
 class AttendanceRecord(APIView):
     def post(self, request, format=None):
         data = loads(request.body)
@@ -231,7 +241,7 @@ class AttendanceRecord(APIView):
                     # Run assigned tasks
                     tasks.do_user_tasks(user_id, inout=inout)
                     # Save captured images for future training
-                    # utility.add_new_user_photos(user=user_id, path=paths[0])
+                    utility.add_new_user_photos(user=user_id, path=paths[0])
                     user = User.objects.get(id=user_id)
                     json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
                     return JsonResponse(json_data, status=status.HTTP_201_CREATED)

@@ -19,6 +19,10 @@
                 <video id="video" width="640" height="480" class="img-thumbnail"></video>
             </div>
             <div class="modal-body">
+                <select id="device" class="form-control">
+                    <option value="0">Local device</option>
+                    <option value="1">Remote device</option>
+                </select><br>
                 <select id="user_id" class="form-control">
                     {% for user in users %}
                         <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
