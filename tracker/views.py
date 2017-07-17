@@ -220,33 +220,40 @@ class AttendanceRecord(APIView):
     def post(self, request, format=None):
         data = loads(request.body)
         operation = int(data['operation'])
+
         if operation == 100:  # Sent images to recognize
             date = datetime.datetime.fromtimestamp(int(data['date']))
+            inout = data['inout']
             paths = []
             for i, photo in enumerate(data['images']):
                 name = 'static/temp/rec' + str(i) + '.png'
                 with open(name, 'wb') as fh:
                     fh.write(base64.b64decode(photo))
                 paths.append(name)
-            utility.crop_photos(paths=paths)
-            user_id, percentage = face_recognizer.get_image_label(*paths)
 
-            if user_id not in (-1, None) and percentage == 100:
-                data_rec = {'user': user_id, 'date': date, 'inout': data['inout']}
-                serializer = AttendanceSerializer(data=data_rec)
-                if serializer.is_valid():
-                    # Add DB records
-                    serializer.save()
-                    inout = Attendance.objects.last().inout
-                    # Run assigned tasks
-                    tasks.do_user_tasks(user_id, inout=inout)
-                    # Save captured images for future training
-                    utility.add_new_user_photos(user=user_id, path=paths[0])
-                    user = User.objects.get(id=user_id)
-                    json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
-                    return JsonResponse(json_data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        elif operation == 200:  # Remote capture photos
+            date = datetime.datetime.now()
+            paths = utility.remote_capture(3)
+            inout = None
+
+        utility.crop_photos(paths=paths)
+        user_id, percentage = face_recognizer.get_image_label(*paths)
+        if user_id not in (-1, None) and percentage == 100:
+            data_rec = {'user': user_id, 'date': date, 'inout': inout}
+            serializer = AttendanceSerializer(data=data_rec)
+            if serializer.is_valid():
+                # Add DB records
+                serializer.save()
+                inout = Attendance.objects.last().inout
+                # Run assigned tasks
+                tasks.do_user_tasks(user_id, inout=inout)
+                # Save captured images for future training
+                utility.add_new_user_photos(user=user_id, path=paths[0])
+                user = User.objects.get(id=user_id)
+                json_data = {'user': user.first_name + ' ' + user.last_name, 'inout': inout}
+                return JsonResponse(json_data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def task(request, id=-1):

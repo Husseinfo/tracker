@@ -2,6 +2,7 @@
 
 import datetime
 import os
+from time import sleep
 import cv2
 import base64
 from urllib import request
@@ -9,6 +10,9 @@ from tracker import lbph_train_file_name
 from tracker import trainer
 from tracker import photos_path
 from tracker.recognition import face_cascade as detector
+
+
+CAPTURE_URL = 'http://192.168.0.2/cgi-bin/nph-zms?mode=single&monitor=4'
 
 
 def time_spent(sec):
@@ -67,8 +71,18 @@ def crop_photos(paths):
             cv2.imwrite(image, gray[y:y + h, x:x + w])
 
 
+def remote_capture(number):
+    paths = []
+    for i in range(number):
+        path = 'static/temp/cap{}.jpg'.format(i)
+        paths.append(path)
+        request.urlretrieve(CAPTURE_URL, path)
+        sleep(0.5)
+    return paths
+
+
 def save_remote_photo(user):
     num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
     name = '{}/{}_{}.jpg'.format(photos_path, user, num)
-    request.urlretrieve('http://192.168.0.2/cgi-bin/nph-zms?mode=single&monitor=4', name)
+    request.urlretrieve(CAPTURE_URL, name)
     crop_photos(name)
