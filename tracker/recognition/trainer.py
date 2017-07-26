@@ -26,6 +26,9 @@ class Trainer:
         return len(os.listdir(self.photos))
 
     def get_photo_size(self):
+        return 100,100
+        if len(os.listdir(self.photos)) == 0:
+            return None, None
         image_paths = [os.path.join(self.photos, f) for f in os.listdir(self.photos)]
         image_pil = cv2.imread(image_paths[0])
         gray = cv2.cvtColor(image_pil, cv2.COLOR_BGR2GRAY)

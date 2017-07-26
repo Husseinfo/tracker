@@ -44,6 +44,7 @@ def are_there_photos():
 def add_new_user_photos(user, path):
     num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
     name = '{}/{}_{}.png'.format(photos_path, user, num)
+    crop_photos([name])
     os.popen('mv {} {}'.format(path, name))
 
 
@@ -81,8 +82,13 @@ def remote_capture(number):
     return paths
 
 
-def save_remote_photo(user):
+def save_remote_photo(user, number):
     num = len([x for x in os.listdir(photos_path) if x.split('_')[0] == str(user)])
-    name = '{}/{}_{}.jpg'.format(photos_path, user, num)
-    request.urlretrieve(CAPTURE_URL, name)
-    crop_photos(name)
+    photos = []
+    for i in range(number):
+        name = '{}/{}_{}.jpg'.format(photos_path, user, num)
+        photos.append(name)
+        request.urlretrieve(CAPTURE_URL, name)
+        num = num + 1
+        sleep(0.5)
+    crop_photos(photos)

@@ -65,17 +65,19 @@ $('#capture').click(function () {
         });
     }
     else {
-        for (var i = 0; i < number; i++) {
-            alert('Ready?');
-            $.ajax({
-                type: "GET",
-                url: "/remotecapture/",
-                data: {
-                    user: id
-                }
-            });
-        }
-        alert('Uploaded!');
+        alert('Ready?');
+        $.ajax({
+            type: "GET",
+            url: "/remotecapture/",
+            data: {
+                user: id,
+                number: number
+            },
+            success: function () {
+                $('#loader').removeClass('loader');
+                alert('Uploaded!');
+            }
+        });
     }
 });
 
