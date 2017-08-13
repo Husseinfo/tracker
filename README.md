@@ -33,8 +33,8 @@ You also need to create an empty postgresql database for django with the followi
 
 ## Running
 To run the project you need first to initialize the database from django:
-```python3 manage.py makemigrations```
-```python3 manage.py migrate```
-```python3 manage.py createsuperuser```
+- ```python3 manage.py makemigrations```
+- ```python3 manage.py migrate```
+- ```python3 manage.py createsuperuser```
 Then start the server with:
 ```python3 manage.py runserver```
