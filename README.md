@@ -34,7 +34,7 @@ You need Python3.6 to be installed on your system with some additional libraries
 
 You can install them with pip3 tool using the following command: ```pip install -r requirements.txt```
 
-You also need to create an empty postgresql database for django with the following parameters: Name: ```tracker```, User: ```django```, Password: ```P@ssw0rd```.
+You also need to create an empty postgresql database for django (or use a different DBMS).
 
 ## Running
 To run the project you need first to initialize the database from django:
