@@ -26,6 +26,9 @@ The ```capture.py``` contains a function to capture photos of a certain user and
 - Attendence page to view the attendence records
 - A RESTful API interface to send attendence records (from the raspberry pi in the prototype device)
 
+## Screenshot
+![alt homepage](https://github.com/Husseinfo/tracker/blob/master/static/images/homepage.png?raw=true)
+
 ## Note
 This project is a part of a complete enterprise automation system that includes IoT, NLP, and AI functionalities ending up with an intelligent automation system.
 
