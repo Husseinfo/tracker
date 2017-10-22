@@ -2,7 +2,7 @@
 
 ## Overview
 
-The aim of the project is to provide a face recognition basede attendence system.
+The aim of the project is to provide a face recognition based attendence system.
 The first part of the project is a Python module used as a library to provide face recognition functionality; managing system users and their photos, training the model and making predictions.
 The second part is a Web interface to provide the configuration and administration of the system.
 
