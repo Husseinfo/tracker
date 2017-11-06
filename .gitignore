@@ -90,6 +90,8 @@ ENV/
 
 # Photos path
 static/photos/*
+static/profile/*
+static/temp/*
 
 # macOS
 .DS_Store
