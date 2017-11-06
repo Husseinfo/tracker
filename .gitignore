@@ -89,7 +89,7 @@ ENV/
 .ropeproject
 
 # Photos path
-# static/photos/
+static/photos/*
 
 # macOS
 .DS_Store
