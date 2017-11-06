@@ -9,10 +9,12 @@ def on_message(self, mosq, obj, message):
 
 
 def db_sync():
-    stored = [x.name for x in Task.objects.all()]
-    if tuple(stored) == TASKS: return
-    for task in tuple(set(tuple(stored)) ^ set(TASKS)):
-        Task.objects.create(name=task)
+    try:
+        stored = [x.name for x in Task.objects.all()]
+        if tuple(stored) == TASKS: return
+        for task in tuple(set(tuple(stored)) ^ set(TASKS)):
+            Task.objects.create(name=task)
+    except: pass
 
 
 def do_user_tasks(user, inout=True):
@@ -43,4 +45,4 @@ def start_voice_assistant(user, inout=False):
 
 TASKS = ('Turn Lamp On', 'Turn AC on', 'Start Voice Assistant')
 mqtt_client = Mqtt(ip='192.168.0.2', port=8883, username='pi', password='123456', subscription='server', on_message=on_message)
-db_sync()
+#db_sync()
