@@ -23,9 +23,9 @@ class Trainer:
         self.export = export
 
     def get_nbr_photos(self):
-	try:
-        	return len(os.listdir(self.photos))
-	except: return 'None'
+        try:
+            return len(os.listdir(self.photos))
+        except: return 'None'
 
     def get_photo_size(self):
         return 100,100
