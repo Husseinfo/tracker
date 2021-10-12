@@ -1,4 +1,4 @@
-opencv-python==3.2.0
+opencv-python==4.2.0.32
 django>=1.10.8
 psycopg2==2.7.1
 rest_framework==3.6.3
