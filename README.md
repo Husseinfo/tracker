@@ -2,28 +2,17 @@
 
 ![alt homepage](https://github.com/Husseinfo/tracker/blob/master/static/images/homepage.png?raw=true)
 
+## Changelog
+
+- [OpenCV](https://github.com/opencv/opencv) replaced
+  with [face_recognition](https://github.com/ageitgey/face_recognition/)
+- Upgraded to [Django 4](https://github.com/django/django/releases/tag/4.0.6)
+
 ## Overview
 
 A face recognition based attendance system.
 
-Python module providing face recognition functionalities:
-
-- Managing faces photos
-- Training models
-- Making predictions.
-
-## The recognition module
-
-```__init__.py``` contains the face_cascade object, a common resource used in face detection.
-
-```trainer.py``` is responsible for feeding the dataset to different models for training.
-Three models are available: ```LBPH, FisherFace``` and ```EigenFace```.
-
-```recognizer.py``` uses pretrained models to make predictions.
-
-```capture.py``` adds photos to user profile.
-
-## The django web interface
+## Functionalities
 
 - Login
 - Homepage: showing last stats of the system
