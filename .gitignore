@@ -102,3 +102,6 @@ static/temp/*
 
 # Train file
 *.yml
+
+# sqlite database
+*.sqlite3

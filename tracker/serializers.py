@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
+from rest_framework import serializers
 
 from tracker.models import Attendance
-from rest_framework import serializers
 
 
 class AttendanceSerializer(serializers.ModelSerializer):

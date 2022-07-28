@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-import datetime
+from datetime import date
 
 from django.db import models
 from django.forms import ModelForm
@@ -13,13 +12,13 @@ class User(models.Model):
     phone = models.CharField(max_length=32)
     image = models.ImageField(upload_to='static/profile/', name="Image")
     address = models.CharField(max_length=128)
-    birth_date = models.DateField("Date", default=datetime.date.today)
+    birth_date = models.DateField("Date", default=date.today)
 
 
 class Image(models.Model):
     id = models.IntegerField(name='ID', unique=True, primary_key=True, editable=False)
     image = models.ImageField(name='Image')
-    user = models.ForeignKey('User')
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
 
 
 class UserForm(ModelForm):
@@ -39,9 +38,9 @@ class ImageForm(ModelForm):
 
 class Attendance(models.Model):
     id = models.AutoField(name='id', primary_key=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField("date")
-    inout = models.NullBooleanField("inout")
+    inout = models.BooleanField("inout", null=True)
 
 
 class Task(models.Model):
@@ -50,8 +49,9 @@ class Task(models.Model):
 
 
 class UserTask(models.Model):
-    task = models.ForeignKey(Task)
-    user = models.ForeignKey(User)
+    id = models.AutoField(name='id', primary_key=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (("task", "user"), )
+        unique_together = (("task", "user"),)
