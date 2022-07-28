@@ -1,12 +1,13 @@
 # tracker
 
-![alt homepage](https://github.com/Husseinfo/tracker/blob/master/static/images/homepage.png?raw=true)
-
-## Changelog
+## ***UPDATE***
 
 - [OpenCV](https://github.com/opencv/opencv) replaced
   with [face_recognition](https://github.com/ageitgey/face_recognition/)
 - Upgraded to [Django 4](https://github.com/django/django/releases/tag/4.0.6)
+
+
+![alt homepage](https://github.com/Husseinfo/tracker/blob/master/static/images/homepage.png?raw=true)
 
 ## Overview
 
