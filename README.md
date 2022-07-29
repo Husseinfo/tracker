@@ -33,9 +33,8 @@ Install libraries: ```pip3 install -r requirements.txt```
 
 Initialize the database from django:
 
-- ```python3 manage.py makemigrations```
-- ```python3 manage.py migrate```
-- ```python3 manage.py createsuperuser```
+- ```python manage.py migrate```
+- ```python manage.py createsuperuser```
 
 Start the server:
-```python3 manage.py runserver```
+```python manage.py runserver```
