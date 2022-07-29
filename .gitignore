@@ -100,8 +100,5 @@ static/temp/*
 # Jetbrains
 .idea/
 
-# Train file
-*.yml
-
 # sqlite database
 *.sqlite3
