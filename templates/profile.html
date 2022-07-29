@@ -12,7 +12,7 @@
                 <img class="card-bkimg" alt="" src="{% static 'images/headerbg.png' %}">
             </div>
             <div class="useravatar">
-                <img src="{{ MEDIA_ROOT }}/{{ user.Image.url }}" alt="" class="img-circle">
+                <img src="{{ user.Image.url }}" alt="" class="img-circle">
             </div>
             <div class="card-info"><span class="card-title">{{ user.first_name }} {{ user.last_name }}</span>
             </div>
@@ -39,14 +39,6 @@
                     </button>
                 </a>
             </div>
-            <div class="btn-group" role="group" id="task">
-                <a href={% url 'tasks' id=user.id %}>
-                    <button type="button" id="following" class="btn btn-default">
-                        <i class="fa fa-tasks"></i>
-                        <div class="hidden-xs">Tasks</div>
-                    </button>
-                </a>
-            </div>
         </div>
 
         <div class="well">
@@ -69,7 +61,9 @@
                     {% for image in images %}
                         <div class="modal-content">
                             <div class="modal-header">
-                                <img src="{{ MEDIA_ROOT }}/static/photos/{{ image }}">
+                                {% with 'photos/'|add:image as image_static %}
+                                    <img src="{% static image_static %}" alt="Image {{ image }}">
+                                {% endwith %}
                             </div>
                         </div>
                     {% endfor %}

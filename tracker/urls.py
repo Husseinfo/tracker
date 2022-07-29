@@ -33,7 +33,7 @@ urlpatterns = [
     path(r'sendtrain', view=views.receive_train),
     path(r'users', view=views.display_users),
     path(r'deleteuser', view=views.delete_user),
-    re_path(r'profile/(?P<id>\d+)/$', view=views.profile, name="profile"),
+    re_path(r'profile/(?P<_id>\d+)/$', view=views.profile, name="profile"),
     path(r'recognize/camera', view=views.recognize_camera),
     path(r'recognizephoto', view=views.receive_recognize),
     path(r'recognize/photo', view=views.recognize_photo),
