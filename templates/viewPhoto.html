@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Photos{% endblock %}
 {% block content %}
-    {% for image in data %}
+    {% for user in data %}
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-user"></i> User :{{ image.user }} </h3>
+                <h3 class="panel-title"><i class="fa fa-user"></i> User :{{ user.user }} </h3>
             </div>
-            {% for b in image.images %}
-                <img src="/static/photos/{{ b }}" name={{ index }}/>
+            {% for image in user.images %}
+                <img src="/static/photos/{{ image }}" name={{ index }}/>
             {% endfor %}
         </div>
     {% endfor %}

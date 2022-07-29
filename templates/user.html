@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Users{% endblock %}
 {% block content %}
-<table class="table table-bordered table-hover table-striped">
-    <thead>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
         <tr>
             <th>#Id</th>
             <th>Name</th>
@@ -10,21 +10,29 @@
             <th>E-mail</th>
             <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
-    {% for b in users %}
-        <tr id = {{ b.id }}>
-            <td>{{ b.id}}</td>
-            <td>{{ b.first_name}} {{ b.last_name}}</td>
-            <td>{{ b.phone }}</td>
-            <td>{{ b.e_mail}}</td>
-            {% load static %}
-            <td><a href={%  url 'profile' _id=b.id%}><button type="button" class="btn btn-xs btn-info">View</button></a>&nbsp&nbsp<a href={%  url 'edituser' id=b.id%}><button type="button" class="btn btn-xs btn-warning">Edit</button></a>&nbsp&nbsp<button id="delete" type="button" class="btn btn-xs btn-danger" onclick="deleteUser({{ b.id }},'{{ b.first_name }}','{{ b.last_name }}')">Delete</button></td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr id= {{ user.id }}>
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.e_mail }}</td>
+                {% load static %}
+                <td><a href={% url 'profile' _id=user.id %}>
+                    <button type="button" class="btn btn-xs btn-info">View</button>
+                </a>&nbsp&nbsp<a href={% url 'edituser' _id=user.id %}>
+                    <button type="button" class="btn btn-xs btn-warning">Edit</button>
+                </a>&nbsp&nbsp
+                    <button id="delete" type="button" class="btn btn-xs btn-danger"
+                            onclick="deleteUser({{ user.id }},'{{ user.first_name }}','{{ user.last_name }}')">Delete
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}
 {% block javascript %}
-    <script src = "{% static 'js/users.js' %}"></script>
+    <script src="{% static 'js/users.js' %}"></script>
 {% endblock %}

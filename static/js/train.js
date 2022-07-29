@@ -12,6 +12,10 @@ $('#train').click(function () {
             $('#loader').removeClass('loader');
             $('#train').prop("disabled", false);
             $('.alert.alert-dismissable.alert-success').show(200);
+        }, error: () => {
+            $('#loader').removeClass('loader');
+            $('#train').prop("disabled", false);
+            $('.alert.alert-dismissable.alert-danger').show(200);
         }
     });
 });

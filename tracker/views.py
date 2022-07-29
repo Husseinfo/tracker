@@ -104,8 +104,6 @@ def receive_images(request):
 def receive_train(request):
     if not request.user.is_authenticated:
         return redirect(login)
-    if not request.is_ajax():
-        return redirect(handler404)
     start = time()
     do_train()
     duration = ceil(time() - start)
