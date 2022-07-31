@@ -102,3 +102,6 @@ static/temp/*
 
 # sqlite database
 *.sqlite3
+
+# model
+static/model

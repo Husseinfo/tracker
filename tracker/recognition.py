@@ -1,4 +1,3 @@
-from glob import glob
 from math import sqrt
 from os import listdir
 from pickle import dump
@@ -19,15 +18,14 @@ def get_nbr_photos() -> int:
 
 def get_dataset():
     dataset = [[], []]
-    for face in glob('static/photos'):
-        for photo in glob(f'static/photos/{face}'):
-            photo_file = load_image_file(photo)
-            locations = face_locations(photo_file)
-            if len(locations) != 1:
-                print(f'Photo should have one exact face, skipping photo at {photo}')
-                continue
-            dataset[0].append(face_encodings(photo_file, known_face_locations=locations)[0])
-            dataset[1].append(face)
+    for photo in listdir('static/photos'):
+        photo_file = load_image_file(f'static/photos/{photo}')
+        locations = face_locations(photo_file)
+        if len(locations) != 1:
+            print(f'Photo should have one exact face, skipping photo at {photo}')
+            continue
+        dataset[0].append(face_encodings(photo_file, known_face_locations=locations)[0])
+        dataset[1].append(photo.split('_')[0])
     return dataset
 
 
