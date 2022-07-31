@@ -1,6 +1,11 @@
 from datetime import date
+from os.path import join
 
 from django.db import models
+
+
+def get_photo_upload_path(instance, filename):
+    return join(f'static/photos/{instance.user.id}_{filename}')
 
 
 class User(models.Model):
@@ -19,7 +24,7 @@ class User(models.Model):
 
 class Image(models.Model):
     id = models.IntegerField(name='ID', unique=True, primary_key=True, editable=False)
-    image = models.ImageField(upload_to='static/photos/', name="Image")
+    image = models.ImageField(upload_to=get_photo_upload_path, name="Image")
     user = models.ForeignKey('User', on_delete=models.CASCADE)
 
 
