@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Upload photo</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        {{ formset.as_p }}
+                        <input type="submit" class="btn btn-primary" value="Add"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

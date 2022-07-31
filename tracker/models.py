@@ -1,7 +1,6 @@
 from datetime import date
 
 from django.db import models
-from django.forms import ModelForm
 
 
 class User(models.Model):
@@ -14,26 +13,14 @@ class User(models.Model):
     address = models.CharField(max_length=128)
     birth_date = models.DateField("Date", default=date.today)
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} ({self.id})'
+
 
 class Image(models.Model):
     id = models.IntegerField(name='ID', unique=True, primary_key=True, editable=False)
-    image = models.ImageField(name='Image')
+    image = models.ImageField(upload_to='static/photos/', name="Image")
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-
-
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        exclude = ['id']
-
-    def is_valid(self):
-        return True
-
-
-class ImageForm(ModelForm):
-    class Meta:
-        model = Image
-        exclude = ['id']
 
 
 class Attendance(models.Model):

@@ -6,11 +6,13 @@ from os import listdir, remove
 from time import time
 
 from django.contrib.auth import authenticate, login as _login, logout as _logout
-from django.http import JsonResponse
+from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 
-from tracker import photos_path, utility
-from .models import UserForm, User, Attendance
+from . import photos_path, utility
+from .forms import UserForm, ImageForm
+from .models import Attendance
+from .models import User
 from .recognition import predict, get_nbr_photos, train as do_train
 from .serializers import AttendanceSerializer
 
@@ -70,6 +72,19 @@ def capture(request):
     return render(request, 'capture.html', {'users': User.objects.all()})
 
 
+def upload(request):
+    if not request.user.is_authenticated:
+        return redirect(login)
+    if User.objects.count() == 0:
+        return redirect('/adduser/?status=empty')
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect(home)
+    return render(request, 'upload.html', {'formset': ImageForm()})
+
+
 def display_users(request):
     if not request.user.is_authenticated:
         return redirect(login)
@@ -85,9 +100,7 @@ def train(request):
 
 
 def handler404(request):
-    response = render(request, '404.html', {})
-    response.status_code = 404
-    return response
+    return HttpResponseNotFound('<h1>Page not found</h1>')
 
 
 def receive_images(request):

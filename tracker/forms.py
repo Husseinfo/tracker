@@ -1,13 +1,18 @@
-from django import forms
+from django.forms import ModelForm
 
-from tracker import settings
+from .models import User, Image
 
 
-class UserForm(forms.Form):
-    first_name = forms.CharField(max_length=32)
-    last_name = forms.CharField(max_length=32)
-    mail = forms.CharField(max_length=32)
-    phone = forms.CharField(max_length=32)
-    image = forms.ImageField(max_length=128)
-    address = forms.CharField(max_length=128)
-    birth_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        exclude = ['id']
+
+    def is_valid(self):
+        return True
+
+
+class ImageForm(ModelForm):
+    class Meta:
+        model = Image
+        exclude = ['id']
