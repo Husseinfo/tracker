@@ -1,11 +1,13 @@
 from math import sqrt
 from os import listdir
-from pickle import dump
+from pickle import dump, load
 
 from face_recognition import face_locations, face_encodings, load_image_file
 from sklearn.neighbors import KNeighborsClassifier
 
-knn_clf: KNeighborsClassifier
+from . import model_filename
+
+knn_clf: KNeighborsClassifier | None = None
 
 
 def get_nbr_photos() -> int:
@@ -29,6 +31,14 @@ def get_dataset():
     return dataset
 
 
+def get_classifier():
+    global knn_clf
+    if not knn_clf:
+        with open(model_filename, 'rb') as f:
+            knn_clf = load(f)
+    return knn_clf
+
+
 def train():
     global knn_clf
     encodings, labels = get_dataset()
@@ -44,7 +54,6 @@ def train():
 
 
 def predict(paths, distance_threshold=0.6):
-    global knn_clf
     res = []
     for path in paths:
         photo_file = load_image_file(path)
@@ -53,9 +62,10 @@ def predict(paths, distance_threshold=0.6):
             print(f'Photo should have one exact face')
             continue
         encodings = face_encodings(photo_file, known_face_locations=locations)[0]
-        closest_distances = knn_clf.kneighbors(encodings, n_neighbors=1)
-        are_matches = closest_distances[0][0][0] <= distance_threshold
-
-        res.append([(pred, loc) if rec else ("unknown", loc) for pred, loc, rec in
-                    zip(knn_clf.predict(encodings), locations, are_matches)])
+        closest_distances = get_classifier().kneighbors([encodings], n_neighbors=1)
+        percent = (1 - closest_distances[0][0][0]) * 100
+        if closest_distances[0][0][0] <= distance_threshold:
+            res.append((get_classifier().predict([encodings])[0], percent, locations[0]))
+        else:
+            res.append(('Unknown', percent, locations[0]))
     return res

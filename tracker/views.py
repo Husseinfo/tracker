@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 
-from . import photos_path, utility
+from . import photos_path, utility, temp_path
 from .forms import UserForm, ImageForm
 from .models import Attendance
 from .models import User
@@ -155,19 +155,17 @@ def recognize_camera(request):
 def receive_recognize(request):
     if not request.user.is_authenticated:
         return redirect(login)
-    if not request.is_ajax():
-        return redirect(handler404)
     photos = request.POST.getlist('photos[]')
     paths = []
     for i, photo in enumerate(photos):
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
-        name = 'static/temp/rec' + str(i) + '.' + ext
+        name = f'{temp_path}/rec' + str(i) + '.' + ext
         fh = open(name, 'wb')
         fh.write(b64decode(img))
         fh.close()
         paths.append('static/temp/rec' + str(i) + '.' + ext)
-    user_id, percentage = predict(paths)
+    user_id, percentage = predict(paths)[0][:2]
     name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
         .objects.get(id=user_id).last_name
     data_rec = {'user': user_id, 'date': datetime.now(), 'inout': None}

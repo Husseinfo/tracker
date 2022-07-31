@@ -36,7 +36,7 @@ urlpatterns = [
     path(r'deleteuser', view=views.delete_user),
     re_path(r'profile/(?P<_id>\d+)/$', view=views.profile, name="profile"),
     path(r'recognize/camera', view=views.recognize_camera),
-    path(r'recognizephoto', view=views.receive_recognize),
+    path(r'recognizephoto/', view=views.receive_recognize),
     path(r'recognize/photo', view=views.recognize_photo),
     path(r'viewphotos', view=views.view_photos),
     re_path(r'edituser/(?P<_id>\d+)/$', view=views.edit_user, name="edituser"),
