@@ -5,7 +5,8 @@ from math import ceil
 from os import listdir, remove
 from time import time
 
-from django.contrib.auth import authenticate, login as _login, logout as _logout
+from django.contrib.auth import logout as _logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 
@@ -17,29 +18,12 @@ from .recognition import predict, get_nbr_photos, train as do_train
 from .serializers import AttendanceSerializer
 
 
+@login_required
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     return render(request, "home.html",
                   {'photos': get_nbr_photos(),
                    'users': User.objects.count(),
                    'last_training': utility.last_training()}, )
-
-
-def login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            _login(request, user)
-            return redirect(home)
-        else:
-            return render(request, 'login.html')
-    elif request.method == 'GET':
-        if request.user.is_authenticated:
-            return redirect(home)
-        return render(request, 'login.html')
 
 
 def logout(request):
@@ -47,15 +31,13 @@ def logout(request):
     return redirect(login)
 
 
+@login_required
 def about(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     return render(request, 'about.html', {})
 
 
+@login_required
 def add_user(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
         instance = form.save(commit=False)
@@ -64,17 +46,15 @@ def add_user(request):
     return render(request, 'adduser.html', {'formset': UserForm()})
 
 
+@login_required
 def capture(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if User.objects.count() == 0:
         return redirect('/adduser/?status=empty')
     return render(request, 'capture.html', {'users': User.objects.all()})
 
 
+@login_required
 def upload(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if User.objects.count() == 0:
         return redirect('/adduser/?status=empty')
     if request.method == 'POST':
@@ -85,15 +65,13 @@ def upload(request):
     return render(request, 'upload.html', {'formset': ImageForm()})
 
 
+@login_required
 def display_users(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     return render(request, 'user.html', {'users': User.objects.all()})
 
 
+@login_required
 def train(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if not utility.are_there_photos():
         return redirect('/capture/?status=empty')
     return render(request, 'train.html')
@@ -103,9 +81,8 @@ def handler404(request):
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 
+@login_required
 def receive_images(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     label = request.POST.get('label')
@@ -114,26 +91,23 @@ def receive_images(request):
     return HttpResponse()
 
 
+@login_required
 def receive_train(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     start = time()
     do_train()
     duration = ceil(time() - start)
     return JsonResponse({'duration': duration})
 
 
+@login_required
 def profile(request, _id=1):
-    if not request.user.is_authenticated:
-        return redirect(login)
     user_data = User.objects.get(pk=_id)
     images = [filename for filename in listdir(photos_path) if filename.split('_')[0] == str(_id)]
     return render(request, 'profile.html', {'user': user_data, 'images': images})
 
 
+@login_required
 def delete_user(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if not request.is_ajax():
         return redirect(handler404)
     user_id = request.POST.get('id')
@@ -144,17 +118,15 @@ def delete_user(request):
     return HttpResponse()
 
 
+@login_required
 def recognize_camera(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if not utility.is_model_trained():
         return redirect('/train/?status=untrained')
     return render(request, 'camera.html')
 
 
+@login_required
 def receive_recognize(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     photos = request.POST.getlist('photos[]')
     paths = []
     for i, photo in enumerate(photos):
@@ -175,17 +147,15 @@ def receive_recognize(request):
     return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
 
 
+@login_required
 def recognize_photo(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     if not utility.is_model_trained():
         return redirect('/train/?status=untrained')
     return render(request, 'recognize_photo.html')
 
 
+@login_required
 def view_photos(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     users = User.objects.all()
     data = []
     for user in users:
@@ -194,9 +164,8 @@ def view_photos(request):
     return render(request, 'viewPhoto.html', {'data': data})
 
 
+@login_required
 def edit_user(request, _id=None):
-    if not request.user.is_authenticated:
-        return redirect(login)
     instance = User.objects.get(id=_id)
     form = UserForm(request.POST or None, request.FILES or None, instance=instance)
     if request.method == 'POST':
@@ -206,7 +175,6 @@ def edit_user(request, _id=None):
     return render(request, 'user_details.html', {'formset': form})
 
 
+@login_required
 def attendance(request):
-    if not request.user.is_authenticated:
-        return redirect(login)
     return render(request, 'attendance.html', {'attendance': Attendance.objects.all()})
