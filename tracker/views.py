@@ -5,7 +5,6 @@ from math import ceil
 from os import listdir, remove
 from time import time
 
-from django.contrib.auth import logout as _logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
@@ -24,11 +23,6 @@ def home(request):
                   {'photos': get_nbr_photos(),
                    'users': User.objects.count(),
                    'last_training': utility.last_training()}, )
-
-
-def logout(request):
-    _logout(request)
-    return redirect(login)
 
 
 @login_required
