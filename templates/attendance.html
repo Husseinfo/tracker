@@ -23,7 +23,7 @@
         {% for rec in attendance %}
             <tr id= {{ rec.id }}>
                 <td>{{ rec.id }}</td>
-                <td><a href={% url 'profile' id=rec.user.id %}>{{ rec.user.first_name }} {{ rec.user.last_name }}</a>
+                <td><a href={% url 'profile' _id=rec.user.id %}>{{ rec.user.first_name }} {{ rec.user.last_name }}</a>
                 </td>
                 <td>{{ rec.date }}</td>
                 <td>{% if rec.inout %}
