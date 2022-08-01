@@ -4,8 +4,7 @@ $(function () {
         if ($('#device').val() == 0) {
             $('.modal-header').empty();
             $('.modal-header').prepend('<video id="video" width="640" height="480" class="img-thumbnail"></video>');
-        }
-        else {
+        } else {
             $('.modal-header').empty();
             $('.modal-header').prepend('<img id="image" src="http://192.168.0.2/cgi-bin/nph-zms?monitor=4" width=640 height=480 class="img-thumbnail"/>');
         }
@@ -63,8 +62,7 @@ $('#capture').click(function () {
                 alert('Uploaded!');
             }
         });
-    }
-    else {
+    } else {
         alert('Ready?');
         $.ajax({
             type: "GET",

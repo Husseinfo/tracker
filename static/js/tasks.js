@@ -37,6 +37,7 @@ $("body").on('click', '#todo a', function () {
     $("#tasks").append('<option >' + s + '</option>');
     $(this).closest("tr").remove();
 });
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {

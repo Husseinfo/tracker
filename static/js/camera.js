@@ -19,10 +19,12 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 // Elements for taking the snapshot
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
+
 function takePhotos() {
     context.drawImage(video, 0, 0, 320, 240);
     photos[nbPhoto - counter] = document.getElementById("canvas").toDataURL("image/png");
 }
+
 // Trigger photo take
 $('#capture').click(function () {
     if (counter == 0)

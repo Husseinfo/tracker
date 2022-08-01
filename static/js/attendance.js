@@ -37,8 +37,8 @@ function onCalendarChange() {
         var month = td.split(' ')[0];
         var year = td.split(', ')[1].split(',')[0];
         var m = months.indexOf(month);
-        var cDate = new Date(year,m,day);
-        if (cDate <= lDate && cDate >= fDate && tr[i].style.display=="")
+        var cDate = new Date(year, m, day);
+        if (cDate <= lDate && cDate >= fDate && tr[i].style.display == "")
             tr[i].style.display = "";
         else
             tr[i].style.display = "none";

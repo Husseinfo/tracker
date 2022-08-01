@@ -1,7 +1,6 @@
 // Grab elements, create settings, etc.
-function deleteUser(id,fName,lName)
-{
-    if (!confirm('Are you sure you want to delete '+fName+' '+lName+'?'))
+function deleteUser(id, fName, lName) {
+    if (!confirm('Are you sure you want to delete ' + fName + ' ' + lName + '?'))
         return;
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
@@ -11,8 +10,8 @@ function deleteUser(id,fName,lName)
             id: id
         },
         success: function () {
-            $('#'+id).hide(300);
-            $('#'+id).remove();
+            $('#' + id).hide(300);
+            $('#' + id).remove();
             alert('deleted!');
         }
     });
