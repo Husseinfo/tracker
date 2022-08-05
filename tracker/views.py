@@ -77,8 +77,6 @@ def handler404(request):
 
 @login_required
 def receive_images(request):
-    if not request.is_ajax():
-        return redirect(handler404)
     label = request.POST.get('label')
     photos = request.POST.getlist('photos[]')
     start_new_thread(utility.save_base64_photos, (label, photos))
@@ -102,8 +100,6 @@ def profile(request, _id=1):
 
 @login_required
 def delete_user(request):
-    if not request.is_ajax():
-        return redirect(handler404)
     user_id = request.POST.get('id')
     User.objects.filter(id=user_id).delete()
     images = [filename for filename in listdir(photos_path) if filename.split('_')[0] == str(user_id)]

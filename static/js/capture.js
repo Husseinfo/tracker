@@ -1,4 +1,5 @@
 // Grab elements, create settings, etc.
+let video;
 $(function () {
     $('#device').change(function () {
         if ($('#device').val() == 0) {
@@ -13,8 +14,7 @@ $(function () {
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results !== null)
-        return results[1] || 0;
+    if (results !== null) return results[1] || 0;
 };
 
 var user = $.urlParam('user');
@@ -22,16 +22,6 @@ if (user !== null) {
     $('#user_id').val(user);
 }
 
-var video = document.getElementById('video');
-
-// Get access to the camera!
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
-    });
-}
 
 // Elements for taking the snapshot
 var canvas = document.getElementById('canvas');
@@ -50,14 +40,9 @@ $('#capture').click(function () {
     if ($('#device').val() == 0) {
         var photos = takePhotos(number);
         $.ajax({
-            headers: {"X-CSRFToken": getCookie('csrftoken')},
-            type: "POST",
-            url: "/sendimage/",
-            data: {
-                label: id,
-                photos: photos
-            },
-            success: function () {
+            headers: {"X-CSRFToken": getCookie('csrftoken')}, type: "POST", url: "/sendimage/", data: {
+                label: id, photos: photos
+            }, success: function () {
                 $('#loader').removeClass('loader');
                 alert('Uploaded!');
             }
@@ -65,13 +50,9 @@ $('#capture').click(function () {
     } else {
         alert('Ready?');
         $.ajax({
-            type: "GET",
-            url: "/remotecapture/",
-            data: {
-                user: id,
-                number: number
-            },
-            success: function () {
+            type: "GET", url: "/remotecapture/", data: {
+                user: id, number: number
+            }, success: function () {
                 $('#loader').removeClass('loader');
                 alert('Uploaded!');
             }
@@ -88,3 +69,18 @@ function takePhotos(num) {
     }
     return photos;
 }
+
+$(() => {
+    video = document.getElementsByTagName('video')[0];
+
+    const facingMode = "user";
+    const constraints = {
+        audio: false,
+        video: {
+            facingMode: facingMode
+        }
+    };
+    navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
+        video.srcObject = stream;
+    });
+});

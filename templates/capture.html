@@ -16,7 +16,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <video id="video" width="640" height="480" class="img-thumbnail"></video>
+                <device type="media" onchange="update(this.data)"></device>
+                <video autoplay width="100%"></video>
             </div>
             <div class="modal-body">
                 <select id="device" class="form-control">
