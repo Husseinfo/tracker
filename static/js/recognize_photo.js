@@ -2,7 +2,7 @@
  * Created by Ahmad Tfaily on 5/15/2017.
  */
 
-var image = [];
+let image = [];
 
 function readURL(input) {
     if (input.files && input.files[0]) {
@@ -30,13 +30,9 @@ $('#file').on('change', function () {
 $('#btnRecognize').click(function () {
     $('#loader').addClass('loader');
     $.ajax({
-        headers: {"X-CSRFToken": getCookie('csrftoken')},
-        type: "POST",
-        url: "/recognizephoto/",
-        data: {
+        headers: {"X-CSRFToken": getCookie('csrftoken')}, type: "POST", url: "/recognizephoto/", data: {
             photos: image
-        },
-        success: function (data) {
+        }, success: function (data) {
             $('#loader').removeClass('loader');
             if (data.id === null) {
                 $('.alert.alert-dismissable.alert-danger').show(200);
@@ -57,19 +53,3 @@ $('#reset').click(function () {
     $('#uploaded').hide(200);
     $('.alert.alert-dismissable.alert-danger').hide(200);
 });
-
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
