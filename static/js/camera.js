@@ -23,22 +23,24 @@ $('#capture').click(function () {
             photos: [photo]
         },
         success: function (data) {
-            $('#go').prop('disabled', true);
+            const go = $('#go');
+            const percentage = $('#percentage');
+            go.prop('disabled', true);
             if (data.id === null) {
-                $('#go').hide();
-                $('#percentage').css('width', '0%').attr('aria-valuenow', 0).html('');
+                go.hide();
+                percentage.css('width', '0%').attr('aria-valuenow', 0).html('');
                 return;
             }
-            $('#go').html(data.name);
-            $('#go').removeAttr('style');
+            go.html(data.name);
+            go.removeAttr('style');
             if (data.name === 'Unknown') {
-                $('#percentage').css('width', '0%').attr('aria-valuenow', 0).html('');
+                percentage.css('width', '0%').attr('aria-valuenow', 0).html('');
                 return;
             }
-            $('#go').prop('disabled', false);
-            $('#go').parent().attr('href', '/profile/' + data.id);
+            go.prop('disabled', false);
+            go.parent().attr('href', '/profile/' + data.id);
             const percent = String(data.percentage);
-            $('#percentage').css('width', percent + '%').attr('aria-valuenow', percent).html(percent + ' %');
+            percentage.css('width', percent + '%').attr('aria-valuenow', percent).html(percent + ' %');
         }
     });
 });
