@@ -18,7 +18,7 @@ $('#capture').click(function () {
     $.ajax({
         headers: {"X-CSRFToken": getCookie('csrftoken')},
         type: "POST",
-        url: "/recognizephoto/",
+        url: "/recognize/",
         data: {
             photos: [photo]
         },
