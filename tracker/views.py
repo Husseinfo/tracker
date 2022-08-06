@@ -127,14 +127,17 @@ def receive_recognize(request):
         fh.write(b64decode(img))
         fh.close()
         paths.append('static/temp/rec' + str(i) + '.' + ext)
-    user_id, percentage = predict(paths)[0][:2]
-    name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
-        .objects.get(id=user_id).last_name
-    data_rec = {'user': user_id, 'date': datetime.now(), 'inout': None}
-    serializer = AttendanceSerializer(data=data_rec)
-    if serializer.is_valid() and percentage == 100:
-        serializer.save()
-    return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
+
+    if predictions := predict(paths):
+        user_id, percentage = predictions[0][:2]
+        name = 'Unknown' if user_id in (-1, None) else User.objects.get(id=user_id).first_name + ' ' + User \
+            .objects.get(id=user_id).last_name
+        data_rec = {'user': user_id, 'date': datetime.now(), 'inout': None}
+        serializer = AttendanceSerializer(data=data_rec)
+        if serializer.is_valid() and percentage >= 85:
+            serializer.save()
+        return JsonResponse({'id': user_id, 'name': name, 'percentage': percentage})
+    return JsonResponse({'id': None})
 
 
 @login_required
