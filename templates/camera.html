@@ -2,22 +2,18 @@
 {% load static %}
 {% block title %}Camera{% endblock %}
 {% block content %}
-{% block css %}
-    <link href="{% static 'css/camera.css' %}" rel="stylesheet">
-{% endblock %}
+    {% block css %}
+        <link href="{% static 'css/camera.css' %}" rel="stylesheet">
+    {% endblock %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <video id="video" width="640" height="480" class="img-thumbnail"></video>
+                <video autoplay width="100%"></video>
                 <div class="clock-canvas" style="position: absolute; top: 0px; left: 0px;">
                     <div class="kineticjs-content" role="presentation"
                          style="display: inline-block; width: 200px; height: 200px;">
                         <canvas width="200" height="200"
                                 style="padding: 0px; margin: 0px; border: 0px; background: transparent; position: absolute; top: 0px; left: 0px; width: 200px; height: 200px;"></canvas>
-                    </div>
-                    <div class="text">
-                        <p id="counter" class="val">3</p>
-                        <p class="type-seconds type-time"></p>
                     </div>
                 </div>
             </div>
