@@ -63,7 +63,7 @@ def predict(paths, distance_threshold=0.6):
             continue
         encodings = face_encodings(photo_file, known_face_locations=locations)[0]
         closest_distances = get_classifier().kneighbors([encodings], n_neighbors=1)
-        percent = (1 - closest_distances[0][0][0]) * 100
+        percent = round((1 - closest_distances[0][0][0]) * 100, 2)
         if closest_distances[0][0][0] <= distance_threshold:
             res.append((get_classifier().predict([encodings])[0], percent, locations[0]))
         else:
