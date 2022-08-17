@@ -7,7 +7,7 @@
 - Upgraded to [Django 4](https://github.com/django/django/releases/tag/4.0.6)
 
 
-![alt homepage](https://github.com/Husseinfo/tracker/blob/master/static/images/homepage.png?raw=true)
+![homepage](https://github.com/Husseinfo/tracker/blob/main/static/images/homepage.png?raw=true)
 
 ## Overview
 
