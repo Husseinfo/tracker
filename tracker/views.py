@@ -26,11 +26,6 @@ def home(request):
 
 
 @login_required
-def about(request):
-    return render(request, 'about.html', {})
-
-
-@login_required
 def add_user(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
