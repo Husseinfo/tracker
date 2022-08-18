@@ -1,2 +1,4 @@
 static/admin/** linguist-vendored
 static/js/lib/* linguist-vendored
+static/css/lib/** linguist-vendored
+static/css/fonts/** linguist-vendored
