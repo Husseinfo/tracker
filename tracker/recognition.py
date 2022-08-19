@@ -39,9 +39,9 @@ def get_classifier(model=model_filename):
     return knn_clf
 
 
-def train(model=model_filename):
+def train(model=model_filename, photos=photos_path):
     global knn_clf
-    encodings, labels = get_dataset()
+    encodings, labels = get_dataset(photos)
     n_neighbors = int(round(sqrt(len(encodings))))
 
     # Create and train the KNN classifier

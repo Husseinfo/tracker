@@ -21,7 +21,7 @@ class RecognitionTestCase(TestCase):
     def test_train(self):
         if isfile(self.model_path):
             remove(self.model_path)
-        train(self.model_path)
+        train(self.model_path, self.photos_train_path)
         self.assertTrue(isfile(self.model_path))
 
     def test_prediction(self):
