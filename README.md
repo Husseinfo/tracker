@@ -1,6 +1,6 @@
 # tracker
 
-![Django CI](https://github.com/Husseinfo/tracker/actions/workflows/django.yml/badge.svg)
+![Django CI](https://github.com/Husseinfo/tracker/actions/workflows/django.yml/badge.svg) ![Docker image CI](https://github.com/Husseinfo/tracker/actions/workflows/docker-image.yml/badge.svg) 
 
 ## ***UPDATE***
 
