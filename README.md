@@ -1,11 +1,12 @@
 # tracker
 
+![Django CI](https://github.com/Husseinfo/tracker/actions/workflows/django.yml/badge.svg)
+
 ## ***UPDATE***
 
 - [OpenCV](https://github.com/opencv/opencv) replaced
   with [face_recognition](https://github.com/ageitgey/face_recognition/)
 - Upgraded to [Django 4](https://github.com/django/django/releases/tag/4.0.6)
-
 
 ![homepage](https://github.com/Husseinfo/tracker/blob/main/static/images/homepage.png?raw=true)
 
