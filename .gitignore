@@ -103,5 +103,6 @@ static/temp/*
 # sqlite database
 *.sqlite3
 
-# model
+# model files
 static/model
+tests/recognition/model
