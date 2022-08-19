@@ -26,7 +26,7 @@ class RecognitionTestCase(TestCase):
 
     def test_prediction(self):
         if not isfile(self.model_path):
-            train(self.model_path)
+            train(self.model_path, self.photos_train_path)
             self.assertTrue(isfile(self.model_path))
 
         predictions = predict((f'{self.photos_test_path}/cr7.jpg',))
