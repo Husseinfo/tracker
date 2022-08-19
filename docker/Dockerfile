@@ -17,7 +17,7 @@ WORKDIR /opt/tracker
 ENV DJANGO_SUPERUSER_EMAIL admin@admin.local
 ENV DJANGO_SUPERUSER_USERNAME admin
 ENV DJANGO_SUPERUSER_PASSWORD admin
-RUN pip install -r requirements.txt && python manage.py migrate && python manage.py createsuperuser --noinput
+RUN pip install -r requirements.txt && python manage.py migrate && python manage.py createsuperuser --noinput && python manage.py test
 
 EXPOSE 8000
 
