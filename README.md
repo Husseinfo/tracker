@@ -26,7 +26,7 @@ A face recognition based attendance system.
 
 ## Environment
 
-Python: > 3.6
+Python == 3.10
 
 Install libraries: ```pip3 install -r requirements.txt```
 
