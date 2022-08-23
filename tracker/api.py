@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from . import temp_path
 from .models import User, Attendance
 from .recognition import predict
 from .serializers import AttendanceSerializer
@@ -19,7 +20,7 @@ class AttendanceRecord(APIView):
         inout = data['inout']
         paths = []
         for i, photo in enumerate(data['images']):
-            name = 'static/temp/rec' + str(i) + '.png'
+            name = f'{temp_path}/rec{i}.png'
             with open(name, 'wb') as fh:
                 fh.write(b64decode(photo))
             paths.append(name)
