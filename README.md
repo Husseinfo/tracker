@@ -1,6 +1,9 @@
 # tracker
 
 ![Django CI](https://github.com/Husseinfo/tracker/actions/workflows/django.yml/badge.svg) ![Docker image CI](https://github.com/Husseinfo/tracker/actions/workflows/docker-image.yml/badge.svg) 
+[![GitHub license](https://img.shields.io/github/license/husseinfo/tracker.svg)](https://github.com/husseinfo/tracker/blob/main/LICENSE)
+[![views-counter](https://github.com/Husseinfo/views-counter/blob/master/svg/90946301/badge.svg)](https://github.com/Husseinfo/views-counter/blob/master/readme/90946301/week.md)
+[![GitHub stars](https://img.shields.io/github/stars/husseinfo/tracker.svg)](https://github.com/husseinfo/tracker/stargazers)
 
 ## ***UPDATE***
 
