@@ -143,16 +143,6 @@ def recognize_photo(request):
 
 
 @login_required
-def view_photos(request):
-    users = User.objects.all()
-    data = []
-    for user in users:
-        images = [filename for filename in listdir(photos_path) if filename.split('_')[0] == str(user.id)]
-        data.append({'user': user.first_name + " " + user.last_name, 'images': images})
-    return render(request, 'viewPhoto.html', {'data': data})
-
-
-@login_required
 def edit_user(request, _id=None):
     instance = User.objects.get(id=_id)
     form = UserForm(request.POST or None, request.FILES or None, instance=instance)

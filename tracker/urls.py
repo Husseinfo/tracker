@@ -38,7 +38,6 @@ urlpatterns = [
     path(r'recognize/camera', view=views.recognize_camera),
     path(r'recognize/', view=views.receive_recognize),
     path(r'recognize/photo', view=views.recognize_photo),
-    path(r'viewphotos', view=views.view_photos),
     re_path(r'edituser/(?P<_id>\d+)/$', view=views.edit_user, name="edituser"),
     path(r'attendance', view=views.attendance),
     path(r'api/attendance', view=AttendanceRecord.as_view()),
