@@ -1,2 +1,7 @@
 site_name: Tracker
 theme: material
+
+# Extensions
+markdown_extensions:
+  - codehilite
+  - meta
