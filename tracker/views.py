@@ -120,8 +120,9 @@ def recognize(request):
                 user = User.objects.get(id=user_id)
                 name = 'Unknown' if user_id in (-1, None) else user.first_name + ' ' + user.last_name
                 last_attendance = user.attendance_set.last()
+                inout = not last_attendance.inout if last_attendance else True
                 if confidence >= 85:
-                    Attendance.objects.create(user=user, date=datetime.now(), inout=not last_attendance.inout)
+                    Attendance.objects.create(user=user, date=datetime.now(), inout=inout)
                 return render(request, 'recognize.html', {'id': user_id, 'name': name, 'confidence': confidence})
             return render(request, 'recognize.html', {'confidence': -1})
     return render(request, 'recognize.html')
