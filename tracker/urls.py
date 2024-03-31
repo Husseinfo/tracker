@@ -11,9 +11,8 @@ urlpatterns = [
     path(r'capture', view=views.capture, name='capture'),
     path(r'upload', view=views.upload, name='upload'),
     path(r'train/', view=views.train, name='train'),
-    path(r'sendimage/', view=views.receive_images, name='sendimage'),
 
-    path(r'users', view=views.display_users, name='users'),
+    path(r'users', view=views.users, name='users'),
     path(r'profile/<user_id>', view=views.profile, name="profile"),
     path(r'adduser/', view=views.add_user, name='adduser'),
     path(r'edituser/<user_id>', view=views.edit_user, name="edituser"),

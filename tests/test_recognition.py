@@ -3,8 +3,8 @@ from os.path import isfile
 
 from django.test import TestCase
 
+from tracker.engine import train, predict
 from tracker.models import User
-from tracker.recognition import get_nbr_photos, train, predict
 
 
 class RecognitionTestCase(TestCase):
@@ -15,10 +15,7 @@ class RecognitionTestCase(TestCase):
         User.objects.create(first_name="Barack", last_name="Obama")
         User.objects.create(first_name="Cristiano", last_name="Ronaldo")
 
-    def test_get_nbr_photos(self):
-        self.assertEqual(get_nbr_photos(self.photos_train_path), 2)
-
-    def test_train(self):
+    def test_training(self):
         if isfile(self.model_path):
             remove(self.model_path)
         train(self.model_path, self.photos_train_path)

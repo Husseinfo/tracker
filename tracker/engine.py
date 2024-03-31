@@ -10,13 +10,6 @@ from tracker import model_filename, photos_path
 knn_clf: KNeighborsClassifier | None = None
 
 
-def get_nbr_photos(photos=photos_path) -> int:
-    try:
-        return len(listdir(photos))
-    except Exception as e:
-        return 0
-
-
 def get_dataset(photos=photos_path):
     dataset = [[], []]
     for photo in listdir(photos):

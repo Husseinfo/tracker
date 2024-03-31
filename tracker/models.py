@@ -32,17 +32,3 @@ class Attendance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField("date")
     inout = models.BooleanField("inout", null=True)
-
-
-class Task(models.Model):
-    id = models.AutoField(name='id', primary_key=True)
-    name = models.CharField(max_length=32)
-
-
-class UserTask(models.Model):
-    id = models.AutoField(name='id', primary_key=True)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = (("task", "user"),)

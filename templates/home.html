@@ -30,7 +30,13 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ last_training|timesince }}</h5>
+                    <h5 class="card-title">
+                        {% if last_training %}
+                            {{ last_training|timesince }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </h5>
                     <p class="card-text">
                         Last Training
                     </p>

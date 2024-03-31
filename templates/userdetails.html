@@ -3,3 +3,19 @@
 {% load django_bootstrap5 %}
 
 {% block title %}User{% endblock %}
+
+{% block extra %}
+    <div class="container-fluid">
+        <div class="row">
+            {% if request.GET.status == 'empty' %}
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="alert alert-dismissible alert-warning fade show">
+                        <strong>No enough data! </strong>You need to add new users and photos to train model.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

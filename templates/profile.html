@@ -41,13 +41,12 @@
                             <dt>Address:</dt>
                             <dd>{{ user.address }}</dd>
                         </dl>
-
                     </div>
                     <div class="tab-pane fade" id="images-tab-pane" role="tabpanel" aria-labelledby="images-tab"
                          tabindex="0">
-                        {% for image in images %}
+                        {% for image in user.image_set.all %}
                             {% with 'photos/'|add:image as image_static %}
-                                <img src="{% static image_static %}" alt="Image {{ image }}" class="w-100">
+                                <img src="/{{ image.Image }}" alt="{{ image.Image }}" class="w-100">
                             {% endwith %}
                         {% endfor %}
                     </div>

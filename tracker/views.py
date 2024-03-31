@@ -1,33 +1,33 @@
 from base64 import b64decode
 from datetime import datetime
 from math import ceil
-from os import listdir, remove
+from os import remove
+from os.path import isfile, getmtime
 from time import time
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 
-from tracker import photos_path, utility, temp_path
+from tracker import model_filename, temp_path
+from tracker.engine import predict, train as do_train
 from tracker.forms import UserForm, ImageForm
 from tracker.models import Attendance, User, Image
-from tracker.recognition import predict, get_nbr_photos, train as do_train
 
 
 @login_required
 def home(request):
-    return render(request, "home.html",
-                  {'photos': get_nbr_photos(),
-                   'users': User.objects.count(),
-                   'last_training': utility.last_training()}, )
+    return render(request, "home.html", {
+        'photos': Image.objects.count(),
+        'users': User.objects.count(),
+        'last_training': datetime.fromtimestamp(getmtime(model_filename)) if isfile(model_filename) else None
+    })
 
 
 @login_required
 def add_user(request):
     if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES)
-        instance = form.save(commit=False)
-        instance.save()
-        return redirect(home)
+        UserForm(request.POST, request.FILES).save()
+        return redirect('users')
     return render(request, 'userdetails.html', {'formset': UserForm()})
 
 
@@ -62,14 +62,14 @@ def upload(request):
 
 
 @login_required
-def display_users(request):
+def users(request):
     return render(request, 'user.html', {'users': User.objects.all()})
 
 
 @login_required
 def train(request):
-    if not utility.are_there_photos():
-        return redirect('/capture/?status=empty')
+    if not Image.objects.count():
+        return redirect('/capture?status=empty')
     if request.method == 'GET':
         return render(request, 'train.html')
     start = time()
@@ -79,50 +79,43 @@ def train(request):
 
 
 @login_required
-def receive_images(request):
-    label = request.POST.get('label')
-    photos = request.POST.getlist('photos[]')
-    utility.save_base64_photos(label, photos)
-    return HttpResponse()
-
-
-@login_required
 def profile(request, user_id):
-    user_data = User.objects.get(pk=user_id)
-    images = [filename for filename in listdir(photos_path) if filename.split('_')[0] == str(user_id)]
-    return render(request, 'profile.html', {'user': user_data, 'images': images})
+    return render(request, 'profile.html', {'user': User.objects.get(pk=user_id)})
 
 
 @login_required
 def delete_user(request, user_id):
-    User.objects.filter(id=user_id).delete()
-    images = [filename for filename in listdir(photos_path) if filename.split('_')[0] == str(user_id)]
-    for image in images:
-        remove('static/photos/' + image)
+    user = User.objects.get(id=user_id)
+    for image in user.image_set.all():
+        try:
+            remove(image.Image.path)
+        except (FileNotFoundError, ValueError):
+            pass
+    user.delete()
     return redirect('users')
 
 
 @login_required
 def recognize(request):
-    if not utility.is_model_trained():
+    if not isfile(model_filename):
         return redirect('/train/?status=untrained')
     if request.method == 'POST':
-        paths = []
+        files = []
         if frame := request.POST.get('frame'):
             ext, img = frame.split(';base64,')
             ext = ext.split('/')[-1]
             name = f'{temp_path}/rec_frame.{ext}'
             with open(name, 'wb') as fh:
                 fh.write(b64decode(img))
-            paths.append(name)
+            files.append(name)
         if images := request.FILES.getlist('images'):
             for i, image in enumerate(images):
                 name = f'{temp_path}/rec{i}.jpg'
                 with open(name, 'wb') as fh:
                     fh.write(image.file.read())
-                paths.append(name)
-        if paths:
-            if predictions := predict(paths):
+                files.append(name)
+        if files:
+            if predictions := predict(files):
                 user_id, confidence = predictions[0][:2]
                 user = User.objects.get(id=user_id)
                 name = 'Unknown' if user_id in (-1, None) else user.first_name + ' ' + user.last_name

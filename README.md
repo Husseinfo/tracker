@@ -7,13 +7,6 @@ A face recognition based attendance system.
 [![views-counter](https://github.com/Husseinfo/views-counter/blob/master/svg/90946301/badge.svg)](https://github.com/Husseinfo/views-counter/blob/master/readme/90946301/year.md)
 [![GitHub stars](https://img.shields.io/github/stars/husseinfo/tracker.svg)](https://github.com/husseinfo/tracker/stargazers)
 
-## ***UPDATE***
-
-- [OpenCV](https://github.com/opencv/opencv) replaced
-  with [face_recognition](https://github.com/ageitgey/face_recognition/)
-- Upgraded to [Django 4](https://github.com/django/django/releases/tag/4.0.6)
-- UI with [django-bootstrap5](https://github.com/zostera/django-bootstrap5)
-
 ![homepage](https://github.com/Husseinfo/tracker/blob/main/static/images/homepage.png?raw=true)
 
 ## Running
