@@ -1,38 +1,42 @@
 {% extends 'base.html' %}
+
 {% block title %}Users{% endblock %}
+
 {% block content %}
-    <table class="table table-bordered table-hover table-striped">
-        <thead>
-        <tr>
-            <th>#Id</th>
-            <th>Name</th>
-            <th>Phone Number</th>
-            <th>E-mail</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr id= {{ user.id }}>
-                <td>{{ user.id }}</td>
-                <td>{{ user.first_name }} {{ user.last_name }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.e_mail }}</td>
-                {% load static %}
-                <td><a href={% url 'profile' _id=user.id %}>
-                    <button type="button" class="btn btn-xs btn-info">View</button>
-                </a>&nbsp&nbsp<a href={% url 'edituser' _id=user.id %}>
-                    <button type="button" class="btn btn-xs btn-warning">Edit</button>
-                </a>&nbsp&nbsp
-                    <button id="delete" type="button" class="btn btn-xs btn-danger"
-                            onclick="deleteUser({{ user.id }},'{{ user.first_name }}','{{ user.last_name }}')">Delete
-                    </button>
-                </td>
+    <div class="col-12 p-3">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#Id</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.e_mail }}</td>
+                    {% load static %}
+                    <td>
+                        <a href="{% url 'profile' user.id %}" class="btn btn-xs btn-outline-primary">
+                            View
+                        </a>
+                        <a href="{% url 'edituser' user.id %}" class="btn btn-xs btn-outline-secondary">
+                            Edit
+                        </a>
+                        <a class="btn btn-xs btn-outline-danger" href="{% url 'deleteuser' user.id %}"
+                           onclick="return confirm('This will delete all {{ user }} info. Are you sure?')">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}
-{% block javascript %}
-    <script src="{% static 'js/users.js' %}"></script>
-{% endblock %}

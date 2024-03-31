@@ -1,44 +1,24 @@
-"""tracker URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, re_path, include
+from django.urls import path, include
 
-from . import views
-from .api import AttendanceRecord
+from tracker import views
 
 urlpatterns = [
-    path('', views.home),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path(r'admin', admin.site.urls),
+
+    path(r'', view=views.home, name='home'),
+    path(r'capture', view=views.capture, name='capture'),
+    path(r'upload', view=views.upload, name='upload'),
+    path(r'train/', view=views.train, name='train'),
+    path(r'sendimage/', view=views.receive_images, name='sendimage'),
+
+    path(r'users', view=views.display_users, name='users'),
+    path(r'profile/<user_id>', view=views.profile, name="profile"),
     path(r'adduser/', view=views.add_user, name='adduser'),
-    path(r'home', view=views.home),
-    path(r'capture', view=views.capture),
-    path(r'upload', view=views.upload),
-    path(r'train/', view=views.train),
-    path(r'sendimage/', view=views.receive_images),
-    path(r'sendtrain/', view=views.receive_train),
-    path(r'users', view=views.display_users),
-    path(r'deleteuser', view=views.delete_user),
-    re_path(r'profile/(?P<_id>\d+)/$', view=views.profile, name="profile"),
-    path(r'recognize/camera', view=views.recognize_camera),
-    path(r'recognize/', view=views.receive_recognize),
-    path(r'recognize/photo', view=views.recognize_photo),
-    re_path(r'edituser/(?P<_id>\d+)/$', view=views.edit_user, name="edituser"),
-    path(r'attendance', view=views.attendance),
-    path(r'api/attendance', view=AttendanceRecord.as_view()),
+    path(r'edituser/<user_id>', view=views.edit_user, name="edituser"),
+    path(r'deleteuser/<user_id>', view=views.delete_user, name='deleteuser'),
+
+    path(r'recognize', view=views.recognize, name='recognize'),
+    path(r'attendance', view=views.attendance, name='attendance'),
 ]

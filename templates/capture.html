@@ -1,40 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block css %}
-    <link href="{% static 'css/capture.css' %}" rel="stylesheet">
-{% endblock %}
+{% load django_bootstrap5 %}
+
 {% block title %}Capture{% endblock %}
+
 {% block content %}
-    {% if request.GET.status == 'empty' %}
-        <div class="col-lg-2">
-            <div class="alert alert-dismissable alert-warning">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Empty! </strong>You need to capture some photos.
-            </div>
-        </div>
-    {% endif %}
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <video autoplay width="100%"></video>
-            </div>
-            <div class="modal-body">
-                <select id="device" class="form-control">
-                    <option value="0">Local device</option>
-                    <option value="1">Remote device</option>
-                </select><br>
-                <select id="user_id" class="form-control">
-                    {% for user in users %}
-                        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
-                    {% endfor %}
-                </select><br>
-                <input id="number" type="number" placeholder="Number" class="form-control" value="10"><br>
-                <button id="capture" class="btn btn-primary">Capture</button>
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Capture</h3>
+                <form class="" role="form" action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-auto">
+                        <label for="user_id" class="form-label">User</label>
+                        <select id="user_id" class="form-control" name="user_id">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                            {% endfor %}
+                        </select><br>
+                    </div>
+                    <input type="hidden" name="frame" id="frame" value="">
+                </form>
+                <div>
+                    <canvas id="canvas" class="d-none"></canvas>
+                    <video width="100%" class="d-none" autoplay></video>
+                    <button class="btn btn-outline-primary mt-2" onclick="openCamera()">Open Camera</button>
+                    <button id="capture" class="btn btn-outline-secondary mt-2 d-none" onclick="capture()">Capture
+                    </button>
+                    <button id="recognize" class="btn btn-outline-success mt-2 d-none" onclick="recognize()">Save
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <canvas id="canvas" width="320" height="240" style="visibility: hidden"></canvas>
 {% endblock %}
+
 {% block javascript %}
-    <script src="{% static 'js/capture.js' %}"></script>
+    <script src="{% static 'js/camera.js' %}"></script>
 {% endblock %}

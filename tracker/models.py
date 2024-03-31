@@ -1,11 +1,10 @@
 from datetime import date
-from os.path import join
 
 from django.db import models
 
 
 def get_photo_upload_path(instance, filename):
-    return join(f'static/photos/{instance.user.id}_{filename}')
+    return f'static/photos/{instance.user.id}_{filename}'
 
 
 class User(models.Model):

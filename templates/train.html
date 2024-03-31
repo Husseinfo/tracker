@@ -1,54 +1,54 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block css %}
-    <link href="{% static 'css/train.css' %}" rel="stylesheet">
-{% endblock %}
-{% block title %}Train{% endblock %}
+
+{% block title %}Training{% endblock %}
+
 {% block content %}
-    {% if request.GET.status == 'untrained' %}
-        <div class="col-lg-4">
-            <div class="alert alert-dismissable alert-warning">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Untrained! </strong>You need train the model.
-                <a href="#" class="alert-link">Afterwards, you can recognize by camera or photo.</a>
-            </div>
+    <div class="container-fluid">
+        <div class="row">
+            {% if request.GET.status == 'untrained' %}
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="alert alert-dismissible alert-warning fade show">
+                        <strong>Not Trained! </strong>You need train the model.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-lg-4"></div>
+            {% endif %}
+            {% if duration %}
+                <div class="col-lg-4">
+                    <div class="alert alert-dismissible alert-success fade show" role="alert">
+                        <strong>Trained!</strong> Process took {{ duration }} seconds.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-    {% else %}
-        <div class="col-lg-4"></div>
-    {% endif %}
+    </div>
+
+    <div class="col-lg-4"></div>
     <div class="col-lg-4">
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h3 class="panel-title">Train the model</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Train the model</h5>
+                <p class="card-text">
                 <p>
                     Click to start Training process. It may take several minutes.
                 </p>
                 <p>
                     Note that training results a new training model and <strong>overwrite</strong> the old one.
                 </p>
-                <button id="train" class="btn btn-danger">Train</button>
             </div>
-        </div>
-        <div id="loader"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="alert alert-dismissable alert-success" style="display: none">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Trained! </strong>Process took <span id="duration"></span> seconds.<br>
-                <a href="#" class="alert-link">Old model has been overridden!</a>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="alert alert-dismissable alert-danger" style="display: none">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Training failed!</strong>
+            <div class="card-footer">
+                <div class="d-flex align-items-center">
+                    <form class="row gy-2 gx-3 align-items-center" role="form" action="" method="post">
+                        {% csrf_token %}
+                        <button id="train" class="btn btn-outline-danger">Run Training</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascript %}
-    <script src="{% static 'js/train.js' %}"></script>
 {% endblock %}

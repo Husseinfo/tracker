@@ -1,92 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Dashboard{% endblock %}
-{% block css %}
-{% endblock %}
+
 {% block content %}
-    <div class="page-wrapper">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <i class="fa fa-photo fa-5x"></i>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">{{ photos }}</p>
-                    <p class="announcement-text">{% if photos == 1 %}Photo{% else %}Photos{% endif %}</p>
-                  </div>
+    <div class="row p-3">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ photos }}</h5>
+                    <p class="card-text">
+                        {% if photos == 1 %}Photo{% else %}Photos{% endif %}
+                    </p>
+                    <a href="{% url 'users' %}" class="btn btn-outline-secondary">Browse</a>
                 </div>
-              </div>
-              <a href="/users">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Browse
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="panel panel-warning">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <i class="fa fa-users fa-5x"></i>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">{{ users }}</p>
-                    <p class="announcement-text">{% if users == 1 %}User{% else %}Users{% endif %}</p>
-                  </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ users }}</h5>
+                    <p class="card-text">
+                        {% if users == 1 %}User{% else %}Users{% endif %}
+                    </p>
+                    <a href="{% url 'adduser' %}" class="btn btn-outline-success">Add</a>
                 </div>
-              </div>
-              <a href="/users">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Manage Users
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="panel panel-danger">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <i class="fa fa-clock-o fa-5x"></i>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">{{ last_training }}</p>
-                    <p class="announcement-text">Last Training</p>
-                  </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ last_training|timesince }}</h5>
+                    <p class="card-text">
+                        Last Training
+                    </p>
+                    <a href="{% url 'train' %}" class="btn btn-outline-danger">Perform Training</a>
                 </div>
-              </div>
-              <a href="/train">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Perform Training
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
-          </div>
-        </div><!-- /.row -->
-</div>
+        </div>
+    </div>
 {% endblock %}

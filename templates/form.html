@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Edit User{% endblock %}
+{% load django_bootstrap5 %}
+
 {% block content %}
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Update user</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card card-primary">
+            <div class="card-body">
+                <h3 class="card-title">{% block title %}{% endblock %}</h3>
                 <form role="form" action="" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         {% csrf_token %}
-                        {{ formset.as_p }}
-                        <input type="submit" class="btn btn-primary" value="Update"/>
+                        {% bootstrap_form formset %}
+                        {% bootstrap_button button_type="submit" content="Save" %}
                     </div>
                 </form>
             </div>

@@ -1,61 +1,36 @@
-let photo;
-let video = document.getElementById('video');
-
-
-// Elements for taking the snapshot
+const video = document.getElementsByTagName('video')[0];
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
+const captureButton = document.getElementById('capture');
+const recognizeButton = document.getElementById('recognize');
 
-function takePhotos() {
-    context.drawImage(video, 0, 0, 320, 240);
-    photo = document.getElementById("canvas").toDataURL("image/png");
-}
-
-// Trigger photo take
-$('#capture').click(function () {
-    context.drawImage(video, 0, 0, 320, 240);
-    takePhotos();
-    $.ajax({
-        headers: {"X-CSRFToken": getCookie('csrftoken')},
-        type: "POST",
-        url: "/recognize/",
-        data: {
-            photos: [photo]
-        },
-        success: function (data) {
-            const go = $('#go');
-            const percentage = $('#percentage');
-            go.prop('disabled', true);
-            if (data.id === null) {
-                go.hide();
-                percentage.css('width', '0%').attr('aria-valuenow', 0).html('');
-                return;
-            }
-            go.html(data.name);
-            go.removeAttr('style');
-            if (data.name === 'Unknown') {
-                percentage.css('width', '0%').attr('aria-valuenow', 0).html('');
-                return;
-            }
-            go.prop('disabled', false);
-            go.parent().attr('href', '/profile/' + data.id);
-            const percent = String(data.percentage);
-            percentage.css('width', percent + '%').attr('aria-valuenow', percent).html(percent + ' %');
-        }
-    });
-});
-
-$(() => {
-    video = document.getElementsByTagName('video')[0];
-
-    const facingMode = "user";
-    const constraints = {
+function openCamera() {
+    navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-            facingMode: facingMode
+            facingMode: "user"
         }
-    };
-    navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
+    }).then(function (stream) {
+        video.classList = [];
+        canvas.classList = ['d-none'];
         video.srcObject = stream;
+        captureButton.classList.remove('d-none');
     });
-});
+}
+
+function capture() {
+    const width = video.getBoundingClientRect().width;
+    const height = video.getBoundingClientRect().height;
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(video, 0, 0, width, height);
+    video.classList = ['d-none'];
+    canvas.classList = [];
+    video.srcObject.getTracks().forEach(track => track.stop());
+    recognizeButton.classList.remove('d-none');
+}
+
+function recognize() {
+    document.getElementById('frame').value = canvas.toDataURL();
+    document.getElementsByTagName('form')[0].submit();
+}

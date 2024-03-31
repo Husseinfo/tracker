@@ -5,7 +5,7 @@ from pickle import dump, load
 from face_recognition import face_locations, face_encodings, load_image_file
 from sklearn.neighbors import KNeighborsClassifier
 
-from . import model_filename, photos_path
+from tracker import model_filename, photos_path
 
 knn_clf: KNeighborsClassifier | None = None
 
@@ -14,7 +14,6 @@ def get_nbr_photos(photos=photos_path) -> int:
     try:
         return len(listdir(photos))
     except Exception as e:
-        print(e)
         return 0
 
 

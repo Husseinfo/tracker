@@ -1,5 +1,4 @@
 Django==4.1.13
-djangorestframework==3.14.0
 face_recognition==1.3.0
 scikit-learn==1.1.3
-mkdocs-material==8.5.9
+django-bootstrap5==23.4

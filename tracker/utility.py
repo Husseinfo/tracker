@@ -3,8 +3,8 @@ from datetime import datetime
 from os import listdir
 from os.path import isfile, getmtime
 
-from . import model_filename, photos_path
-from .recognition import get_nbr_photos
+from tracker import model_filename, photos_path
+from tracker.recognition import get_nbr_photos
 
 
 def time_spent(sec):
@@ -20,9 +20,8 @@ def time_spent(sec):
 
 def last_training():
     try:
-        return time_spent(getmtime(model_filename))
-    except Exception as e:
-        print(e)
+        return datetime.fromtimestamp(getmtime(model_filename))
+    except FileNotFoundError:
         return 'N/A'
 
 
@@ -41,8 +40,7 @@ def save_base64_photos(label, photos):
         ext, img = photo.split(';base64,')
         ext = ext.split('/')[-1]
         name = 'static/photos/' + str(label) + '_' + str(num) + '.' + ext
-        fh = open(name, 'wb')
+        with open(name, 'wb') as fh:
+            fh.write(b64decode(img))
         num += 1
-        fh.write(b64decode(img))
-        fh.close()
         paths.append(name)

@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Attendance{% endblock %}
-{% block css %}
-    <link href="{% static 'css/attendance.css' %}" rel="stylesheet">
-    <link href="{% static 'css/lib/dhtmlxcalendar.css' %}" rel="stylesheet">
-{% endblock %}
+
 {% block content %}
-    <i class="fa fa-search fa-2x"></i>
-    <input type="text" id="search" onkeyup="sort()" placeholder="Search names ..">
-    From:<input type="text" id="calendar" placeholder="Filter by dates ..">
-    To:<input type="text" id="calendar2" placeholder="Filter by dates ..">
-    <table class="table table-bordered table-hover table-striped" id="table">
-        <thead>
-        <tr>
-            <th># Id</th>
-            <th>User</th>
-            <th>Date</th>
-            <th>In / Out</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for rec in attendance %}
-            <tr id= {{ rec.id }}>
-                <td>{{ rec.id }}</td>
-                <td><a href={% url 'profile' _id=rec.user.id %}>{{ rec.user.first_name }} {{ rec.user.last_name }}</a>
-                </td>
-                <td>{{ rec.date }}</td>
-                <td>{% if rec.inout %}
-                    <i class="fa fa-arrow-up"></i>
-                {% else %}
-                    <i class="fa fa-arrow-down"></i>
-                {% endif %}
-                </td>
+    <div class="col-12 p-3">
+        <table class="table table-bordered table-hover table-striped" id="table">
+            <thead>
+            <tr>
+                <th># Id</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>In / Out</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for rec in attendance %}
+                <tr id= {{ rec.id }}>
+                    <td>{{ rec.id }}</td>
+                    <td>
+                        <a href={% url 'profile' rec.user.id %}>{{ rec.user.first_name }} {{ rec.user.last_name }}</a>
+                    </td>
+                    <td>{{ rec.date }}</td>
+                    <td>
+                        {% if rec.inout %}
+                            IN
+                        {% else %}
+                            OUT
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}
-{% block javascript %}
-    <script src="{% static 'js/attendance.js' %}"></script>
-    <script src="{% static 'js/lib/dhtmlxcalendar.js' %}"></script>
-{% endblock %}

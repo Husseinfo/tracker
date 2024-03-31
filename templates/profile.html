@@ -1,79 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block css %}
-    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
-{% endblock %}
+
 {% block title %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+
 {% block content %}
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
-        <div class="card hovercard">
-            <div class="card-background">
-                <img class="card-bkimg" alt="" src="{% static 'images/headerbg.png' %}">
-            </div>
-            <div class="useravatar">
-                <img src="{{ user.Image.url }}" alt="" class="img-circle">
-            </div>
-            <div class="card-info"><span class="card-title">{{ user.first_name }} {{ user.last_name }}</span>
-            </div>
-        </div>
-        <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab">
-                    <i class="fa fa-info-circle"></i>
-                    <div class="hidden-xs">Info</div>
-                </button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab">
-                    <i class="fa fa-camera-retro"></i>
-                    <div class="hidden-xs">Images</div>
-                </button>
-            </div>
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="card">
+            <img src="{{ user.Image.url }}" alt="">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <span class="card-title">{{ user.first_name }} {{ user.last_name }}</span>
+                </h5>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+                                data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="info-tab-pane"
+                                aria-selected="true">Info
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="images-tab" data-bs-toggle="tab"
+                                data-bs-target="#images-tab-pane" type="button" role="tab"
+                                aria-controls="images-tab-pane" aria-selected="false">Images
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
+                         tabindex="0">
+                        <dl class="dl-horizontal">
+                            <dt>Id:</dt>
+                            <dd>{{ user.id }}</dd>
+                            <dt>Email Address:</dt>
+                            <dd>{{ user.e_mail }}</dd>
+                            <dt>Phone Number:</dt>
+                            <dd>{{ user.phone }}</dd>
+                            <dt>birthdate:</dt>
+                            <dd>{{ user.birth_date }}</dd>
+                            <dt>Address:</dt>
+                            <dd>{{ user.address }}</dd>
+                        </dl>
 
-            <div class="btn-group" role="group" id="capture">
-                <a href="/capture?user={{ user.id }}">
-                    <button type="button" id="following" class="btn btn-default">
-                        <i class="fa fa-camera"></i>
-                        <div class="hidden-xs">Capture</div>
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <div class="well">
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="tab1">
-                    <dl class="dl-horizontal">
-                        <dt>Id:</dt>
-                        <dd>{{ user.id }}</dd>
-                        <dt>Email Address:</dt>
-                        <dd>{{ user.e_mail }}</dd>
-                        <dt>Phone Number:</dt>
-                        <dd>{{ user.phone }}</dd>
-                        <dt>birthdate:</dt>
-                        <dd>{{ user.birth_date }}</dd>
-                        <dt>Address:</dt>
-                        <dd>{{ user.address }}</dd>
-                    </dl>
-                </div>
-                <div class="tab-pane fade in" id="tab2">
-                    {% for image in images %}
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                {% with 'photos/'|add:image as image_static %}
-                                    <img src="{% static image_static %}" alt="Image {{ image }}">
-                                {% endwith %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="tab-pane fade in" id="tab3">
+                    </div>
+                    <div class="tab-pane fade" id="images-tab-pane" role="tabpanel" aria-labelledby="images-tab"
+                         tabindex="0">
+                        {% for image in images %}
+                            {% with 'photos/'|add:image as image_static %}
+                                <img src="{% static image_static %}" alt="Image {{ image }}" class="w-100">
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascript %}
-    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

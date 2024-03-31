@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import User, Image
+from tracker.models import User, Image
 
 
 class UserForm(ModelForm):
